@@ -6,6 +6,7 @@ TagManager:
   tags:
   - AI
   - Prop
+  - Enemy
   layers:
   - Default
   - TransparentFX
