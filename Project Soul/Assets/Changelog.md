@@ -27,3 +27,8 @@ Jim 1# 26/10/19 Master
  -Based on good tutorials it's good stand-alone needs work to fit in game, although tutorial has more videos that will help.
  -Animations from tutorial and Mixamo.
  -Needs a ton more work.
+ 
+ Stratos #2 05/11/19 Master
+ 1) Added IState,StateMachine for general use throughout the game.
+ 2) Implemented FSM Logic on Game Manager and added 3 new state scripts along minor changes.
+ 3) Populated stats manager.

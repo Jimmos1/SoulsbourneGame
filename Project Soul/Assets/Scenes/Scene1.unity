@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 1204962632}
   m_Layer: 0
   m_Name: Managers
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -324,6 +324,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 420516d07d5b42344b3e77c592378209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPosition: {x: 1, y: 1, z: 1}
+  playerRotation: {x: 0, y: 0, z: 0, w: 0}
+  hp: 100
+  fp: 100
+  stamina: 100
+  equipLoad: 20
+  poise: 20
+  itemDiscover: 111
+  R_weapon_1: 51
+  R_weapon_2: 51
+  R_weapon_3: 51
+  L_weapon_1: 51
+  L_weapon_2: 51
+  L_weapon_3: 51
+  physical: 87
+  vs_strike: 87
+  vs_slash: 87
+  vs_thrust: 87
+  magic_res: 30
+  fire_res: 30
+  lighting_res: 30
+  dark_res: 30
+  bleed: 100
+  poison: 100
+  frost: 100
+  curse: 100
+  attunementSlots: 0
+  level: 1
+  souls: 0
+  vigor: 11
+  attunement: 11
+  endurance: 11
+  vitality: 11
+  strength: 11
+  dexterity: 11
+  intelligence: 11
+  faith: 11
+  luck: 11
 --- !u!114 &1204962633
 MonoBehaviour:
   m_ObjectHideFlags: 0
