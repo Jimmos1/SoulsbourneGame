@@ -65,10 +65,9 @@ public class InputControl : StateAction
 
         retVal = HandleAttacking();
 
-        //temp
         if (Input.GetKeyDown(KeyCode.F) || y_Input)
         {
-            if (s.lockOn)
+            if(s.lockOn)
             {
                 s.OnClearLookOverride();
             }
@@ -77,6 +76,22 @@ public class InputControl : StateAction
                 s.OnAssignLookOverride(s.target);
             }
         }
+
+        //debug
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            s.movementSpeed += 5f;
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            s.movementSpeed -= 5f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            s.rigidbody.position += Vector3.up * 10;
+        }
+        //debug
 
         return retVal;
     }

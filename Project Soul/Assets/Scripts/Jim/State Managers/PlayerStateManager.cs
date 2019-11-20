@@ -73,6 +73,7 @@ public class PlayerStateManager : CharacterStateManager
         ChangeState(locomotionId);
 
         ignoreForGroundCheck = ~(1 << 9 | 1 << 10);
+
     }
 
     private void FixedUpdate()

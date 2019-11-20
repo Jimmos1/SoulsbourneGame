@@ -32,10 +32,15 @@ public class MovePlayerCharacter : StateAction
         Vector3 origin = states.mTransform.position + (targetVelocity.normalized * states.frontRayOffset);
         origin.y += .5f;
         Debug.DrawRay(origin, -Vector3.up, Color.red, .01f, false);
-        if (Physics.Raycast(origin, -Vector3.up, out hit, 1, states.ignoreForGroundCheck))
+        if (Physics.Raycast(origin, -Vector3.up, out hit, 1.5f, states.ignoreForGroundCheck))
         {
+            states.isGrounded = true;
             float y = hit.point.y;
             frontY = y - states.mTransform.position.y;
+        }
+        else
+        {
+            states.isGrounded = false;
         }
 
         Vector3 currentVelocity = states.rigidbody.velocity;
@@ -74,6 +79,9 @@ public class MovePlayerCharacter : StateAction
             states.rigidbody.isKinematic = false;
             states.rigidbody.drag = 0;
             targetVelocity.y = currentVelocity.y;
+
+            HandleRotation(); //temp needs better "dropping" behaviour
+
         }
 
         HandleAnimations();
