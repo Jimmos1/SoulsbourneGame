@@ -36,3 +36,8 @@ Stratos #2 05/11/19 Master
 Jim 2# 20/11/19 Master
 1) Added level prototype.
 2) Added a temporary run button (left shift) and a jump button (space) for debugging purposes.
+
+Nikos #2 26/11/19 Master 
+1) Added Weapon Hook (at right shoulder wrist)
+2) Changed Attack scripts
+3) Updated Nikos Attack demo scene

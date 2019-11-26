@@ -7,6 +7,8 @@ public class InputControl : StateAction
     //Input Manager but named to InputControl to avoid conflicts
     PlayerStateManager s;
 
+    AttackController attackController;
+
     //Triggers & Bumpers
     bool Rb;
     bool Rt;
@@ -33,6 +35,8 @@ public class InputControl : StateAction
     public InputControl(PlayerStateManager states)
     {
         s = states;
+
+        attackController = GameObject.FindGameObjectWithTag("Player").GetComponent<AttackController>();
     }
 
     public override bool Execute()
@@ -114,6 +118,12 @@ public class InputControl : StateAction
             //play animation
             s.PlayTargetAnimation("Attack 1", true);
             s.ChangeState(s.attackStateId);
+
+            attackController.isAttacking = true;
+        }
+        else
+        {
+            attackController.isAttacking = false;
         }
 
         return isAttacking;

@@ -10,6 +10,7 @@ public class WeaponTrigger : MonoBehaviour
         playerAttackController = GameObject.FindGameObjectWithTag("Player").GetComponent<AttackController>();
     }
 
+    // Add to List
     private void OnTriggerEnter(Collider hit)
     {
         if (hit.tag == "Enemy" && hit.GetComponent<HPController>().hp > 0)
@@ -18,9 +19,10 @@ public class WeaponTrigger : MonoBehaviour
         }
     }
 
+    // Remove from List
     private void OnTriggerExit(Collider hit)
     {
-        if (hit.tag == "Enemy")
+        if (hit.tag == "Enemy" && playerAttackController.hitGameObjects.Contains(hit.gameObject))
         {
             playerAttackController.hitGameObjects.Remove(hit.gameObject);
         }
