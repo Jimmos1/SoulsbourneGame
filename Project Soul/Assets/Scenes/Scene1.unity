@@ -220,6 +220,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 712460593}
+  - component: {fileID: 712460596}
+  - component: {fileID: 712460595}
+  - component: {fileID: 712460594}
   - component: {fileID: 712460592}
   m_Layer: 0
   m_Name: EnemyTestObject
@@ -237,11 +240,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 712460591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e44ca07ad2bf07428e988c629312288, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e96eb4ff06b6419ea290c9ef91e29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGOAPAgent: 0
-  agentGoals: []
+  enableConsoleMessages: 0
 --- !u!4 &712460593
 Transform:
   m_ObjectHideFlags: 0
@@ -252,9 +254,93 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 912653289}
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &712460594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712460591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c91c03aed45ef347932db787d313f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 100
+  physical: 87
+  magic_res: 30
+  bleed: 100
+  poison: 100
+  isDisabled: 0
+  isSlowed: 0
+  isAware: 0
+--- !u!114 &712460595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712460591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d7b0ea50bc8d443b936d66db52e1ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 912653288}
+  numWeaponSlots: 1
+  numPotions: 0
+  weaponType: WeaponMelee
+  secondaryWeaponType: 
+--- !u!114 &712460596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712460591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d6645e56b1c284088ca099a075edaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backpack: {fileID: 0}
+  combatStats: {fileID: 712460594}
+  navAgent: {fileID: 0}
+  moveSpeed: 1
+--- !u!1 &912653288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 912653289}
+  m_Layer: 0
+  m_Name: TestWeapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &912653289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912653288}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 712460593}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:

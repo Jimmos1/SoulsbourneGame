@@ -11,7 +11,7 @@ public sealed class GoapAgent : MonoBehaviour
 
     private FSM.FSMState idleState; // finds something to do
     private FSM.FSMState moveToState; // moves to a target
-    private FSM.FSMState performActionState; // performs an action
+    private FSM.FSMState performActionState; // performs an action - animation
 
     private HashSet<GoapAction> availableActions;
     private Queue<GoapAction> currentActions;
@@ -20,6 +20,7 @@ public sealed class GoapAgent : MonoBehaviour
 
     private GoapPlanner planner;
 
+    public bool enableConsoleMessages;
 
     void Start()
     {
@@ -27,7 +28,7 @@ public sealed class GoapAgent : MonoBehaviour
         availableActions = new HashSet<GoapAction>();
         currentActions = new Queue<GoapAction>();
         planner = new GoapPlanner();
-        findDataProvider(); //returns all components with IGOAP interface implemented.
+        findDataProvider(); //returns all components with IGOAP interface implemented
         createIdleState();
         createMoveToState();
         createPerformActionState();
@@ -38,6 +39,10 @@ public sealed class GoapAgent : MonoBehaviour
 
     void Update()
     {
+        //----------------------------------------------------------
+        //TODO: TO RUN UPDATE METHOD CHECK IF ISANIMATING!!!!!!!!!!!
+        //----------------------ASAP ASAP ASAP----------------------
+        //----------------------------------------------------------
         stateMachine.Update(this.gameObject);
     }
 
@@ -73,7 +78,7 @@ public sealed class GoapAgent : MonoBehaviour
                                          // GOAP planning
 
             // get the world state and the goal we want to plan for
-            HashSet<KeyValuePair<string, object>> worldState = dataProvider.getWorldState(); //Gets WorldState from Blacksmith:Labourer script.
+            HashSet<KeyValuePair<string, object>> worldState = dataProvider.getWorldState(); //Gets WorldState from BaseClass:InherritedClass script.
             HashSet<KeyValuePair<string, object>> goal = dataProvider.createGoalState();
 
             // Plan
@@ -91,7 +96,10 @@ public sealed class GoapAgent : MonoBehaviour
             else
             {
                 // ugh, we couldn't get a plan
-                Debug.Log("<color=orange>Failed Plan:</color>" + prettyPrint(goal));
+                if (enableConsoleMessages)
+                {
+                    Debug.Log("<color=orange>Failed Plan:</color>" + prettyPrint(goal));
+                }
                 dataProvider.planFailed(goal);
                 fsm.popState(); // move back to IdleAction state
                 fsm.pushState(idleState);
@@ -101,7 +109,7 @@ public sealed class GoapAgent : MonoBehaviour
 
     private void createMoveToState()
     {
-        moveToState = (fsm, gameObj) => {
+        moveToState = (fsm, gameObj) => {    //Lambda expression to refer actual method.
             // move the game object
 
             GoapAction action = currentActions.Peek();

@@ -21,5 +21,5 @@ public class CombatStats : MonoBehaviour
     public bool isDisabled = false;
     public bool isSlowed = false;
 
-    public bool isAware = false;
+    public bool isAware = true; //TODO: SET TO FALSE IN LATER VERSION
 }

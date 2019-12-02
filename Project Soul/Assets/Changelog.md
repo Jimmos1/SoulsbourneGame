@@ -41,3 +41,15 @@ Nikos #2 26/11/19 Master
 1) Added Weapon Hook (at right shoulder wrist)
 2) Changed Attack scripts
 3) Updated Nikos Attack demo scene
+
+Stratos #3 02/12/19 Master
+This changelog entry includes commits pushed by Stratos on 06/11, 19/11, 21/11 and 02/12.
+1) AI_Manager added but not implemented yet. Will provide hierarchical orders in certain scenarios.
+2) AI_Goap CORE system implemented (includes STACK_FSM/GOAP_Planner/GOAP_Agent/IGOAP/GOAPAction).
+3) Added CombatStats as required component to provide essential stats to the agent.
+4) Added Archetype classes for our agents (Ranger/Warrior/Labourer(FriendlyNPCs)). Also, Knight - extension of Warrior.
+5) Added archetype-based backpack components.
+6) Added MeleeAttackAction and FinisherMeleeAction.
+7) Final work needed to have prototype-ready agent is setting up animator and creating 1-2 animations.
+Sub-note: Made changes on dummy agent in Envir scene and added AttackController script made by Nick to the scene.
+

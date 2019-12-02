@@ -5,12 +5,12 @@ using UnityEngine.AI;
 
 
 /**
- * A general Ranger class.
+ * A generic Ranger class for medieval setting.
  * You should subclass this for specific Ranger classes and implement
  * the createGoalState() method that will populate the goal for the GOAP
  * planner.
  * 
- * POTENTIAL SUBCLASSES INCLUDE: Archer/Hunter/Scout/Tracker
+ * POTENTIAL SUBCLASSES INCLUDE: Archer, Hunter, Scout, Tracker
  */
 public abstract class Ranger : MonoBehaviour, IGoap
 {
