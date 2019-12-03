@@ -5,7 +5,17 @@ using UnityEngine.AI;
 
 public class AI_Manager : MonoBehaviour
 {
-    private int layers = 2; //the first step of creating advanced AI. Layer will be something like groups that manage different AIs.
+    /*
+     * AI manager is an AI that handles all agents deployed in the game.
+     * 1) Spawns/Despawns agents according to Game Manager plan.
+     * 2) Modifies agent stats when necessary.
+     * 3) Changes agent plan when necessary.
+     * 4) In future version, applies hierarchical planning to agents.
+     * 5) Provides ID and information to agents.
+     * 6) Observer pattern through ITaskObserver.
+     */
+
+    //private int layers = 2; //The first step of creating advanced AI. Neural networks. Input Layer -> Hidden Layers (Computation) -> Output Layer
 
     private GameManager gameManager;
     private StatsManager statsManager;
@@ -18,38 +28,19 @@ public class AI_Manager : MonoBehaviour
 
     private int newAgentID = 0;
 
-    //private GameObject[] activeAgents = new GameObject[nr_activeAgents];
-    //private AI_Attack[] activeAgentsAtkScripts = new AI_Attack[nr_activeAgents];
-    //private AI_Movement[] activeAgentsMovementScripts = new AI_Movement[nr_activeAgents];
-    //private AI_Health[] activeAgentsHealthScripts = new AI_Health[nr_activeAgents];
-    //private NavMeshAgent[] activeAgentsNavMesh = new NavMeshAgent[nr_activeAgents];
-    //private Animator[] activeAgentsAnimator = new Animator[nr_activeAgents];
-    //private float[] activeAgentsAttackTimer = new float[nr_activeAgents];
-    //private int[] activeAgentsID = new int[nr_activeAgents];
-    //private bool[] activeAgentsEnabled = new bool[nr_activeAgents];
-
-    //Resource Assignment Algorithm
-    //1.Assignment Scoring for active Agents -GOAP
-    // Black Knights->  Protect the Area -> On low HP Stay Alive -> Kill player    -BT
-
-    //Known intel for our ACTIVE agents. (Cheat factor)
+    //Known intel for our ACTIVE agents. (Cheat factor - PERCEPTION)
     //Player Health, Player Position, Last 3 player moves.
 
-    //Agent kit contains always a defensive move and an attack. Also, a number of special abilities. Order of execution changes. -GOAP
-    //Agent stats, abilities and custom stuff are contained in a separate script that is loaded on spawn. 
-    //Remove old stats component -> Add New Stats Component. (Will be drawn directly from Recources folder)
-
-    //Behaviour control will go through this manager but actions are taken from the agent. Agent can be stand-alone without AIManager controller.
-    //TODO: Add 2 layers on Agent. One will go through the process with puppet master (AIManager in our case) and the other standalone based on 
-    //self-survival plan. Add AIReligion templates as well for fun.
-
+    //Agent gameobject requires Animator, NavMeshAgent, DataProvider(e.g. Knight Class), CombatStats, BackpackComponent and GoalGenerator(e.g. GOAP Agent).
+    //Agent gameobject always has a defensive and an offensive action. Also, a number of special actions. Order of execution changes. 
+    
     //Agent object-pooling method will be used for Project Soul. Agents are said to include a rigidbody but that's not final. 
     //Agent will have an AI_Attack, AI_Health, AI_Stats(Modification), AI_Goals, AI_Actions and of course AI_Planner.
-    //Action scripts will contain all AI mechanics like Movement(Patrol, Idle, Chase), Attack(Normal, Heavy, Combo), Defense(Guard, Dodge) and Flavour(eat,forge).
+    //Action scripts will contain all AI mechanics like Attack(Normal, Heavy, Combo), Defense(Guard, Dodge) and Flavour(eat,forge).
+    //Movement is handled by a Stack-Based FSM.
 
     //Goal-Oriented Action Planning method is used OVER Behaviour Tree for random factor and UX. This method will help the team achieve
     //the best looking gameplay product.
-
     //Actions + Goals + WorldState -> Planner(A*) -> Plan -> FSM(MOVE <-> PERFORM)
     //This might create a hard unoptimized experience in the beginning of the systems that will go through optimization cycles to achieve the best quality.
 

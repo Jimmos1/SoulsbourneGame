@@ -116,7 +116,7 @@ public abstract class GoapAction : MonoBehaviour
     }
 
 
-    public HashSet<KeyValuePair<string, object>> Preconditions
+    public HashSet<KeyValuePair<string, object>> Preconditions   //For goap planner
     {
         get
         {
@@ -124,7 +124,7 @@ public abstract class GoapAction : MonoBehaviour
         }
     }
 
-    public HashSet<KeyValuePair<string, object>> Effects
+    public HashSet<KeyValuePair<string, object>> Effects          //For goap planner
     {
         get
         {

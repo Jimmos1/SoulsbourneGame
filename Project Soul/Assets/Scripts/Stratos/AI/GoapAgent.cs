@@ -6,7 +6,13 @@ using System;
 
 public sealed class GoapAgent : MonoBehaviour
 {
+    /*
+     * One Job.
+     * Create an experience.
+     */
 
+    //------GOAL GENERATOR-------
+    //V1.1 vars
     private FSM stateMachine;
 
     private FSM.FSMState idleState; // finds something to do
@@ -20,10 +26,20 @@ public sealed class GoapAgent : MonoBehaviour
 
     private GoapPlanner planner;
 
-    public bool enableConsoleMessages;
+
+    //V1.2 vars
+    public bool enableConsoleMessages = true;
+
+    private int agentID; 
+    
+
 
     void Start()
     {
+        //NEXT LEVEL SHIT
+        //agentID = GameObject.FindGameObjectWithTag("Manager").GetComponent<AI_Manager>().RegisterNewAgent(this.gameObject);
+        agentID = UnityEngine.Random.Range(0, 100);
+
         stateMachine = new FSM();
         availableActions = new HashSet<GoapAction>();
         currentActions = new Queue<GoapAction>();
@@ -197,7 +213,6 @@ public sealed class GoapAgent : MonoBehaviour
                     // push moveTo state
                     fsm.pushState(moveToState);
                 }
-
             }
             else
             {
@@ -230,7 +245,10 @@ public sealed class GoapAgent : MonoBehaviour
         {
             availableActions.Add(a);
         }
-        Debug.Log("Found actions: " + prettyPrint(actions));
+        if (enableConsoleMessages)
+        {
+            Debug.Log("Found actions on agent " + agentID + ": " + prettyPrint(actions));
+        }
     }
 
     public static string prettyPrint(HashSet<KeyValuePair<string, object>> state)

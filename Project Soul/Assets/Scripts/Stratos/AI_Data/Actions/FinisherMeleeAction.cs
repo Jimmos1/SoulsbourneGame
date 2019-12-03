@@ -75,7 +75,7 @@ public class FinisherMeleeAction : GoapAction
     public override bool perform(GameObject agent)
     {
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
-        Animator anim = (Animator)agent.GetComponent(typeof(An
+        Animator anim = (Animator)agent.GetComponent(typeof(Animator));
         //NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponent(typeof(NavMeshAgent));
         anim.SetTrigger("MeleeAttack");
         //TODO: ATTACK EFFECTS (ANYTHING RELATED TO SOUND/UI/ETC)
