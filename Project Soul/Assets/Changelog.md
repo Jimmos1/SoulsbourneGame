@@ -53,3 +53,8 @@ This changelog entry includes commits pushed by Stratos on 06/11, 19/11, 21/11 a
 7) Final work needed to have prototype-ready agent is setting up animator and creating 1-2 animations.
 Sub-note: Made changes on dummy agent in Envir scene and added AttackController script made by Nick to the scene.
 
+Stratos #4 09/12/19 Master
+1) Added player health on previous update.
+2) Added Buff & Debuff classes along with StatusEffectDatabase class that has all the information for the buff/debuff ops.
+3) Added Player Stats class that handles all the stat modifications, including between inventory-buffs-debuffs-health.
+4) Finally, added IModifiable interface for Stats class to achieve communication with managers/other object. 
