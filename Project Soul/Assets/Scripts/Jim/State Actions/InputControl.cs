@@ -7,13 +7,14 @@ public class InputControl : StateAction
     //Input Manager but named to InputControl to avoid conflicts
     PlayerStateManager s;
 
-    AttackController attackController;
-
     //Triggers & Bumpers
     bool Rb;
     bool Rt;
     bool Lb;
     bool Lt;
+
+    bool LMDown;
+    bool RMDown;
 
     //Inventory
     bool inventoryInput;
@@ -22,6 +23,8 @@ public class InputControl : StateAction
     bool b_Input;
     bool y_Input;
     bool x_Input;
+    bool FKey_Input;
+    bool GKey_Input;
 
     //DPad
     bool leftArrow;
@@ -35,8 +38,6 @@ public class InputControl : StateAction
     public InputControl(PlayerStateManager states)
     {
         s = states;
-
-        attackController = GameObject.FindGameObjectWithTag("Player").GetComponent<AttackController>();
     }
 
     public override bool Execute()
@@ -53,14 +54,21 @@ public class InputControl : StateAction
 
         inventoryInput = Input.GetButton("Inventory");
 
-        b_Input = Input.GetButton("B");
+        b_Input = Input.GetButtonDown("B");
         y_Input = Input.GetButtonDown("Y");
-        x_Input = Input.GetButton("X");
+        x_Input = Input.GetButtonDown("X");
+        FKey_Input = Input.GetKeyDown(KeyCode.F); //need to add to input profile
+        GKey_Input = Input.GetKeyDown(KeyCode.G); //need to add to input profile
+
+        LMDown = Input.GetMouseButtonDown(0);
+        RMDown = Input.GetMouseButtonDown(1);
 
         leftArrow = Input.GetButton("Left");
         rightArrow = Input.GetButton("Right");
         upArrow = Input.GetButton("Up");
         downArrow = Input.GetButton("Down");
+
+
 
         s.mouseX = Input.GetAxis("Mouse X");
         s.mouseY = Input.GetAxis("Mouse Y");
@@ -69,15 +77,17 @@ public class InputControl : StateAction
 
         retVal = HandleAttacking();
 
-        if (Input.GetKeyDown(KeyCode.F) || y_Input)
+        if (FKey_Input || x_Input)
         {
-            if(s.lockOn)
+            if (s.lockOn)
             {
                 s.OnClearLookOverride();
             }
             else
             {
-                s.OnAssignLookOverride(s.target);
+                s.target = s.FindLockableTarget();
+                if (s.target != null)
+                    s.OnAssignLookOverride(s.target);
             }
         }
 
@@ -86,44 +96,67 @@ public class InputControl : StateAction
         {
             s.movementSpeed += 5f;
         }
-        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             s.movementSpeed -= 5f;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || b_Input)
         {
             s.rigidbody.position += Vector3.up * 10;
         }
         //debug
+
+        if (s.canDoCombo)
+        {
+            bool isInteracting = s.anim.GetBool("isInteracting");
+            if (!isInteracting)
+            {
+                s.canDoCombo = false;
+            }
+        }
+
 
         return retVal;
     }
 
     bool HandleAttacking()
     {
-        if (Rb || Rt || Lb || Lt || Input.GetMouseButtonDown(0))
+        AttackInputs attackInput = AttackInputs.rt;
+
+        if (Rb || Rt || Lb || Lt || LMDown || RMDown)
         {
             isAttacking = true;
+
+            if (Rb || LMDown)
+            {
+                attackInput = AttackInputs.rb;
+            }
+            if (Rt || LMDown)
+            {
+                attackInput = AttackInputs.rt;
+            }
+            if (Lb || RMDown)
+            {
+                attackInput = AttackInputs.lb;
+            }
+            if (Lt || RMDown)
+            {
+                attackInput = AttackInputs.lt;
+            }
         }
 
-        if (y_Input)
+        if (y_Input || GKey_Input)
         {
-            isAttacking = false;
+            s.HandleTwoHanded();
         }
 
         if (isAttacking)
         {
             //Find the actual attack animation from the items etc.
             //play animation
-            s.PlayTargetAnimation("Attack 1", true);
+            s.PlayTargetItemAction(attackInput);
             s.ChangeState(s.attackStateId);
-
-            attackController.isAttacking = true;
-        }
-        else
-        {
-            attackController.isAttacking = false;
         }
 
         return isAttacking;

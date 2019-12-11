@@ -96,7 +96,7 @@ public class MovePlayerCharacter : StateAction
         return false;
     }
 
-    void HandleRotation()
+    public void HandleRotation()
     {
         Vector3 targetDir = Vector3.zero;
         float moveOverride = states.moveAmount;
@@ -119,10 +119,14 @@ public class MovePlayerCharacter : StateAction
         if (targetDir == Vector3.zero)
             targetDir = states.mTransform.forward;
 
+        float rotationSpeed = states.rotationSpeed;
+        if (states.isInteracting)
+            rotationSpeed = states.attackRotationSpeed;
+
         Quaternion tr = Quaternion.LookRotation(targetDir);
         Quaternion targetRotation = Quaternion.Slerp(
             states.mTransform.rotation, tr,
-            states.delta * moveOverride * states.rotationSpeed);
+            states.delta * moveOverride * rotationSpeed);
 
         states.mTransform.rotation = targetRotation;
     }

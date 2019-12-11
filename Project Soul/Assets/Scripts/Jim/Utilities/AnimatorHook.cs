@@ -30,4 +30,28 @@ public class AnimatorHook : MonoBehaviour
         }
     }
 
+    public void OpenDamageCollider()
+    {
+        states.HandleDamageCollider(true);
+    }
+
+    public void CloseDamageCollider()
+    {
+        states.HandleDamageCollider(false);
+    }
+
+    public void EnableCombo()
+    {
+        states.canDoCombo = true;
+    }
+
+    public void EnableRotation()
+    {
+        states.canRotate = true;
+    }
+
+    public void DisableRotation()
+    {
+        states.canRotate = false;
+    }
 }

@@ -19,6 +19,7 @@ public class MonitorInteractingAnimation : StateAction
     public override bool Execute()
     {
         bool isInteracting = states.anim.GetBool(targetBool);
+        states.isInteracting = isInteracting;
 
         if (isInteracting)
         {

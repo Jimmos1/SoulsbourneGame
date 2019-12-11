@@ -4,68 +4,74 @@ using UnityEngine;
 
 public class PlayerStateManager : CharacterStateManager
 {
-    //Specific Class for our Player or enemy (PVP) Players
-    //Also our Monobehaviours get updated here but actually control our StateManager
     [Header("Inputs")]
     public float mouseX;
     public float mouseY;
     public float moveAmount;
     public Vector3 rotateDirection;
 
+
     [Header("References")]
     public new Transform camera;
     public Cinemachine.CinemachineFreeLook normalCamera;
     public Cinemachine.CinemachineFreeLook lockOnCamera;
 
+
     [Header("Movement Stats")]
-    public float frontRayOffset = 0.5f;
-    public float movementSpeed = 1.0f;
-    public float adaptSpeed = 1.0f;
-    public float rotationSpeed = 10.0f;
+    public float frontRayOffset = .5f;
+    public float movementSpeed = 1;
+    public float adaptSpeed = 1;
+    public float rotationSpeed = 10;
+    public float attackRotationSpeed = 3;
 
     [HideInInspector]
     public LayerMask ignoreForGroundCheck;
 
     public string locomotionId = "locomotion";
-    public string attackStateId = "attackState";
+    public string attackStateId = "attackId";
+
+
 
     public override void Init()
     {
         base.Init();
 
+        MovePlayerCharacter movePlayerCharacter = new MovePlayerCharacter(this);
+
         State locomotion = new State(
             new List<StateAction>() //Fixed Update
             {
-                new MovePlayerCharacter(this)
+                movePlayerCharacter,
             },
             new List<StateAction>() //Update
             {
-                new InputControl(this)
+                new InputControl(this),
             },
-            new List<StateAction>() //Late Update
+            new List<StateAction>()//Late Update
             {
-
             }
             );
 
         locomotion.onEnter = DisableRootMotion;
+        locomotion.onEnter += DisableCombo;
 
         State attackState = new State(
             new List<StateAction>() //Fixed Update
             {
-
+                new HandleRotationHook(this, movePlayerCharacter),
             },
             new List<StateAction>() //Update
             {
                 new MonitorInteractingAnimation(this,"isInteracting", locomotionId),
+                new InputsForCombo(this),
             },
-            new List<StateAction>() //Late Update
+            new List<StateAction>()//Late Update
             {
-
             }
             );
 
         attackState.onEnter = EnableRootMotion;
+        attackState.onEnter += DisableComboVariables;
 
         RegisterState(locomotionId, locomotion);
         RegisterState(attackStateId, attackState);
@@ -74,6 +80,10 @@ public class PlayerStateManager : CharacterStateManager
 
         ignoreForGroundCheck = ~(1 << 9 | 1 << 10);
 
+        weaponHolderManager.Init();
+        weaponHolderManager.LoadWeaponOnHook(leftWeapon, true);
+        weaponHolderManager.LoadWeaponOnHook(rightWeapon, false);
+        UpdateItemActionsWithCurrent();
     }
 
     private void FixedUpdate()
@@ -83,10 +93,11 @@ public class PlayerStateManager : CharacterStateManager
         base.FixedTick();
     }
 
+    public bool debugLock;
+
     private void Update()
     {
         delta = Time.deltaTime;
-
         base.Tick();
     }
 
@@ -95,7 +106,7 @@ public class PlayerStateManager : CharacterStateManager
         base.LateTick();
     }
 
-    #region Lock On
+    #region Lock on 
     public override void OnAssignLookOverride(Transform target)
     {
         base.OnAssignLookOverride(target);
@@ -114,9 +125,24 @@ public class PlayerStateManager : CharacterStateManager
         lockOnCamera.gameObject.SetActive(false);
     }
 
+
+
     #endregion
 
+    public override void PlayTargetItemAction(AttackInputs attackInput)
+    {
+        canRotate = false;
 
+        ItemActionContainer iac = GetItemActionContainer(attackInput, itemActions);
+
+        iac.ExecuteItemAction(this);
+    }
+
+    public override void DoCombo()
+    {
+        currentItemAction.ExecuteItemAction(this);
+        ChangeState(attackStateId);
+    }
 
     #region State Events
     void DisableRootMotion()
@@ -128,6 +154,12 @@ public class PlayerStateManager : CharacterStateManager
     {
         useRootMotion = true;
     }
-    
+
+    void DisableComboVariables()
+    {
+        canDoCombo = false;
+    }
+
     #endregion
+
 }

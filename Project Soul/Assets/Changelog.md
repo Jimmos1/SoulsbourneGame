@@ -17,7 +17,7 @@ Nikos #1 18/10/19 Master
 2) Added Enemy tag.
 3) Created a prototype of Attack mechanic in TestNick Scene.
 
-Jim 1# 26/10/19 Master
+Jim #1 26/10/19 Master
 1) Added Cinemachine package to the project.
 2) Added alot of Animation related things to the project.
 3) Changed the Input settings at the Project Settings from Input (for controllers).
@@ -33,7 +33,7 @@ Stratos #2 05/11/19 Master
 2) Implemented FSM Logic on Game Manager and added 3 new state scripts along minor changes.
 3) Populated stats manager.
 
-Jim 2# 20/11/19 Master
+Jim #2 20/11/19 Master
 1) Added level prototype.
 2) Added a temporary run button (left shift) and a jump button (space) for debugging purposes.
 
@@ -58,3 +58,7 @@ Stratos #4 09/12/19 Master
 2) Added Buff & Debuff classes along with StatusEffectDatabase class that has all the information for the buff/debuff ops.
 3) Added Player Stats class that handles all the stat modifications, including between inventory-buffs-debuffs-health.
 4) Finally, added IModifiable interface for Stats class to achieve communication with managers/other object. 
+
+Jim #3 11/12/19 Master
+1) Revamped some movement logic.
+2) Added 
