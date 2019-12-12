@@ -13,7 +13,7 @@ public class Knight : Warrior
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
         //goal.Add(new KeyValuePair<string, object>("protectArea", true));
-        goal.Add(new KeyValuePair<string, object>("killPlayer", true));
+        goal.Add(new KeyValuePair<string, object>("killEnemy", true));
         return goal;
     }
 }

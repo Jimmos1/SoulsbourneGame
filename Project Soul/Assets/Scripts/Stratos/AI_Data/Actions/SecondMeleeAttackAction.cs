@@ -2,34 +2,33 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class FinisherMeleeAction : GoapAction
+public class SecondMeleeAttackAction : GoapAction
 {
 
     //dummy for now
     //only added to be able to create plan
 
-    private bool killEnemy = false;
+    private bool severeDamagedEnemy = false;
     private GameObject enemy; // what enemy we attack
     private string playerTag = "Player";
 
-    public FinisherMeleeAction()
+    public SecondMeleeAttackAction()
     {
         addPrecondition("hasWeapon", true); // don't bother attacking when no weapon in hands
         addPrecondition("damagedEnemy", true);
-        addPrecondition("severeDamagedEnemy", true);
-        addEffect("killEnemy", true); // destroy his dreams
+        addEffect("severeDamagedEnemy", true); // kick his ass
     }
 
 
     public override void reset()
     {
-        killEnemy = false;
+        severeDamagedEnemy = false;
         enemy = null;
     }
 
     public override bool isDone()
     {
-        return killEnemy; 
+        return severeDamagedEnemy; 
     }
 
     public override bool requiresInRange()
@@ -91,7 +90,7 @@ public class FinisherMeleeAction : GoapAction
                  * so it's possible we can get actual damagedEnemy
                  * status from player and evaluate attack success.
                  */
-                killEnemy = true; //... effect is true so we can move to next action
+                severeDamagedEnemy = true; //... effect is true so we can move to next action
                 navAgent.isStopped = false;
                 anim.SetBool("actionSuccess_AI", false);
                 Debug.Log("Attack has ended!");
@@ -99,11 +98,10 @@ public class FinisherMeleeAction : GoapAction
                 return true;
             }
 
-            anim.CrossFade("Attack 3", 0.25f);
+            anim.CrossFade("Attack 2", 0.25f);
             //PLAY SOUND/UI STUFF HERE
-            Debug.Log("Attack 3 at: " + Time.time);
+            Debug.Log("Attack 2 at: " + Time.time);
         }
-
         return true;
     }
 }

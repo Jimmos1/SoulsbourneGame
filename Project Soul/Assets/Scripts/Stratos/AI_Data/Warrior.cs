@@ -110,7 +110,7 @@ public abstract class Warrior : MonoBehaviour, IGoap
 
         float distance = (nextAction.target.transform.position - this.gameObject.transform.position).magnitude;
 
-        if (distance <= 0.5f) //0.5 is good enough for melee classes like warrior
+        if (distance <= 1.5f) //0.5 is good enough for melee classes like warrior
         {
             nextAction.setInRange(true);
             return true;

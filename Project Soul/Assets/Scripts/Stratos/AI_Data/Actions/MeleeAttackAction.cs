@@ -71,20 +71,33 @@ public class MeleeAttackAction : GoapAction
     {
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
         Animator anim = (Animator)agent.GetComponent(typeof(Animator));
-        //NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponent(typeof(NavMeshAgent));
-        anim.SetTrigger("MeleeAttack");
-        //TODO: ATTACK EFFECTS (ANYTHING RELATED TO SOUND/UI/ETC)
-        //navAgent.isStopped = true;
-        damagedEnemy = true;
+        NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponent(typeof(NavMeshAgent));
+        
+        //Becomes true during the period of attack
+        if (anim.GetBool("isAnimating_AI") != true) //Did we start animating an action...
+        {
+            navAgent.isStopped = true;             //...lets stop the agent for a bit shall we?
+            //Becomes true only on exit 
+            if (anim.GetBool("actionSuccess_AI")) //...if action is complete and successful
+            {
+                /*
+                 * Here we are sure we finished the animation
+                 * so it's possible we can get actual damagedEnemy
+                 * status from player and evaluate attack success.
+                 */
+                damagedEnemy = true; //... effect is true so we can move to next action
+                navAgent.isStopped = false;
+                anim.SetBool("actionSuccess_AI", false);
+                Debug.Log("Attack has ended!");
+
+                return true;
+            }
+            
+            anim.CrossFade("Attack 1", 0.25f);
+            //PLAY SOUND/UI STUFF HERE
+            Debug.Log("Attack 1 at: " + Time.time);
+        }
+            
         return true;
-
-        /*Animation will set isStopped to false after attack is finished
-         */
-
-        //Debug.Log(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        //yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        //Debug.Log("Attack has ended!");
-        //navAgent.isStopped = false;
-        //TODO: SOME WAY TO GET CONFIRMATION PLAYER GOT DAMAGED?
     }
 }
