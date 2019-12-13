@@ -61,7 +61,9 @@ Stratos #4 09/12/19 Master
 
 Jim #3 11/12/19 Master
 1) Revamped some movement logic.
-2) Added 
+2) Added animations for attacking, attacks can be executed consecutively in a combo fashion. Each weapon has each own attacks/ animations,
+	if there is no weapon, animations default to a punch.
+3) Logic for attacking added to weapon animations, colliders on/ off are controlled in the animation clips by the equivalent animation name.
 
 Nikos #3 13/12/19 Master 
 1) Added ItemNikos class(Item name was taken) and ItemAttribute
@@ -69,3 +71,17 @@ Nikos #3 13/12/19 Master
 3) Updated Inventory Manager
 4) Added Temporary pick up script with OnTriggerEnter
 5) Created a demo Scene for Inventory and UI(future update)
+
+Jim #4 14/12/19 Master
+1) Added changelog for <Jim #3>.
+2) Fixed a bug with oh_attack 3 animation event which let the player unarmed strike with weapon.
+3) Fixed a bug with debug code for running which didn't properly reset the movement speed.
+4) Removed some left over junk from previous projects - scripts folders not changed other than mine.
+5) Soft removed Nikos' WeaponHook.cs and replaced with mine. The logic that it had is now controlled by the combination of WeaponHolderHook, WeaponHolderManager and WeaponItem.
+6) Added some temporary code to AnimatorHook.cs so that animation event errors don't show up in the console.
+7) Added the tag Enemy to the AI Dummy.
+8) This is more of a reminder if someone needs a variable from the player it should in theory (hopefully) already exist in either CharacterStateManager or PlayerStateManager
+	either way if you need something from them, reference them properly and get what you need. Also since that structure is StateManager> CharacterStateManager> PlayerStateManager
+	you can just reference the PlayerStateManager and have access to whatever exists in the parent classes - unless they are protected variables in which case there should be a 
+	get/ set method for it. For example if we need to see if the player is acting which currently he just attacks the variable isInteracting will be flipped to true and we can just reference
+	that if we need to know if player is attacking.

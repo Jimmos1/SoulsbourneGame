@@ -94,11 +94,11 @@ public class InputControl : StateAction
         //debug
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            s.movementSpeed += 5f;
+            s.movementSpeed = 10f;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            s.movementSpeed -= 5f;
+            s.movementSpeed = 5f;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) || b_Input)

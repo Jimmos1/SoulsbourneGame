@@ -18,7 +18,7 @@ public class InputsForCombo : StateAction
     bool isAttacking;
 
     PlayerStateManager states;
-    AttackInputs attackInput;
+    //AttackInputs attackInput;
 
     public InputsForCombo(PlayerStateManager playerStates)
     {
@@ -45,22 +45,22 @@ public class InputsForCombo : StateAction
         {
             isAttacking = true;
 
-            if (Rb || LMDown)
-            {
-                attackInput = AttackInputs.rb;
-            }
-            if (Rt || LMDown)
-            {
-                attackInput = AttackInputs.rt;
-            }
-            if (Lb || RMDown)
-            {
-                attackInput = AttackInputs.lb;
-            }
-            if (Lt || RMDown)
-            {
-                attackInput = AttackInputs.lt;
-            }
+            //if (Rb || LMDown)
+            //{
+            //    attackInput = AttackInputs.rb;
+            //}
+            //if (Rt || LMDown)
+            //{
+            //    attackInput = AttackInputs.rt;
+            //}
+            //if (Lb || RMDown)
+            //{
+            //    attackInput = AttackInputs.lb;
+            //}
+            //if (Lt || RMDown)
+            //{
+            //    attackInput = AttackInputs.lt;
+            //}
         }
 
         if (isAttacking)
