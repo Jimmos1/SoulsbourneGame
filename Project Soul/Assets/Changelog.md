@@ -62,3 +62,10 @@ Stratos #4 09/12/19 Master
 Jim #3 11/12/19 Master
 1) Revamped some movement logic.
 2) Added 
+
+Nikos #3 13/12/19 Master 
+1) Added ItemNikos class(Item name was taken) and ItemAttribute
+2) Added ItemDatabase and ItemAttributeDatabase as ScriptableObjects in Resources
+3) Updated Inventory Manager
+4) Added Temporary pick up script with OnTriggerEnter
+5) Created a demo Scene for Inventory and UI(future update)

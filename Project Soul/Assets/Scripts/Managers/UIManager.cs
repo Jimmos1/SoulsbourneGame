@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private GameObject uiCanvas;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ToggleUI();
+        }
+    }
+
+    private void ToggleUI()
+    {
+        uiCanvas.SetActive(!uiCanvas.activeInHierarchy);
+        // TODO
     }
 }

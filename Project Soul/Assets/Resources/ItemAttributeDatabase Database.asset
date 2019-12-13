@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d5b56dd976c1f49be192ef5f533992, type: 3}
+  m_Name: ItemAttributeDatabase Database
+  m_EditorClassIdentifier: 
+  itemAttributeDatabase:
+  - name: Uses
+    value: 0
+  - name: Damage
+    value: 0
+  - name: Critical
+    value: 0
