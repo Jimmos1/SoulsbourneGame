@@ -85,3 +85,10 @@ Jim #4 14/12/19 Master
 	you can just reference the PlayerStateManager and have access to whatever exists in the parent classes - unless they are protected variables in which case there should be a 
 	get/ set method for it. For example if we need to see if the player is acting which currently he just attacks the variable isInteracting will be flipped to true and we can just reference
 	that if we need to know if player is attacking.
+
+Stratos #5 14/12/19 Master
+1) Added developer console csgo-style in the project files. Enable in every scene is advised -> requires Event System & DeveloperConsoleObjectNew 
+from prefabs folder to work. In unity play or exe press ` to activate and hooks in Debug.Log/Warning/Error messages. Only available command in v1.0 
+is quit which exits play mode or closes the application. Needs evaluation of behaviour with other systems (player control).
+2) Added AI_Showcase scene for future use.
+3) In yesterday update added and edited a lot of AI scripts and animator.

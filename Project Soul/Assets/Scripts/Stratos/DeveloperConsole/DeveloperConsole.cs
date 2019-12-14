@@ -84,6 +84,10 @@ namespace Console
             if (Input.GetKeyDown(KeyCode.BackQuote))
             {
                 consoleCanvas.gameObject.SetActive(!consoleCanvas.gameObject.activeInHierarchy); //checks if its active in hierarchy and enables or disables
+                if (consoleCanvas.isActiveAndEnabled)
+                {
+                    consoleInput.ActivateInputField(); //enables focus into the console.
+                }
             }
 
             if (consoleCanvas.gameObject.activeInHierarchy)
@@ -94,6 +98,9 @@ namespace Console
                     {
                         AddMessageToConsole(inputText.text);
                         ParseInput(inputText.text);
+                        //inputText.text = ""; //resets the input
+                        consoleInput.text = "";
+                        consoleInput.ActivateInputField();
                     }
                 }
             }
