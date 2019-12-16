@@ -15,15 +15,22 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
     //Use these enums to make comparison checks in our program.
     private enum gameFlowState
     {
-        isPlaying,isPaused,isLoading
+        isPlaying,
+        isPaused,
+        isLoading
     }
     private enum playerArea
     {
-        level01,level02,level03,secretArea
+        level01,
+        level02,
+        level03,
+        secretArea
     }
     private enum combatStatus
     {
-        outOfCombat,inCombat,other
+        outOfCombat,
+        inCombat,
+        other
     }
 
     //TIMERS
@@ -33,7 +40,7 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
 
     void Awake()
     {
-        
+        SoundManager.Initialize(); //init the sound manager
     }
 
     void Start()

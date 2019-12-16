@@ -92,3 +92,9 @@ from prefabs folder to work. In unity play or exe press ` to activate and hooks 
 is quit which exits play mode or closes the application. Needs evaluation of behaviour with other systems (player control).
 2) Added AI_Showcase scene for future use.
 3) In yesterday update added and edited a lot of AI scripts and animator.
+
+Stratos #6 16/12/19 Master
+1) Added AudioManager static class that can be called to apply positional and non-positional sound to the scene.
+2) Edited a bit GameManager.
+3) Added GameAssets script which supports our game with reference to every game asset needed. (Can apply item/buff database here)
+4) Added a few test sounds.
