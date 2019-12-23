@@ -12,6 +12,8 @@ public class StatsManager : MonoBehaviour  //This class provides save system int
     public Vector3 playerPosition = Vector3.one; //test
     public Quaternion playerRotation;
 
+    public GameManager.WayPoint lastVisitedWaypoint;
+    public GameManager.WayPoint[] unlockedWaypoints;
 
     //TODO: Add more vars + Create Inventory Class.
     [Header("Character Stats")]
@@ -78,5 +80,9 @@ public class StatsManager : MonoBehaviour  //This class provides save system int
     public Quaternion GetPlayerRot()
     {
         return playerRotation;
+    }
+    public GameManager.WayPoint GetLastVisitedWaypoint()
+    {
+        return lastVisitedWaypoint;
     }
 }

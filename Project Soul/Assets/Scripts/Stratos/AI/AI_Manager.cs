@@ -70,14 +70,19 @@ public class AI_Manager : MonoBehaviour
         int goalID = 1; //DUMMY
         return goalID;
     }
-    public void RespawnAgents(int areaID) //Called usually when player dies.
+    public void RespawnAgents(GameManager.PlayerArea area) //Called usually when player dies.
     {
-        switch (areaID) 
+        switch (area) 
         {
-            case 1: break; //after ops complete we should have a callback to let game manager know of ops progress.
-            case 2: break;
-            case 3: break;
-            case 4: break;
+            case GameManager.PlayerArea.level01:
+                {
+                    //TODO: POPULATE 
+                    break; //after ops complete we should have a callback to let game manager know of ops progress.
+                }
+            case GameManager.PlayerArea.level02: break;
+            case GameManager.PlayerArea.level03: break;
+            case GameManager.PlayerArea.secretArea: break;
+            case GameManager.PlayerArea.custom: break; //for developer scene
         }
     }
     public void RespawnSingleAgent(int agentID, Vector3 spawnPoint)
