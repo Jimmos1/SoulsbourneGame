@@ -16,6 +16,7 @@ public class InventoryManager : MonoBehaviour
     // Private
     private ItemDatabase itemDatabase;
     private ItemAttributeDatabase itemAttributeDatabase;
+    private UIManager uiManager;
 
 
     [Serializable]
@@ -31,6 +32,7 @@ public class InventoryManager : MonoBehaviour
     {
         itemDatabase = Resources.Load<ItemDatabase>("ItemDatabase");
         itemAttributeDatabase = Resources.Load<ItemAttributeDatabase>("ItemAttributeDatabase");
+        uiManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<UIManager>();
         inventoryItems = new List<ItemNikos>();
     }
 
@@ -39,6 +41,18 @@ public class InventoryManager : MonoBehaviour
         if (itemDatabase.GetItemByID(item.id) != null)
         {
             inventoryItems.Add(item);
+
+            // UI
+            if (item.type == ItemType.Weapon)
+                uiManager.AddUIItem("Weapons", item.id);
+            else if (item.type == ItemType.ChestArmor || item.type == ItemType.HandArmor ||
+                item.type == ItemType.HeadArmor || item.type == ItemType.ShoeArmor ||
+                item.type == ItemType.TrouserArmor || item.type == ItemType.Shield)
+                uiManager.AddUIItem("Armors", item.id);
+            else if (item.type == ItemType.Consumable)
+                uiManager.AddUIItem("Consumables", item.id);
+            else if (item.type == ItemType.None)
+                uiManager.AddUIItem("Keys", item.id);
 
             Debug.Log("Added " + item.name + " to inventory");
             Debug.Log("Attributes:");
@@ -52,6 +66,21 @@ public class InventoryManager : MonoBehaviour
         if (itemDatabase.GetItemByName(gameObject.name) != null)
         {
             inventoryItems.Add(itemDatabase.GetItemByName(gameObject.name));
+
+            // UI
+            if (itemDatabase.GetItemByName(gameObject.name).type == ItemType.Weapon)
+                uiManager.AddUIItem("Weapons", itemDatabase.GetItemByName(gameObject.name).id);
+            else if (itemDatabase.GetItemByName(gameObject.name).type == ItemType.ChestArmor ||
+                itemDatabase.GetItemByName(gameObject.name).type == ItemType.HandArmor ||
+                itemDatabase.GetItemByName(gameObject.name).type == ItemType.HeadArmor ||
+                itemDatabase.GetItemByName(gameObject.name).type == ItemType.ShoeArmor ||
+                itemDatabase.GetItemByName(gameObject.name).type == ItemType.TrouserArmor ||
+                itemDatabase.GetItemByName(gameObject.name).type == ItemType.Shield)
+                uiManager.AddUIItem("Armors", itemDatabase.GetItemByName(gameObject.name).id);
+            else if (itemDatabase.GetItemByName(gameObject.name).type == ItemType.Consumable)
+                uiManager.AddUIItem("Consumables", itemDatabase.GetItemByName(gameObject.name).id);
+            else if (itemDatabase.GetItemByName(gameObject.name).type == ItemType.None)
+                uiManager.AddUIItem("Keys", itemDatabase.GetItemByName(gameObject.name).id);
 
             Debug.Log("Added " + gameObject.name + " to inventory");
             Debug.Log("Attributes:");

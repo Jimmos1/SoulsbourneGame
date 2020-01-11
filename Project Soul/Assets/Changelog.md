@@ -98,3 +98,6 @@ Stratos #6 16/12/19 Master
 2) Edited a bit GameManager.
 3) Added GameAssets script which supports our game with reference to every game asset needed. (Can apply item/buff database here)
 4) Added a few test sounds.
+
+Nikos #4 11/01/20 Master 
+1) Created a simple inventory UI and connected it with picked up items
