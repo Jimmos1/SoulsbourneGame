@@ -8,4 +8,9 @@ public class LockableHook : MonoBehaviour, ILockable
     {
         return transform;
     }
+
+    public bool IsAlive()
+    {
+        return true;
+    }
 }

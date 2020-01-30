@@ -101,3 +101,15 @@ Stratos #6 16/12/19 Master
 
 Nikos #4 11/01/20 Master 
 1) Created a simple inventory UI and connected it with picked up items
+
+Jim #5 30/1/20 Master
+1) Revamped Player Controller. The player as an entity exists from the scripts InputControl, CameraManager and Controller. Proper sample scene is JimScenebed for demo.
+	- Movement is about the same WASD movement, Left Shift dodges, Left/Right click attacks with appropriate weapon and R locks on to first target in hierarchy that has or inherits ILockable.
+2) Added sample AI animation logic that is consisted of AIController. More animations and behaviours to come in next patch.
+3) Need to properly adapt AIController logic to GOAP agent logic. Currently hacked up - edited Warrior.cs to introduce some movement but it is not entirely correct.
+4) AIController currently can spawn, chase the enemy using parameter based actions and use attacks appropriately to the parameters. Also can die and become ragdoll for fun.
+5) Stopped using Cinemachine for player because it didn't have full control of it. Might introduce later for cinematics.
+6) Bugs: plently will fix in future patches, ex.AIController gravity doesn't work, agent component "jerky" sometimes when near player, left to right combo doesn't transition to correct hand.
+7) If lost in scripts try finding way around by searching by reference in Visual Studio until I add comments.
+8) Replaced old CharacterController in scenes that used it. InventoryUIScene works better now that it doesn't have input problems, still need to when the UI is open disable by logic the InputControl. 
+9) Cleaned up project abit.

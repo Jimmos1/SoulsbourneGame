@@ -25,12 +25,12 @@ public class WeaponHolderHook : MonoBehaviour
         }
     }
 
-    public void LoadWeaponModel(WeaponItem weaponItem)
+    public WeaponHook LoadWeaponModel(WeaponItem weaponItem)
     {
         if (weaponItem == null)
         {
             UnloadWeapon();
-            return;
+            return null;
         }
 
         GameObject model = Instantiate(weaponItem.modelPrefab) as GameObject;
@@ -50,8 +50,10 @@ public class WeaponHolderHook : MonoBehaviour
             model.transform.localPosition = Vector3.zero;
             model.transform.localRotation = Quaternion.identity;
             model.transform.localScale = Vector3.one;
+
         }
 
         currentModel = model;
+        return weaponItem.weaponHook;
     }
 }

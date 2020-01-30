@@ -5,16 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class ItemActionContainer
 {
-    public int animIndex;
-    public string[] animName;
+    public string animName;
     public ItemAction itemAction;
     public AttackInputs attackInput;
     public bool isMirrored;
     public bool isTwoHanded;
     public Item itemActual;
+    public WeaponHook weaponHook;
 
-    public void ExecuteItemAction(CharacterStateManager characterStateManager)
+    public void ExecuteItemAction(Controller controller)
     {
-        itemAction.ExecuteAction(this, characterStateManager);
+        itemAction.ExecuteAction(this, controller);
     }
 }

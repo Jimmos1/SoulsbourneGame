@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class ItemAction : ScriptableObject
 {
-    public abstract void ExecuteAction(ItemActionContainer itemContainer, CharacterStateManager characterStateManager);
+    public abstract void ExecuteAction(ItemActionContainer itemContainer, Controller controller);
 }

@@ -67,10 +67,12 @@ public class MeleeAttackAction : GoapAction
         return closest != null;
     }
 
+    public Animator anim;
+
     public override bool perform(GameObject agent)
     {
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
-        Animator anim = (Animator)agent.GetComponent(typeof(Animator));
+        anim = GetComponent<Animator>();
         NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponent(typeof(NavMeshAgent));
         
         //Becomes true during the period of attack
@@ -95,7 +97,7 @@ public class MeleeAttackAction : GoapAction
             
             anim.CrossFade("Attack 1", 0.25f);
             //PLAY SOUND/UI STUFF HERE
-            Debug.Log("Attack 1 at: " + Time.time);
+            //Debug.Log("Attack 1 at: " + Time.time);
         }
             
         return true;

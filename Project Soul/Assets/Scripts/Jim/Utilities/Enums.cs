@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum AttackInputs
 {
-    rb,lb,rt,lt
+    rb,lb,rt,lt,none
 }

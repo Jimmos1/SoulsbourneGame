@@ -103,10 +103,46 @@ public abstract class Warrior : MonoBehaviour, IGoap
         Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
     }
 
+    public Animator anim;
+
     public bool moveAgent(GoapAction nextAction)
     {
         //TODO: Add moveSpeed && distance checkers per action.
         this.navAgent.SetDestination(nextAction.target.transform.position);
+
+        //Hacky way of doing things
+        #region hack
+        Vector3 relativeDirection = transform.InverseTransformDirection(navAgent.desiredVelocity);
+        relativeDirection.Normalize();
+
+        anim.SetFloat("forward", relativeDirection.z, 0.1f, Time.deltaTime);
+
+        Vector3 dir = nextAction.target.transform.position - transform.position;
+        dir.y = 0;
+        dir.Normalize();
+
+        float dis = Vector3.Distance(transform.position, nextAction.target.transform.position);
+        float angle = Vector3.Angle(transform.forward, dir);
+        float dot = Vector3.Dot(transform.right, dir);
+
+        if (dot < 0)
+        {
+            angle *= -1;
+        }
+
+        //currentSnapshot = GetAction(dis, angle);
+        //if (currentSnapshot != null && !actionFlag)
+        //{
+        //    PlayTargetAnimation(currentSnapshot.anim, true);
+        //    actionFlag = true;
+        //    recoveryTimer = currentSnapshot.recoveryTime;
+        //}
+        //else
+        //{
+        //    animator.SetFloat("sideways", relativeDirection.x, 0.1f, delta);
+        //}
+
+        #endregion
 
         float distance = (nextAction.target.transform.position - this.gameObject.transform.position).magnitude;
 
@@ -117,6 +153,7 @@ public abstract class Warrior : MonoBehaviour, IGoap
         }
         else
         {
+            anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime); //here is hack too
             return false;
         }
     }

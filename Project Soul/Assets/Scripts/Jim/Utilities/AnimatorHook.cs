@@ -5,80 +5,124 @@ using UnityEngine;
 public class AnimatorHook : MonoBehaviour
 {
     //Helper Class for animations
-    CharacterStateManager states;
+    Controller controller;
+    bool isAI;
 
+    Animator animator;
 
-    /*  
-     *  this is for debugging so no animation errors pop up in the console THIS SHOULD BE ADRESSED AS SOON AS POSSIBLE
-     *  
-     *   if (transform.tag == "Enemy")
-     *   return;
-     *
-     */
+    public Vector3 deltaPosition;
+    public bool canRotate;
+    public bool canDoCombo;
+    public bool canMove;
+    public bool openDamageCollider;
+    public bool hasLookAtTarget;
+    public Vector3 lookAtPosition;
 
-    public virtual void Init(CharacterStateManager stateManager)
+    void Start()
     {
-        if (transform.tag == "Enemy")
-            return;
-        states = (CharacterStateManager)stateManager;
+        animator = GetComponent<Animator>();
+        controller = GetComponentInParent<Controller>();
+        if (controller == null)
+        {
+            isAI = true;
+        }
+        else
+        {
+            isAI = false;
+        }
+
+        RagdollStatus(false);
+    } 
+
+    void RagdollStatus(bool status)
+    {
+        Rigidbody[] ragdollRigids = GetComponentsInChildren<Rigidbody>();
+        Collider[] ragdollColliders = GetComponentsInChildren<Collider>();
+
+        foreach (Rigidbody r in ragdollRigids)
+        {
+            r.isKinematic = !status;
+            r.gameObject.layer = 10; // Ragdoll layer
+        }
+
+        foreach (Collider c in ragdollColliders)
+        {
+            c.isTrigger = !status;
+        }
+
+        animator.enabled = !status;
     }
 
     public void OnAnimatorMove()
     {
-        if (transform.tag == "Enemy")
-            return;
         OnAnimatorMoveOverride();
     }
 
     protected virtual void OnAnimatorMoveOverride()
     {
-        if (transform.tag == "Enemy")
-            return;
+     
+        float delta = Time.deltaTime;
 
-        if (states.useRootMotion == false)
-            return;
-
-        if (states.isGrounded && states.delta > 0)
+        if (!isAI)
         {
-            Vector3 v = (states.anim.deltaPosition) / states.delta;
-            v.y = states.rigidbody.velocity.y;
-            states.rigidbody.velocity = v;
+            if (controller == null)
+                return;
+
+            if (controller.isInteracting == false)
+                return;
+
+            if (controller.isGrounded && delta > 0)
+            {
+                deltaPosition = (animator.deltaPosition) / delta;
+            }
         }
+        else
+        {
+            deltaPosition = (animator.deltaPosition) / delta;
+        }
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (hasLookAtTarget)
+        {
+            animator.SetLookAtWeight(1f, 0.9f, 0.95f, 1f, 1f);
+            animator.SetLookAtPosition(lookAtPosition);
+        }
+    }
+
+    public void OpenCanMove()
+    {
+        canMove = true;
     }
 
     public void OpenDamageCollider()
     {
-        if (transform.tag == "Enemy")
-            return;
-        states.HandleDamageCollider(true);
+        openDamageCollider = true;
     }
 
     public void CloseDamageCollider()
     {
-        if (transform.tag == "Enemy")
-            return;
-        states.HandleDamageCollider(false);
+        openDamageCollider = false;
     }
 
     public void EnableCombo()
     {
-        if (transform.tag == "Enemy")
-            return;
-        states.canDoCombo = true;
+        canDoCombo = true;
     }
 
     public void EnableRotation()
     {
-        if (transform.tag == "Enemy")
-            return;
-        states.canRotate = true;
+        canRotate = true;
     }
 
     public void DisableRotation()
     {
-        if (transform.tag == "Enemy")
-            return;
-        states.canRotate = false;
+        canRotate = false;
     }
 
+    public void EnableRagdoll()
+    {
+        RagdollStatus(true);
+    }
 }

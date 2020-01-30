@@ -101,7 +101,7 @@ public class FinisherMeleeAction : GoapAction
 
             anim.CrossFade("Attack 3", 0.25f);
             //PLAY SOUND/UI STUFF HERE
-            Debug.Log("Attack 3 at: " + Time.time);
+            //Debug.Log("Attack 3 at: " + Time.time);
         }
 
         return true;

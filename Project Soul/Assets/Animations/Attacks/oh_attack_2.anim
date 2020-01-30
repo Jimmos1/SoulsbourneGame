@@ -44327,7 +44327,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.53333336
+  - time: 0.56666666
     functionName: DisableRotation
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -44341,8 +44341,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.6333333
+  - time: 0.6666667
     functionName: EnableCombo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.8
+    functionName: OpenCanMove
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
