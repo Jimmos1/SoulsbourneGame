@@ -16,8 +16,11 @@ public class DamageCollider : MonoBehaviour
         IDamageable damageable = other.GetComponentInParent<IDamageable>();
         if(damageable != null)
         {
+            Debug.Log(owner.GetActionContainer().owner.name + " hit: " + other.name);
+
+
             damageable.OnDamage(owner.GetActionContainer());
-            //Debug.Log(other.name + " was hit.");
+            
         }
     }
 }

@@ -12265,7 +12265,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: ffaf641b210f5ea41952cf36f1379d66, type: 3}
   m_Controller: {fileID: 9100000, guid: c8612cd389c28fa42bc5623f4d60591b, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 1
+  m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -12801,7 +12801,7 @@ GameObject:
   - component: {fileID: 1085033505}
   - component: {fileID: 1085033504}
   - component: {fileID: 1085033503}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Red Dragon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18940,7 +18940,7 @@ GameObject:
   - component: {fileID: 1488972639}
   - component: {fileID: 1488972638}
   - component: {fileID: 1488972637}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20596,7 +20596,7 @@ GameObject:
   - component: {fileID: 1735316615}
   - component: {fileID: 1735316614}
   - component: {fileID: 1735316613}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26614,7 +26614,7 @@ GameObject:
   - component: {fileID: 1736079633969547325}
   - component: {fileID: 974174227409722901}
   - component: {fileID: 7792696875643082017}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

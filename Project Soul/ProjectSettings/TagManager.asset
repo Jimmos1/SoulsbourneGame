@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Dragon
+  - Enemy
+  - Manager
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -17,7 +21,7 @@ TagManager:
   - Enemy
   - Ragdoll
   - RagdollFeet
-  - 
+  - DamageCollider
   - 
   - 
   - 

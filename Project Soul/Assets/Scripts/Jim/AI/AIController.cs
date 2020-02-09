@@ -287,7 +287,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
             isHit = true;
             hitTimer = 1f;
             health -= action.damage;
-            animatorHook.openDamageCollider = false;
+            animatorHook.CloseDamageCollider(); //for safety
 
 
             if (health <= 0)
@@ -309,11 +309,11 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
                 {
                     if (dot > 0)
                     {
-                        PlayTargetAnimation("Get Hit Front", true);
+                        PlayTargetAnimation("Get Hit Front", true, 0f, true);
                     }
                     else
                     {
-                        PlayTargetAnimation("Get Hit Back", true);
+                        PlayTargetAnimation("Get Hit Back", true, 0f, true);
                     }
                 }
             }
@@ -336,7 +336,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
         {
             if (!isInInterruption)
             {
-                //animatorHook.CloseDamageCollider(); //for safety
+                animatorHook.CloseDamageCollider(); //for safety
 
                 dir.Normalize(); // to rotate agent to look at us
                 dir.y = 0;

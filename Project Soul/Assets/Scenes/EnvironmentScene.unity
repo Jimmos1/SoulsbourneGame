@@ -8274,7 +8274,9 @@ MonoBehaviour:
   canMove: 0
   openDamageCollider: 0
   hasLookAtTarget: 0
+  canBeParried: 0
   lookAtPosition: {x: 0, y: 0, z: 0}
+  useIK: 0
 --- !u!1 &1358081812935708325
 GameObject:
   m_ObjectHideFlags: 0
@@ -11641,8 +11643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5854b12049d2545abdce5934b26411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftItem: {fileID: 0}
-  rightItem: {fileID: 11400000, guid: 3c01eb97522b89641adba6c311df730a, type: 2}
 --- !u!1 &1358081814030425953
 GameObject:
   m_ObjectHideFlags: 0
@@ -11681,34 +11681,9 @@ MonoBehaviour:
   isGrounded: 0
   isRolling: 0
   isInteracting: 0
-  rollCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  rollClip: {fileID: 0}
+  isSprinting: 0
   movementSpeed: 5
-  rollSpeed: 1
-  adaptSpeed: 1
+  sprintingSpeed: 3
   rotationSpeed: 25
   attackRotationSpeed: 3
   groundDownDistanceOnAir: 0.4
@@ -11720,34 +11695,51 @@ MonoBehaviour:
   currentActions: []
   defaultActions:
   - animName: Punch 1
-    itemAction: {fileID: 11400000, guid: 3d9bbd772a782a84ca4d45a98ac78de1, type: 2}
     attackInput: 0
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
+    damage: 10
+    overrideReactAnim: 0
+    reactAnim: 
+    canParry: 0
+    canBackstab: 0
   - animName: Punch 1
-    itemAction: {fileID: 11400000, guid: 3d9bbd772a782a84ca4d45a98ac78de1, type: 2}
     attackInput: 1
     isMirrored: 1
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
+    damage: 10
+    overrideReactAnim: 0
+    reactAnim: 
+    canParry: 0
+    canBackstab: 0
   - animName: Punch 1
-    itemAction: {fileID: 11400000, guid: 3d9bbd772a782a84ca4d45a98ac78de1, type: 2}
     attackInput: 2
     isMirrored: 1
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
+    damage: 10
+    overrideReactAnim: 0
+    reactAnim: 
+    canParry: 0
+    canBackstab: 0
   - animName: Punch 1
-    itemAction: {fileID: 11400000, guid: 3d9bbd772a782a84ca4d45a98ac78de1, type: 2}
     attackInput: 3
     isMirrored: 1
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
+    damage: 10
+    overrideReactAnim: 0
+    reactAnim: 
+    canParry: 0
+    canBackstab: 0
   animatorHook: {fileID: 0}
+  parryCollider: {fileID: 8737379350552521204}
 --- !u!4 &1358081814030425955
 Transform:
   m_ObjectHideFlags: 0
@@ -11762,6 +11754,7 @@ Transform:
   - {fileID: 1358081813791225498}
   - {fileID: 1358081813823359422}
   - {fileID: 1358081812467012063}
+  - {fileID: 8737379350552521205}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13328,7 +13321,9 @@ MonoBehaviour:
   canMove: 0
   openDamageCollider: 0
   hasLookAtTarget: 0
+  canBeParried: 0
   lookAtPosition: {x: 0, y: 0, z: 0}
+  useIK: 0
 --- !u!1 &6261522152528633024
 GameObject:
   m_ObjectHideFlags: 0
@@ -17104,6 +17099,63 @@ GameObject:
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!114 &8737379350552521202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8737379350552521204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef4153eaba2bfb4c92411ce3321c694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &8737379350552521203
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8737379350552521204}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8737379350552521204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8737379350552521205}
+  - component: {fileID: 8737379350552521203}
+  - component: {fileID: 8737379350552521202}
+  m_Layer: 12
+  m_Name: Parry Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8737379350552521205
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8737379350552521204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.11, z: 0.71}
+  m_LocalScale: {x: 1.0413, y: 2.166, z: 2.2576}
+  m_Children: []
+  m_Father: {fileID: 1358081814030425955}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8739383090794178639
 GameObject:
   m_ObjectHideFlags: 0
