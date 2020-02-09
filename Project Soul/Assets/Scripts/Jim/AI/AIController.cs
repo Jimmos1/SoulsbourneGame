@@ -218,7 +218,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
 
         if (!playInstantly)
         {
-            animator.CrossFadeInFixedTime(targetAnim, 0.2f);
+            animator.CrossFadeInFixedTime(targetAnim, crossfadeTime);
         }
         else
         {
@@ -332,7 +332,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
 
     public void OnParried(Vector3 dir)
     {
-        if (animatorHook.canBeParried && tag != "Dragon")
+        if (animatorHook.canBeParried && tag != "Dragon") //dragon doesn't have animations
         {
             if (!isInInterruption)
             {
