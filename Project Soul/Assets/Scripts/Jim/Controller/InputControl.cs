@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputControl : MonoBehaviour
 {
@@ -112,6 +113,17 @@ public class InputControl : MonoBehaviour
         {
             cameraManager.HandleRotation(delta, mouseX, mouseY);
         }
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            SceneManager.LoadScene(0); //reload first scene
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
     }
 
     private void LateUpdate()
@@ -147,7 +159,7 @@ public class InputControl : MonoBehaviour
 
         inventoryInput = Input.GetButton("Inventory");
 
-        b_Input = Input.GetButtonDown("B");
+        b_Input = Input.GetButton("B");
         y_Input = Input.GetButtonDown("Y");
         x_Input = Input.GetButtonDown("X");
         FKey_Input = Input.GetKeyDown(KeyCode.F); //need to add to input profile
@@ -272,27 +284,44 @@ public class InputControl : MonoBehaviour
 
     bool HandleRolls()
     {
+        controller.isSprinting = false;
+
         if (b_Input == false && rollFlag)
         {
             rollFlag = false;
 
-            if (moveAmount > 0)
+            if (rollTimer < 0.5f)
             {
-                Vector3 movementDirection = camTransform.right * horizontal;
-                movementDirection += camTransform.forward * vertical;
-                movementDirection.Normalize();
-                movementDirection.y = 0;
+                if (moveAmount > 0)
+                {
+                    Vector3 movementDirection = camTransform.right * horizontal;
+                    movementDirection += camTransform.forward * vertical;
+                    movementDirection.Normalize();
+                    movementDirection.y = 0;
 
-                Quaternion dir = Quaternion.LookRotation(movementDirection);
-                controller.transform.rotation = dir;
-                controller.PlayTargetAnimation("Roll", true, false, 1.5f);
-                return true;
+                    Quaternion dir = Quaternion.LookRotation(movementDirection);
+                    controller.transform.rotation = dir;
+                    controller.PlayTargetAnimation("Roll", true, false, 1.5f);
+                    return true;
 
+                }
+                else
+                {
+                    controller.PlayTargetAnimation("Step", true, false);
+                }
             }
-            else
+        }
+        else if (rollFlag)
+        {
+            if (moveAmount > 0.5f)
             {
-                controller.PlayTargetAnimation("Step", true, false);
+                controller.isSprinting = true;
             }
+        }
+
+        if(b_Input == false)
+        {
+            rollTimer = 0;
         }
 
         return false;

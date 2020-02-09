@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class AIController : MonoBehaviour, ILockable, IDamageable
+public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity, IParryable
 {
     new Rigidbody rigidbody;
     Animator animator;
     NavMeshAgent agent;
     AnimatorHook animatorHook;
     Transform mTransform;
+    Vector3 lookPosition;
 
     public int health = 100;
 
@@ -18,11 +17,14 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
     public float moveSpeed = 2;
     public float recoveryTimer;
     public int hardcodeAction = -1;
+    public bool isInInterruption;
+    public bool openToBackstab = true;
     LayerMask detectionLayer;
 
     Controller currentTarget;
     bool isInteracting = false;
     bool actionFlag;
+
     ActionSnapshot currentSnapshot;
 
     public ActionSnapshot[] actionSnapshots;
@@ -30,7 +32,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
     public ActionSnapshot GetAction(float distance, float angle)
     {
 
-        if(hardcodeAction != -1)
+        if (hardcodeAction != -1)
         {
             int index = hardcodeAction;
             hardcodeAction = -1;
@@ -86,17 +88,16 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
         agent = GetComponentInChildren<NavMeshAgent>();
         rigidbody.isKinematic = false;
         animatorHook = GetComponentInChildren<AnimatorHook>();
-
-        agent.stoppingDistance = 1f;
     }
 
     private void Update()
     {
         float delta = Time.deltaTime;
 
+        isInInterruption = animator.GetBool("interrupted");
         isInteracting = animator.GetBool("isInteracting");
 
-        if (isHit) // Invinsibility
+        if (isHit) // Invincibility
         {
             if (hitTimer > 0)
             {
@@ -117,7 +118,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
             if (agent.isActiveAndEnabled)
             {
                 agent.SetDestination(currentTarget.mTransform.position);
-                mTransform.position = agent.transform.position; // floaty patch :C needs fixing
+                //mTransform.position = agent.transform.position; // floaty patch :C needs fixing
             }
 
             Vector3 relativeDirection = mTransform.InverseTransformDirection(agent.desiredVelocity);
@@ -144,7 +145,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
                 float angle = Vector3.Angle(mTransform.forward, dir);
                 float dot = Vector3.Dot(mTransform.right, dir);
 
-                if(dot < 0)
+                if (dot < 0)
                 {
                     angle *= -1;
                 }
@@ -165,11 +166,10 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
             if (!isInteracting)
             {
                 agent.enabled = true;
-
                 mTransform.rotation = agent.transform.rotation;
 
                 //HeadIK
-                Vector3 lookPosition = currentTarget.mTransform.position;
+                lookPosition = currentTarget.mTransform.position;
                 lookPosition.y += 1.2f;
                 animatorHook.lookAtPosition = lookPosition;
 
@@ -187,7 +187,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
                 animator.SetFloat("movement", 0f, 0.1f, delta);
                 animator.SetFloat("sideways", 0f, 0.1f, delta);
 
-                if(currentSnapshot != null)
+                if (currentSnapshot != null)
                 {
                     currentSnapshot.damageCollider.SetActive(animatorHook.openDamageCollider);
                 }
@@ -195,15 +195,15 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
             }
 
 
+            //HeadIK
+            lookPosition = currentTarget.mTransform.position;
+            lookPosition.y += 1.2f;
+            animatorHook.lookAtPosition = lookPosition;
+
+            //Move with Root Motion 
+            Vector3 targetVel = animatorHook.deltaPosition * moveSpeed;
+            rigidbody.velocity = targetVel;
         }
-    }
-
-    private void FixedUpdate()
-    {
-
-        //Move with Root Motion 
-        Vector3 targetVel = animatorHook.deltaPosition * moveSpeed;
-        rigidbody.velocity = targetVel;
     }
 
     private void LateUpdate()
@@ -212,10 +212,18 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
         agent.transform.localRotation = Quaternion.identity;
     }
 
-    public void PlayTargetAnimation(string targetAnim, bool isInteracting)
+    public void PlayTargetAnimation(string targetAnim, bool toBeInteracting, float crossfadeTime = 0.2f, bool playInstantly = false)
     {
-        animator.SetBool("isInteracting", isInteracting);
-        animator.CrossFade(targetAnim, 0.2f);
+        animator.SetBool("isInteracting", toBeInteracting);
+
+        if (!playInstantly)
+        {
+            animator.CrossFadeInFixedTime(targetAnim, 0.2f);
+        }
+        else
+        {
+            animator.Play(targetAnim);
+        }
     }
 
 
@@ -231,7 +239,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
         }
 
         float angle = Vector3.Angle(dir, mTransform.forward);
-        if (angle > 5)
+        if (angle > 5f)
         {
             animator.SetFloat("sideways", Vector3.Dot(dir, mTransform.right), 0.1f, delta);
         }
@@ -269,20 +277,45 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
     bool isHit;
     float hitTimer;
 
-    public void OnDamage()
+    public void OnDamage(ActionContainer action)
     {
+        if (action.owner == mTransform)
+            return;
+
         if (!isHit)
         {
             isHit = true;
             hitTimer = 1f;
-            PlayTargetAnimation("Damage 1", true);
+            health -= action.damage;
+            animatorHook.openDamageCollider = false;
 
-            health -= 20;
-            if(health <= 0)
+
+            if (health <= 0)
             {
                 PlayTargetAnimation("Death", true);
-                animator.transform.parent = null;
-                gameObject.SetActive(false);
+                animator.transform.parent = null; // in order for ragdoll to properly work
+                gameObject.SetActive(false); // could just destroy instead of disabling
+            }
+            else
+            {
+                Vector3 direction = action.owner.position - mTransform.position;
+                float dot = Vector3.Dot(mTransform.forward, direction);
+
+                if (action.overrideReactAnim)
+                {
+                    PlayTargetAnimation(action.reactAnim, true);
+                }
+                else
+                {
+                    if (dot > 0)
+                    {
+                        PlayTargetAnimation("Get Hit Front", true);
+                    }
+                    else
+                    {
+                        PlayTargetAnimation("Get Hit Back", true);
+                    }
+                }
             }
         }
     }
@@ -290,6 +323,75 @@ public class AIController : MonoBehaviour, ILockable, IDamageable
     public bool IsAlive()
     {
         return health > 0;
+    }
+
+    public ActionContainer GetActionContainer()
+    {
+        return lastAction;
+    }
+
+    public void OnParried(Vector3 dir)
+    {
+        if (animatorHook.canBeParried && tag != "Dragon")
+        {
+            if (!isInInterruption)
+            {
+                //animatorHook.CloseDamageCollider(); //for safety
+
+                dir.Normalize(); // to rotate agent to look at us
+                dir.y = 0;
+                mTransform.rotation = Quaternion.LookRotation(dir);
+
+                PlayTargetAnimation("Attack Interrupt", true, 0f, true);
+            }
+        }
+    }
+
+    public Transform getTransform()
+    {
+        return mTransform;
+    }
+
+    public float parriedDistance = 1.5f;
+    public void GetParried(Vector3 origin, Vector3 direction)
+    {
+        mTransform.position = origin + direction * parriedDistance;
+        mTransform.rotation = Quaternion.LookRotation(-direction);
+        PlayTargetAnimation("Getting Parried", true, 0f, true);
+    }
+
+    public bool canBeParried()
+    {
+        return isInInterruption;
+    }
+
+    public bool canBeBackstabbed()
+    {
+        return openToBackstab;
+    }
+
+    public void GetBackstabbed(Vector3 origin, Vector3 direction)
+    {
+        mTransform.position = origin + direction * parriedDistance;
+        mTransform.rotation = Quaternion.LookRotation(direction);
+        PlayTargetAnimation("Getting Backstabbed", true, 0f, true);
+    }
+
+    ActionContainer _lastAction;
+    public ActionContainer lastAction {
+        get {
+            if (_lastAction == null)
+            {
+                _lastAction = new ActionContainer();
+            }
+
+            _lastAction.owner = mTransform; //For directional attacks
+            _lastAction.damage = currentSnapshot.damage;
+            _lastAction.overrideReactAnim = currentSnapshot.overrideReactAnim;
+            _lastAction.reactAnim = currentSnapshot.reactAnim;
+
+            return _lastAction;
+        }
     }
 }
 
@@ -305,4 +407,7 @@ public class ActionSnapshot
     public float minAngle = -35f;
     public float maxAngle = 35f;
     public GameObject damageCollider;
+    public int damage = 10;
+    public bool overrideReactAnim;
+    public string reactAnim;
 }

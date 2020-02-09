@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Controller : MonoBehaviour
+public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 {
     public bool lockOn;
     public bool isOnAir;
     public bool isGrounded;
     public bool isRolling;
     public bool isInteracting;
-    public AnimationCurve rollCurve;
-    public AnimationClip rollClip;
+    public bool isSprinting;
 
     [Header("Controller")]
     public float movementSpeed = 3;
-    public float rollSpeed = 1;
-    public float adaptSpeed = 1;
+    public float sprintingSpeed = 3;
     public float rotationSpeed = 10;
     public float attackRotationSpeed = 3;
     public float groundDownDistanceOnAir = .4f;
@@ -45,6 +43,26 @@ public class Controller : MonoBehaviour
     public AnimatorHook animatorHook;
     Vector3 currentNormal;
 
+    public GameObject parryCollider;
+
+    ActionContainer _lastAction;
+    public ActionContainer lastAction {
+        get {
+            if (_lastAction == null)
+            {
+                _lastAction = new ActionContainer();
+            }
+
+            _lastAction.owner = mTransform; //For directional attacks
+            _lastAction.damage = currentAction.damage;
+            _lastAction.overrideReactAnim = currentAction.overrideReactAnim;
+            _lastAction.reactAnim = currentAction.reactAnim;
+
+            return _lastAction;
+        }
+    }
+
+
     public void SetWeapons(Item rh, Item lh)
     {
         weaponHolderManager.Init();
@@ -67,7 +85,7 @@ public class Controller : MonoBehaviour
         ResetCurrentActions();
 
         currentPosition = mTransform.position;
-        ignoreForGroundCheck = ~(1 << 9 | 1 << 10);
+        ignoreForGroundCheck = ~(1 << 9 | 1 << 10 | 1 << 12);
     }
 
     private void Update()
@@ -79,6 +97,15 @@ public class Controller : MonoBehaviour
             if (!isInteracting)
             {
                 animatorHook.canDoCombo = false;
+            }
+        }
+
+        if (hitTimer > 0)
+        {
+            hitTimer -= Time.deltaTime;
+            if (hitTimer < 0)
+            {
+                isHit = false;
             }
         }
     }
@@ -102,7 +129,7 @@ public class Controller : MonoBehaviour
         {
             Vector3 rotationDir = moveDirection;
 
-            if (lockOn)
+            if (lockOn && !isSprinting)
             {
                 rotationDir = currentLockTarget.position - mTransform.position;
             }
@@ -112,14 +139,20 @@ public class Controller : MonoBehaviour
 
         Vector3 targetVelocity = Vector3.zero;
 
-        if (lockOn)
+        if (lockOn && !isSprinting)
         {
             targetVelocity = mTransform.forward * vertical * movementSpeed;
             targetVelocity += mTransform.right * horizontal * movementSpeed;
         }
         else
         {
-            targetVelocity = moveDirection * movementSpeed;
+            float speed = movementSpeed;
+            if (isSprinting)
+            {
+                speed = sprintingSpeed;
+            }
+
+            targetVelocity = moveDirection * speed;
         }
 
         if (isInteracting)
@@ -228,7 +261,9 @@ public class Controller : MonoBehaviour
     {
         if (isGrounded)
         {
-            if (lockOn)
+            anim.SetBool("isSprinting", isSprinting);
+
+            if (lockOn && !isSprinting)
             {
                 float v = Mathf.Abs(vertical);
                 float f = 0;
@@ -286,8 +321,9 @@ public class Controller : MonoBehaviour
             currentActions[i].animName = defaultActions[i].animName;
             currentActions[i].attackInput = defaultActions[i].attackInput;
             currentActions[i].isMirrored = defaultActions[i].isMirrored;
-            currentActions[i].itemAction = defaultActions[i].itemAction;
             currentActions[i].itemActual = defaultActions[i].itemActual;
+            currentActions[i].canParry = defaultActions[i].canParry;
+            currentActions[i].canBackstab = defaultActions[i].canBackstab;
         }
     }
 
@@ -305,9 +341,54 @@ public class Controller : MonoBehaviour
         animatorHook.canRotate = false;
         currentAction = GetItemActionContainer(attackInput, currentActions);
 
+        if (currentAction.canBackstab || currentAction.canParry)
+        {
+            RaycastHit hit;
+            Vector3 origin = mTransform.position;
+            origin.y += 1f;
+
+            Vector3 dir = mTransform.forward;
+            Debug.DrawRay(origin, dir * 2f, Color.red, 2, false);
+
+            if (Physics.SphereCast(origin, 0.5f, dir, out hit, 2f))
+            {
+                IParryable parryable = hit.transform.GetComponentInParent<IParryable>();
+                if (parryable != null)
+                {
+                    Transform enTransform = parryable.getTransform();
+
+                    if (parryable.canBeParried())
+                    {
+                        float angle = Vector3.Angle(-enTransform.forward, mTransform.forward);
+
+                        if (angle < 45f)
+                        {
+                            PlayTargetAnimation("Parry Attack", true, currentAction.isMirrored);
+                            parryable.GetParried(mTransform.position, mTransform.forward);
+
+                            return;
+                        }
+                    }
+                    else if (parryable.canBeBackstabbed())
+                    {
+                        float angle = Vector3.Angle(enTransform.forward, mTransform.forward);
+
+                        if (angle < 45f)
+                        {
+                            PlayTargetAnimation("Parry Attack", true, currentAction.isMirrored);
+                            parryable.GetBackstabbed(mTransform.position, mTransform.forward);
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+        }
+
         if (!string.IsNullOrEmpty(currentAction.animName))
         {
-            currentAction.ExecuteItemAction(this);
+            PlayTargetAnimation(currentAction.animName, true, currentAction.isMirrored);
         }
     }
 
@@ -359,8 +440,9 @@ public class Controller : MonoBehaviour
     void CopyItemActionContainer(ItemActionContainer from, ItemActionContainer to)
     {
         to.animName = from.animName;
-        to.itemAction = from.itemAction;
         to.itemActual = from.itemActual;
+        to.canParry = from.canParry;
+        to.canBackstab = from.canBackstab;
     }
 
     AttackInputs GetAttackInput(AttackInputs inp, bool isLeft)
@@ -438,10 +520,98 @@ public class Controller : MonoBehaviour
 
         return null;
     }
+
+    public ActionContainer GetActionContainer()
+    {
+        return lastAction;
+    }
+
+    bool isHit;
+    float hitTimer;
+
+    public void OnDamage(ActionContainer action)
+    {
+        if (action.owner == mTransform)
+            return;
+
+        if (!isHit)
+        {
+            animatorHook.openDamageCollider = false;
+
+            isHit = true;
+            hitTimer = 1f;
+
+            Vector3 direction = action.owner.position - mTransform.position;
+            float dot = Vector3.Dot(mTransform.forward, direction);
+
+            if (action.overrideReactAnim)
+            {
+                PlayTargetAnimation(action.reactAnim, true);
+            }
+            else
+            {
+                if (dot > 0)
+                {
+                    PlayTargetAnimation("Get Hit Front", true);
+                }
+                else
+                {
+                    PlayTargetAnimation("Get Hit Back", true);
+                }
+            }
+        }
+    }
     #endregion
 
+    int parryFrameCount;
+    public void OpenParryCollider()
+    {
+        parryFrameCount = 0;
+        parryCollider.SetActive(true);
+    }
 
+    private void LateUpdate()
+    {
+        if (parryCollider.activeSelf) //parry collider open for 4 frames
+        {
+            parryFrameCount++;
+            if (parryFrameCount > 16f)
+            {
+                parryCollider.SetActive(false);
 
+            }
+        }
+    }
+
+    public void OnParried(Vector3 dir)
+    {
+
+    }
+
+    public Transform getTransform()
+    {
+        return mTransform;
+    }
+
+    public void GetParried(Vector3 origin, Vector3 direction)
+    {
+
+    }
+
+    public bool canBeParried()
+    {
+        return false;
+    }
+
+    public void GetBackstabbed(Vector3 origin, Vector3 direction)
+    {
+
+    }
+
+    public bool canBeBackstabbed()
+    {
+        return false;
+    }
 }
 
 [System.Serializable]

@@ -113,3 +113,11 @@ Jim #5 30/1/20 Master
 7) If lost in scripts try finding way around by searching by reference in Visual Studio until I add comments.
 8) Replaced old CharacterController in scenes that used it. InventoryUIScene works better now that it doesn't have input problems, still need to when the UI is open disable by logic the InputControl. 
 9) Cleaned up project abit.
+
+Jim #6 9/2/20 Master
+1) Added Parry & Backstabbing functionality left mouse triggers a parry depending on the frame of enemy animation you can time your left attack and stun the enemy then follow with a right attack to
+	attack with a lunge and throw enemy backwards. If you go around the back of enemy you can backstab with right attack. Animations are wonky I know :C also damage doesn't get applied from those attacks
+	I will fix later probably.
+2) Added Sprint hold the dodge button down to sprint, tap to dodge and tap while stationary to jump back.
+3) Added red dragon as a test for non-humanoids. It is hard to get good results from mecanim on non-humanoids. Also backstabbin and parry don't work against it.
+4) Added sample quickslot ui, no functionality yet.

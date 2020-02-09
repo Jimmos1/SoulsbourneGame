@@ -5,10 +5,10 @@ using UnityEngine;
 public class WeaponHolderManager : MonoBehaviour
 {
     WeaponHolderHook leftHook;
-    public WeaponItem leftItem;
+    WeaponItem leftItem;
 
     WeaponHolderHook rightHook;
-    public WeaponItem rightItem;
+    WeaponItem rightItem;
 
     public void Init()
     {

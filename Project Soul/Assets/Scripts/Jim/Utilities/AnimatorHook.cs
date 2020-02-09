@@ -16,7 +16,9 @@ public class AnimatorHook : MonoBehaviour
     public bool canMove;
     public bool openDamageCollider;
     public bool hasLookAtTarget;
+    public bool canBeParried;
     public Vector3 lookAtPosition;
+    public bool useIK;
 
     void Start()
     {
@@ -32,7 +34,7 @@ public class AnimatorHook : MonoBehaviour
         }
 
         RagdollStatus(false);
-    } 
+    }
 
     void RagdollStatus(bool status)
     {
@@ -60,7 +62,7 @@ public class AnimatorHook : MonoBehaviour
 
     protected virtual void OnAnimatorMoveOverride()
     {
-     
+
         float delta = Time.deltaTime;
 
         if (!isAI)
@@ -78,13 +80,26 @@ public class AnimatorHook : MonoBehaviour
         }
         else
         {
-            deltaPosition = (animator.deltaPosition) / delta;
+            if (transform.tag == "Dragon")
+            {
+                //Vector3 newPosition = transform.position;
+                //newPosition.z += animator.GetFloat("Runspeed") * Time.deltaTime;
+                //newPosition = new Vector3(animator.deltaPosition.x, animator.deltaPosition.y, newPosition.z);
+                //deltaPosition = (newPosition - transform.position) / delta;
+
+                deltaPosition = (animator.deltaPosition) / delta;
+
+            }
+            else
+            {
+                deltaPosition = (animator.deltaPosition) / delta;
+            }
         }
     }
 
     private void OnAnimatorIK(int layerIndex)
     {
-        if (hasLookAtTarget)
+        if (hasLookAtTarget && !useIK)
         {
             animator.SetLookAtWeight(1f, 0.9f, 0.95f, 1f, 1f);
             animator.SetLookAtPosition(lookAtPosition);
@@ -124,5 +139,33 @@ public class AnimatorHook : MonoBehaviour
     public void EnableRagdoll()
     {
         RagdollStatus(true);
+    }
+
+    public void EnableParryCollider()
+    {
+        if (!isAI)
+        {
+            controller.OpenParryCollider();
+        }
+    }
+
+    public void EnableCanBeParried()
+    {
+        canBeParried = true;
+    }
+
+    public void DisableCanBeParried()
+    {
+        canBeParried = false;
+    }
+
+    public void EnableIK()
+    {
+        useIK = true;
+    }
+
+    public void DisableIK()
+    {
+        useIK = false;
     }
 }

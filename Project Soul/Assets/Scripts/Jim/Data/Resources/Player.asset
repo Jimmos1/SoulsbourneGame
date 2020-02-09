@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc798959ca193542a3de63aaf7b098c, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  startingClothes:
-  - Samurai Body
+  startingArmor: []
   rightHandWeapon: Two Handed Sword
-  leftHandWeapon: Two Handed Sword
+  leftHandWeapon: 

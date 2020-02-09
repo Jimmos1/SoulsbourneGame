@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour
     {
         mTransform = this.transform;
         defaultPosition = camTransform.localPosition.z;
-        ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+        ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10 | 1 << 12);
     }
 
     public void FollowTarget(float delta)
