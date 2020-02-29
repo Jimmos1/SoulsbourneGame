@@ -277,7 +277,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
     bool isHit;
     float hitTimer;
 
-    public void OnDamage(ActionContainer action)
+    public void OnDamage(ActionContainer action) 
     {
         if (action.owner == mTransform)
             return;

@@ -12283,6 +12283,7 @@ MonoBehaviour:
   canBeParried: 0
   lookAtPosition: {x: 0, y: 0, z: 0}
   useIK: 0
+  damageCollider: {fileID: 7792696875643082016}
 --- !u!95 &1010392585
 Animator:
   serializedVersion: 3
@@ -12385,6 +12386,7 @@ MonoBehaviour:
   canBeParried: 0
   lookAtPosition: {x: 0, y: 0, z: 0}
   useIK: 0
+  damageCollider: {fileID: 0}
 --- !u!1 &1032696866
 GameObject:
   m_ObjectHideFlags: 0
@@ -20000,6 +20002,7 @@ MonoBehaviour:
   canBeParried: 0
   lookAtPosition: {x: 0, y: 0, z: 0}
   useIK: 0
+  damageCollider: {fileID: 0}
 --- !u!95 &1647399323
 Animator:
   serializedVersion: 3
@@ -20128,6 +20131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 1
+  actionDamage: 27
+  actionDamageType: Physical
   target: {fileID: 0}
 --- !u!114 &1669385657
 MonoBehaviour:
@@ -20142,6 +20147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 1
+  actionDamage: 27
+  actionDamageType: Physical
   target: {fileID: 0}
 --- !u!114 &1669385658
 MonoBehaviour:
@@ -20156,6 +20163,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 1
+  actionDamage: 27
+  actionDamageType: Physical
   target: {fileID: 0}
 --- !u!114 &1669385659
 MonoBehaviour:
@@ -20170,6 +20179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 1
+  actionDamage: 27
+  actionDamageType: Physical
   target: {fileID: 0}
 --- !u!1 &1674555715
 GameObject:
@@ -21825,13 +21836,11 @@ MonoBehaviour:
   openToBackstab: 1
   recoveryTimer: 0
   parriedDistance: 1.5
-  actionSnapshots: []
   fovRadius: 20
   targetLayer: 8
-  health: 100
-  damageCollider: {fileID: 7792696875643082016}
+  health: 30
   enableConsoleMessages: 1
-  lockOnTarget: {fileID: 0}
+  lockOnTarget: {fileID: 671109730}
 --- !u!136 &1816734427
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -22360,6 +22369,7 @@ MonoBehaviour:
   canBeParried: 1
   lookAtPosition: {x: 0, y: 0, z: 0}
   useIK: 0
+  damageCollider: {fileID: 0}
 --- !u!95 &1894121854
 Animator:
   serializedVersion: 3
@@ -23708,6 +23718,7 @@ MonoBehaviour:
     canBackstab: 0
   animatorHook: {fileID: 0}
   parryCollider: {fileID: 561271906}
+  health: 100
 --- !u!4 &2047408543
 Transform:
   m_ObjectHideFlags: 0
@@ -26481,6 +26492,7 @@ MonoBehaviour:
   canBeParried: 0
   lookAtPosition: {x: 0, y: 0, z: 0}
   useIK: 0
+  damageCollider: {fileID: 0}
 --- !u!1 &6661749611735742872
 GameObject:
   m_ObjectHideFlags: 0

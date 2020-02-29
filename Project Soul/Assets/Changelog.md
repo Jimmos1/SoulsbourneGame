@@ -131,3 +131,10 @@ Stratos #8 29/2/20 Master
 2) Edited ALL Goap scripts (working speciment is on StratosTestBed scene).
 3) Added 4 new actions & edited Enemy Animation Controller to support them.
 4) GOAP state is working. Requires Combat Stats and damage I/O which is the next top priority. Further actions must be deployed soon to showcase the depth of the system.
+
+Stratos #9 1/3/20 Master
+1) Edited AnimatorHook damageCollider logic. Player is unaffected by this change.
+2) Added damage type on ActionContainer.
+3) Edited Player Controller. Added health and damage input on player. Need to hook in UI/Combat stats and GameOver scene.
+4) Major changes in GOAP Core and GOAP Action. Now supports full damage input and output (no combat stats yet).
+5) Edited a bit GOAP actions to further support combat with colliders/damage.

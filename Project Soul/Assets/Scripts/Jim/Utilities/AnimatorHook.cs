@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//v1.1
 public class AnimatorHook : MonoBehaviour
 {
     //Helper Class for animations
@@ -19,6 +20,8 @@ public class AnimatorHook : MonoBehaviour
     public bool canBeParried;
     public Vector3 lookAtPosition;
     public bool useIK;
+
+    public GameObject damageCollider;
 
     void Start()
     {
@@ -114,11 +117,19 @@ public class AnimatorHook : MonoBehaviour
     public void OpenDamageCollider()
     {
         openDamageCollider = true;
+        if(damageCollider!= null)
+        {
+            damageCollider.SetActive(openDamageCollider);
+        }
     }
 
     public void CloseDamageCollider()
     {
         openDamageCollider = false;
+        if (damageCollider != null)
+        {
+            damageCollider.SetActive(openDamageCollider);
+        }
     }
 
     public void EnableCombo()

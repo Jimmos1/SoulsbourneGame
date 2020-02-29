@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 
-//V2.1
+//V2.2
 //FINAL VERSION FOR PROJECT SOUL (Current build is Alpha) 
 public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEntity, IParryable 
 {
@@ -44,29 +44,24 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
     public float recoveryTimer;
     public float parriedDistance = 1.5f;
 
-    //REMOVE ASAP
-    Controller currentTarget;
-    public ActionSnapshot[] actionSnapshots;
-    ActionSnapshot currentSnapshot;
-    ActionContainer _lastAction; //TODO: Read ActionSnapshot and Container and merge this logic with GOAP.
-
     //Perception vars
-    public float fovRadius = 5; //TODO: Testing.
+    public float fovRadius = 5; 
     private LayerMask detectionLayer;
     public int targetLayer = 8; //8th layer is the player.
 
     //Combat vars
-    public int health = 100;
-    private bool isHit; //TODO: Change in future versions (public maybe)
+    public int health = 30;
+    private bool isHit; 
     private float hitTimer;
-    public GameObject damageCollider; //The collider we enable/disable to deal damage.
+    Controller currentTarget;
+    ActionContainer _lastAction;
+    //public GameObject damageCollider; //The collider we enable/disable to deal damage.
 
 
     //Helper vars
     private int agentID;
     public bool enableConsoleMessages = true;
-    [HideInInspector]
-    public Transform lockOnTarget; //TODO: make private
+    public Transform lockOnTarget; 
     
     void Start()
     {
@@ -382,17 +377,20 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
     }
     #endregion ILockable 
 
-    //TODO: IDamageable fix! Defensive ->Draw defensive stats here
-    public void OnDamage(ActionContainer action)
+    public void OnDamage(ActionContainer action) //OnDamageTaken***
     {
-        if (action.owner == mTransform)
+        if (action.owner == mTransform)  //Check if we hit ourselves :))
             return;
 
         if (!isHit)
         {
-            isHit = true;
+            isHit = true;  //Invincibility removal happens in Update method.
             hitTimer = 1f;
+
+            //TODO: IDamageable fix! Defensive ->Draw defensive stats here
             health -= action.damage;
+            Debug.Log(agentID + " received " + action.damage + " new health is " + health);
+
             animatorHook.CloseDamageCollider(); //for safety
 
 
@@ -426,8 +424,7 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
         }
     }
 
-    //TODO: IDamageEntity fix! Offensive ->Draw offensive stats here
-    public ActionContainer GetActionContainer() //Gets current action to deal damage with it TODO: IMPLEMENT GOAP LOGIC
+    public ActionContainer GetActionContainer() //Gets current action to deal damage with it
     {
         return GetLastAction;
     }
@@ -441,9 +438,18 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             }
 
             _lastAction.owner = mTransform; //For directional attacks
-            _lastAction.damage = currentSnapshot.damage;
-            _lastAction.overrideReactAnim = currentSnapshot.overrideReactAnim;
-            _lastAction.reactAnim = currentSnapshot.reactAnim;
+
+            /*
+             * Queue.Peek() can bug out if we try to pull an empty action, although the system is designed to pull only when doing an action.
+             */
+            _lastAction.damage = currentActions.Peek().GetActionDamage(); //we pull damage and damage type directly from current action.
+            _lastAction.damageType = currentActions.Peek().GetActionDamageType();
+
+            //TODO: IDamageEntity fix! Offensive -> Draw offensive stats here
+
+            //TODO: Evaluate react anim (if necessary implement in goap)
+            //_lastAction.overrideReactAnim = currentSnapshot.overrideReactAnim;
+            //_lastAction.reactAnim = currentSnapshot.reactAnim;
 
             return _lastAction;
         }

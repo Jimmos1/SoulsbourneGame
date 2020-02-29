@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+//v2.1
 public abstract class GoapAction : MonoBehaviour
 {
 
@@ -15,7 +16,14 @@ public abstract class GoapAction : MonoBehaviour
 	 * Changing it will affect what actions are chosen during planning.*/
     public float cost = 1f;
 
-    /**
+    /*
+     * An action usually has damage output. In order to be able to pull that for our damage output
+     * we define its damage and damage type. String is used for damage type in this version.
+     */
+    public int actionDamage = 27;
+    public string actionDamageType = "Physical";
+
+    /*
 	 * An action often has to perform on an object. This is that object. Can be null. */
     public GameObject target;
 
@@ -77,6 +85,14 @@ public abstract class GoapAction : MonoBehaviour
         this.inRange = inRange;
     }
 
+    public int GetActionDamage()
+    {
+        return actionDamage;
+    }
+    public string GetActionDamageType()
+    {
+        return actionDamageType;
+    }
 
     public void addPrecondition(string key, object value)
     {

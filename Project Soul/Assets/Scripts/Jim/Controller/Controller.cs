@@ -46,6 +46,9 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     public GameObject parryCollider;
 
     ActionContainer _lastAction;
+
+    public int health = 100; //TODO: Hook this with other stuff.
+
     public ActionContainer lastAction {
         get {
             if (_lastAction == null)
@@ -541,24 +544,39 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
             isHit = true;
             hitTimer = 1f;
 
-            Vector3 direction = action.owner.position - mTransform.position;
-            float dot = Vector3.Dot(mTransform.forward, direction);
+            health -= action.damage; // TODO: Draw defensive stats here.
+            Debug.Log("Player received " + action.damage + " new health is " + health);
 
-            if (action.overrideReactAnim)
+            if (health <= 0)
             {
-                PlayTargetAnimation(action.reactAnim, true);
+                health = 0;
+                //GAME OVER STUFF HERE
+                Debug.Log("I DEAD");
+                //PlayTargetAnimation("Death", true);           
+                //animator.transform.parent = null; // in order for ragdoll to properly work
+                //gameObject.SetActive(false); // could just destroy instead of disabling
             }
             else
             {
-                if (dot > 0)
+                Vector3 direction = action.owner.position - mTransform.position;
+                float dot = Vector3.Dot(mTransform.forward, direction);
+
+                if (action.overrideReactAnim)
                 {
-                    PlayTargetAnimation("Get Hit Front", true);
+                    PlayTargetAnimation(action.reactAnim, true);
                 }
                 else
                 {
-                    PlayTargetAnimation("Get Hit Back", true);
+                    if (dot > 0)
+                    {
+                        PlayTargetAnimation("Get Hit Front", true);
+                    }
+                    else
+                    {
+                        PlayTargetAnimation("Get Hit Back", true);
+                    }
                 }
-            }
+            }            
         }
     }
     #endregion

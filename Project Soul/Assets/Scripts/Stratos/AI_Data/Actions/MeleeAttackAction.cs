@@ -75,7 +75,7 @@ public class MeleeAttackAction : GoapAction
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
         Animator anim = (Animator)agent.GetComponentInChildren(typeof(Animator));
         NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponentInChildren(typeof(NavMeshAgent));
-        GameObject damageCollider = agent.GetComponent<GoapCore>().damageCollider;
+        //GameObject damageCollider = agent.GetComponent<GoapCore>().damageCollider;
         AnimatorHook animatorHook = agent.GetComponentInChildren<AnimatorHook>();
 
         navAgent.enabled = false;
@@ -126,7 +126,8 @@ public class MeleeAttackAction : GoapAction
             {                
                 agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
                 actionFlag = true;
-                damageCollider.SetActive(animatorHook.openDamageCollider);
+                animatorHook.OpenDamageCollider();
+                //damageCollider.SetActive(animatorHook.openDamageCollider);
                 recoveryTimer = 2f; //TODO: Current action recovery time.
                 //PLAY SOUND/UI STUFF HERE
             }
