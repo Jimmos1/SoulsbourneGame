@@ -104,6 +104,7 @@ public class FinisherMeleeAction : GoapAction
             //Debug.Log("Attack 3 at: " + Time.time);
         }
 
+        //FIGURE OUT A WAY TO RETURN FALSE SOMEHOW!!!
         return true;
     }
 }

@@ -19,6 +19,7 @@ public abstract class Warrior : MonoBehaviour, IGoap
 
     public NavMeshHit navHit;
     public NavMeshAgent navAgent;
+    public Animator anim;
     public RaycastHit rayHit;
     private Transform target;
 
@@ -40,7 +41,8 @@ public abstract class Warrior : MonoBehaviour, IGoap
         if (combatStats == null)
             combatStats = this.gameObject.AddComponent<CombatStats>() as CombatStats;
 
-        this.navAgent = this.gameObject.GetComponent<NavMeshAgent>();
+        this.navAgent = this.gameObject.GetComponentInChildren<NavMeshAgent>();
+        this.anim = this.gameObject.GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -70,7 +72,7 @@ public abstract class Warrior : MonoBehaviour, IGoap
     /**
 	 * Implement in subclasses
 	 */
-    public abstract HashSet<KeyValuePair<string, object>> createGoalState();
+    public abstract HashSet<KeyValuePair<string, object>> createGoalState(int goalGeneratorID);
 
 
     public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
@@ -103,57 +105,30 @@ public abstract class Warrior : MonoBehaviour, IGoap
         Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
     }
 
-    public Animator anim;
-
     public bool moveAgent(GoapAction nextAction)
     {
         //TODO: Add moveSpeed && distance checkers per action.
         this.navAgent.SetDestination(nextAction.target.transform.position);
+        Transform mTransform = this.transform;
 
-        //Hacky way of doing things
-        #region hack
-        Vector3 relativeDirection = transform.InverseTransformDirection(navAgent.desiredVelocity);
+        Vector3 relativeDirection = mTransform.InverseTransformDirection(navAgent.desiredVelocity);
         relativeDirection.Normalize();
 
-        anim.SetFloat("forward", relativeDirection.z, 0.1f, Time.deltaTime);
+        anim.SetFloat("movement", relativeDirection.z, 0.1f, Time.deltaTime);
+        anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime);
 
-        Vector3 dir = nextAction.target.transform.position - transform.position;
-        dir.y = 0;
-        dir.Normalize();
-
-        float dis = Vector3.Distance(transform.position, nextAction.target.transform.position);
-        float angle = Vector3.Angle(transform.forward, dir);
-        float dot = Vector3.Dot(transform.right, dir);
-
-        if (dot < 0)
-        {
-            angle *= -1;
-        }
-
-        //currentSnapshot = GetAction(dis, angle);
-        //if (currentSnapshot != null && !actionFlag)
-        //{
-        //    PlayTargetAnimation(currentSnapshot.anim, true);
-        //    actionFlag = true;
-        //    recoveryTimer = currentSnapshot.recoveryTime;
-        //}
-        //else
-        //{
-        //    animator.SetFloat("sideways", relativeDirection.x, 0.1f, delta);
-        //}
-
-        #endregion
+        navAgent.enabled = true;
+        mTransform.rotation = navAgent.transform.rotation;
 
         float distance = (nextAction.target.transform.position - this.gameObject.transform.position).magnitude;
 
-        if (distance <= 1.5f) //0.5 is good enough for melee classes like warrior
+        if (distance <= 2.1f) //2.1f is good enough for melee classes like warrior (Based on player/AI model size)
         {
             nextAction.setInRange(true);
             return true;
         }
         else
         {
-            anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime); //here is hack too
             return false;
         }
     }

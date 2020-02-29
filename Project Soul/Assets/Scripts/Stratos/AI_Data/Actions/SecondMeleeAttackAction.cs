@@ -75,8 +75,8 @@ public class SecondMeleeAttackAction : GoapAction
     public override bool perform(GameObject agent)
     {
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
-        Animator anim = (Animator)agent.GetComponent(typeof(Animator));
-        NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponent(typeof(NavMeshAgent));
+        Animator anim = (Animator)agent.GetComponentInChildren(typeof(Animator));
+        NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponentInChildren(typeof(NavMeshAgent));
 
         //Becomes true during the period of attack
         if (anim.GetBool("isAnimating_AI") != true) //Did we start animating an action...

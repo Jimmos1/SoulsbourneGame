@@ -7,6 +7,9 @@ public class MeleeAttackAction : GoapAction
     private bool damagedEnemy = false;
     private GameObject enemy; // what enemy we attack
     private string playerTag = "Player";
+    private string animAction = "Attack 1";
+    private bool actionFlag;
+    private float recoveryTimer;
 
     public MeleeAttackAction()
     {
@@ -67,37 +70,66 @@ public class MeleeAttackAction : GoapAction
         return closest != null;
     }
 
-    public Animator anim;
-
     public override bool perform(GameObject agent)
     {
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
-        anim = GetComponent<Animator>();
-        NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponent(typeof(NavMeshAgent));
-        
-        //Becomes true during the period of attack
-        if (anim.GetBool("isAnimating_AI") != true) //Did we start animating an action...
-        {
-            navAgent.isStopped = true;             //...lets stop the agent for a bit shall we?
-            //Becomes true only on exit 
-            if (anim.GetBool("actionSuccess_AI")) //...if action is complete and successful
-            {
-                /*
-                 * Here we are sure we finished the animation
-                 * so it's possible we can get actual damagedEnemy
-                 * status from player and evaluate attack success.
-                 */
-                damagedEnemy = true; //... effect is true so we can move to next action
-                navAgent.isStopped = false;
-                anim.SetBool("actionSuccess_AI", false);
-                Debug.Log("Attack has ended!");
+        Animator anim = (Animator)agent.GetComponentInChildren(typeof(Animator));
+        NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponentInChildren(typeof(NavMeshAgent));
+        GameObject damageCollider = agent.GetComponent<GoapCore>().damageCollider;
+        AnimatorHook animatorHook = agent.GetComponentInChildren<AnimatorHook>();
 
-                return true;
+        navAgent.enabled = false;
+
+        anim.SetFloat("movement", 0f, 0.1f, Time.deltaTime);
+        anim.SetFloat("sideways", 0f, 0.1f, Time.deltaTime);
+
+                                               //Becomes true only on exit... 
+        if (anim.GetBool("actionSuccess_AI")) //...if action is complete and successful
+        {
+            /*
+             * Here we are sure we finished the animation
+             * so it's possible we can get actual damagedEnemy
+             * status from player and evaluate attack success.
+             */
+            damagedEnemy = true; //... effect is true so we can move to next action
+            navAgent.enabled = true;
+            animatorHook.CloseDamageCollider();
+            anim.SetBool("actionSuccess_AI", false);
+            Debug.Log("Attack has ended!");
+
+            return true;
+        }
+
+        if (actionFlag) //Update method only - Action Flag
+        {
+             recoveryTimer -= Time.deltaTime;
+             if (recoveryTimer <= 0)
+             {
+                    Debug.Log("Action Flag finished.");
+                    actionFlag = false;
+             }
+        }
+        if (animatorHook.canRotate) //TODO: Check if it becomes true
+        {
+            agent.GetComponent<GoapCore>().HandleRotation(Time.deltaTime, target);
+        }
+        
+        //Becomes true during the period of attack OR getting disabled by enemy.
+        if (anim.GetBool("isInteracting") != true) //Did we start animating an action...
+        {
+            navAgent.enabled = false;             //...lets stop the agent for a bit shall we?
+
+            anim.SetFloat("movement", 0f, 0.1f, Time.deltaTime);
+            anim.SetFloat("sideways", 0f, 0.1f, Time.deltaTime);
+
+            if (!actionFlag)
+            {                
+                agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
+                actionFlag = true;
+                damageCollider.SetActive(animatorHook.openDamageCollider);
+                recoveryTimer = 2f; //TODO: Current action recovery time.
+                //PLAY SOUND/UI STUFF HERE
             }
-            
-            anim.CrossFade("Attack 1", 0.25f);
-            //PLAY SOUND/UI STUFF HERE
-            //Debug.Log("Attack 1 at: " + Time.time);
         }
             
         return true;

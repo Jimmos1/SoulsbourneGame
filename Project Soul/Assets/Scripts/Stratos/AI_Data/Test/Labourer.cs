@@ -52,7 +52,7 @@ public abstract class Labourer : MonoBehaviour, IGoap
     /**
 	 * Implement in subclasses
 	 */
-    public abstract HashSet<KeyValuePair<string, object>> createGoalState();
+    public abstract HashSet<KeyValuePair<string, object>> createGoalState(int goalGeneratorID);
 
 
     public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)

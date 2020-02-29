@@ -95,7 +95,7 @@ public sealed class GoapAgent : MonoBehaviour
 
             // get the world state and the goal we want to plan for
             HashSet<KeyValuePair<string, object>> worldState = dataProvider.getWorldState(); //Gets WorldState from BaseClass:InherritedClass script.
-            HashSet<KeyValuePair<string, object>> goal = dataProvider.createGoalState();
+            HashSet<KeyValuePair<string, object>> goal = dataProvider.createGoalState(2);
 
             // Plan
             Queue<GoapAction> plan = planner.plan(gameObject, availableActions, worldState, goal);

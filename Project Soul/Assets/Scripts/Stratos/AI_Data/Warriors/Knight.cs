@@ -5,15 +5,28 @@ using System.Collections.Generic;
 public class Knight : Warrior
 {
     /**
-	 * Our only goal will ever be to make tools.
-	 * The ForgeTooldAction will be able to fulfill this goal.
+	 * We have one default goal which changes on demand
+	 * from GoapCore to kill Enemy.
 	 */
-    public override HashSet<KeyValuePair<string, object>> createGoalState()
+
+    //public int goalGeneratorID = 1;
+
+    public override HashSet<KeyValuePair<string, object>> createGoalState(int goalGeneratorID)
     {
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
-        //goal.Add(new KeyValuePair<string, object>("protectArea", true));
-        goal.Add(new KeyValuePair<string, object>("killEnemy", true));
+        if (goalGeneratorID == 1)
+        {
+            goal.Add(new KeyValuePair<string, object>("protectArea", true));
+        }
+        else if (goalGeneratorID == 2)
+        {
+            goal.Add(new KeyValuePair<string, object>("killEnemy", true));
+        }
+        else
+        {
+            goal.Add(new KeyValuePair<string, object>("killEnemy", true)); //default plan?
+        }
         return goal;
     }
 }

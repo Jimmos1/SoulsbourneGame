@@ -1,6 +1,6 @@
 # Project Soul
 
-Current Client Version 0.01
+Current Client Version 0.21
 
 Works in Unity 2019.2.9 and newer versions.
 
@@ -99,6 +99,10 @@ Stratos #6 16/12/19 Master
 3) Added GameAssets script which supports our game with reference to every game asset needed. (Can apply item/buff database here)
 4) Added a few test sounds.
 
+Stratos #7 23/12/19 Master
+1) Re-created GameManager based on Project needs (Requires further development in project).
+2) Edited a bit Stats & AI manager.
+
 Nikos #4 11/01/20 Master 
 1) Created a simple inventory UI and connected it with picked up items
 
@@ -121,3 +125,9 @@ Jim #6 9/2/20 Master
 2) Added Sprint hold the dodge button down to sprint, tap to dodge and tap while stationary to jump back.
 3) Added red dragon as a test for non-humanoids. It is hard to get good results from mecanim on non-humanoids. Also backstabbin and parry don't work against it.
 4) Added sample quickslot ui, no functionality yet.
+
+Stratos #8 29/2/20 Master
+1) Added test scenes.
+2) Edited ALL Goap scripts (working speciment is on StratosTestBed scene).
+3) Added 4 new actions & edited Enemy Animation Controller to support them.
+4) GOAP state is working. Requires Combat Stats and damage I/O which is the next top priority. Further actions must be deployed soon to showcase the depth of the system.

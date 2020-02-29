@@ -28,7 +28,7 @@ public interface IGoap
 	 * Give the planner a new goal so it can figure out 
 	 * the actions needed to fulfill it.
 	 */
-    HashSet<KeyValuePair<string, object>> createGoalState();
+    HashSet<KeyValuePair<string, object>> createGoalState(int goalGeneratorID);
 
     /**
 	 * No sequence of actions could be found for the supplied goal.
