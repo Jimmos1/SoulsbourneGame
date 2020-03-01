@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 
 
-/**
+/*
  * A generic Warrior class for Medieval setting.
  * You should subclass this for specific Warrior classes and implement
  * the createGoalState() method that will populate the goal for the GOAP
@@ -23,7 +23,7 @@ public abstract class Warrior : MonoBehaviour, IGoap
     public RaycastHit rayHit;
     private Transform target;
 
-    public float moveSpeed = 1;
+    public float moveSpeed = 2; //used in goap core currently --- v2.3
 
 
     void Start()
@@ -50,14 +50,14 @@ public abstract class Warrior : MonoBehaviour, IGoap
 
     }
 
-    /**
+    /*
 	 * Key-Value data that will feed the GOAP actions and system while planning.
 	 */
     public HashSet<KeyValuePair<string, object>> getWorldState()
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
-        worldData.Add(new KeyValuePair<string, object>("hasPotion", (backpack.numPotions > 0)));
+        worldData.Add(new KeyValuePair<string, object>("hasPotion", (backpack.numPotions > 0))); //TODO: Implement this!
         worldData.Add(new KeyValuePair<string, object>("hasWeapon", (backpack.weapon != null)));
 
         worldData.Add(new KeyValuePair<string, object>("isHealthy", (combatStats.healthPoints > 50)));
@@ -69,7 +69,7 @@ public abstract class Warrior : MonoBehaviour, IGoap
         return worldData;
     }
 
-    /**
+    /*
 	 * Implement in subclasses
 	 */
     public abstract HashSet<KeyValuePair<string, object>> createGoalState(int goalGeneratorID);

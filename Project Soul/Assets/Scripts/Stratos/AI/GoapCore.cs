@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 
-//V2.2
+//V2.3
 //FINAL VERSION FOR PROJECT SOUL (Current build is Alpha) 
 public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEntity, IParryable 
 {
@@ -133,7 +133,7 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             animatorHook.lookAtPosition = lookPosition;
 
             //Move with Root Motion 
-            Vector3 targetVel = animatorHook.deltaPosition * moveSpeed;
+            Vector3 targetVel = animatorHook.deltaPosition * moveSpeed; //todo:draw movespeed from dataprovider
             rigidbody.velocity = targetVel;
         }
     }
@@ -371,6 +371,11 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
         return health > 0;
     }
 
+    public int GetCurrentHealth()
+    {
+        return health;
+    }
+
     public Transform GetLockOnTarget(Transform from)
     {
         return lockOnTarget;
@@ -387,9 +392,10 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             isHit = true;  //Invincibility removal happens in Update method.
             hitTimer = 1f;
 
-            //TODO: IDamageable fix! Defensive ->Draw defensive stats here
-            health -= action.damage;
-            Debug.Log(agentID + " received " + action.damage + " new health is " + health);
+            // Defensive ->Pulling defensive stats here
+            int totalDamageTaken = this.GetComponent<CombatStats>().CalculateFinalDamageTaken(action.damage, action.damageType);
+            health -= totalDamageTaken;
+            Debug.Log(agentID + " received " + totalDamageTaken + " new health is " + health);
 
             animatorHook.CloseDamageCollider(); //for safety
 
@@ -442,10 +448,12 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             /*
              * Queue.Peek() can bug out if we try to pull an empty action, although the system is designed to pull only when doing an action.
              */
-            _lastAction.damage = currentActions.Peek().GetActionDamage(); //we pull damage and damage type directly from current action.
             _lastAction.damageType = currentActions.Peek().GetActionDamageType();
 
-            //TODO: IDamageEntity fix! Offensive -> Draw offensive stats here
+            //Offensive -> Pulling offensive stats here
+            _lastAction.damage = this.GetComponent<CombatStats>().CalculateFinalDamageGiven(
+                currentActions.Peek().GetActionDamage(),
+                _lastAction.damageType); 
 
             //TODO: Evaluate react anim (if necessary implement in goap)
             //_lastAction.overrideReactAnim = currentSnapshot.overrideReactAnim;

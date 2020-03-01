@@ -138,3 +138,9 @@ Stratos #9 1/3/20 Master
 3) Edited Player Controller. Added health and damage input on player. Need to hook in UI/Combat stats and GameOver scene.
 4) Major changes in GOAP Core and GOAP Action. Now supports full damage input and output (no combat stats yet).
 5) Edited a bit GOAP actions to further support combat with colliders/damage.
+
+Stratos #10 2/3/20 Master
+1) Edited GOAP Core to use combat stats on both defensive and offensive operations.
+2) Major changes in combat stats script for Agents to use. Will be used on player as well in future version.
+3) GOAP Agent is ready for final release. Need a simple way to rotate when changing actions and is in range of player to attack.
+   Other than that only design choices and required from now on in regards of AI.
