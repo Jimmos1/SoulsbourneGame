@@ -4,5 +4,10 @@ using UnityEngine;
 
 public enum AttackInputs
 {
-    rb,lb,rt,lt,none
+    rb, rt, lb, lt, none
+}
+
+public enum InteractionType
+{
+    pickup, talk, open
 }

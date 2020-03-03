@@ -13,7 +13,7 @@ public class WeaponHolderHook : MonoBehaviour
     {
         if (currentModel != null)
         {
-            currentModel.SetActive(false);
+            Destroy(currentModel);
         }
     }
 
@@ -27,9 +27,19 @@ public class WeaponHolderHook : MonoBehaviour
 
     public WeaponHook LoadWeaponModel(WeaponItem weaponItem)
     {
-        if (weaponItem == null)
+        if (currentModel != null)
         {
             UnloadWeapon();
+        }
+
+        //if (weaponItem == null)
+        //{
+        //    UnloadWeapon();
+        //    return null;
+        //}
+
+        if (weaponItem.isUnarmed)
+        {
             return null;
         }
 

@@ -18,6 +18,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
     public float recoveryTimer;
     public int hardcodeAction = -1;
     public bool isInInterruption;
+    public bool isInSpecialState = false;
     public bool openToBackstab = true;
     LayerMask detectionLayer;
 
@@ -126,6 +127,8 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
 
             if (!isInteracting)
             {
+                openToBackstab = true;
+
                 if (actionFlag)
                 {
                     recoveryTimer -= delta;
@@ -277,18 +280,29 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
     bool isHit;
     float hitTimer;
 
-    public void OnDamage(ActionContainer action) 
+    public void OnDamage(ActionContainer action)
     {
         if (action.owner == mTransform)
             return;
 
         if (!isHit)
         {
+            //Sound
+            SoundManager.PlaySound(SoundManager.Sound.EnemyHit, mTransform.position);
+
             isHit = true;
             hitTimer = 1f;
             health -= action.damage;
             animatorHook.CloseDamageCollider(); //for safety
+            //Debug.Log("Enemy received " + action.damage + " new health is " + health);
 
+
+            //VFX
+            GameObject blood = ObjectPool.GetObject("BloodFX");
+            blood.transform.position = mTransform.position + Vector3.up * 1f;
+            blood.transform.rotation = mTransform.rotation;
+            blood.transform.SetParent(mTransform);
+            blood.SetActive(true);
 
             if (health <= 0)
             {
@@ -305,7 +319,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
                 {
                     PlayTargetAnimation(action.reactAnim, true);
                 }
-                else
+                else if (!isInSpecialState)
                 {
                     if (dot > 0)
                     {
@@ -317,6 +331,9 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
                     }
                 }
             }
+
+            isInSpecialState = false;
+
         }
     }
 
@@ -355,6 +372,9 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
     public float parriedDistance = 1.5f;
     public void GetParried(Vector3 origin, Vector3 direction)
     {
+        isInSpecialState = true;
+
+
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(-direction);
         PlayTargetAnimation("Getting Parried", true, 0f, true);
@@ -372,6 +392,9 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
 
     public void GetBackstabbed(Vector3 origin, Vector3 direction)
     {
+        isInSpecialState = true;
+        openToBackstab = false;
+
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(direction);
         PlayTargetAnimation("Getting Backstabbed", true, 0f, true);

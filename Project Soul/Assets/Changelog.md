@@ -144,3 +144,7 @@ Stratos #10 2/3/20 Master
 2) Major changes in combat stats script for Agents to use. Will be used on player as well in future version.
 3) GOAP Agent is ready for final release. Need a simple way to rotate when changing actions and is in range of player to attack.
    Other than that only design choices and required from now on in regards of AI.
+
+Jim #7 3/3/20 Master
+1) Will write full changelog on next patch, tldr added objectpooling class for whatever object, some sounds, some vfx and some major fixes
+	on player and inventory also used some of Nicks inventory scripts for picking up stuff. Working scene was JimScenebed_Sounds+Pickups+VFX.

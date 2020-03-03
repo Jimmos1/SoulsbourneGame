@@ -35,15 +35,22 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
     public List<ArmorItem> startingArmor;
     public ItemActionContainer[] currentActions;
-    public ItemActionContainer[] defaultActions;
+    //public ItemActionContainer[] defaultActions;
     ItemActionContainer currentAction;
-    WeaponHolderManager weaponHolderManager;
+    InventoryManager_temp _inventoryManager;
+    public InventoryManager_temp inventoryManager {
+        get {
+            return _inventoryManager;
+        }
+    }
     ArmorManager armorManager;
     [HideInInspector]
     public AnimatorHook animatorHook;
     Vector3 currentNormal;
 
+    Collider controllerCollider;
     public GameObject parryCollider;
+    //public GameObject unarmedCollider;
 
     ActionContainer _lastAction;
 
@@ -66,29 +73,35 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     }
 
 
-    public void SetWeapons(Item rh, Item lh)
+    public void InitInventory(PlayerProfile profile)
     {
-        weaponHolderManager.Init();
-        LoadWeapon(rh, false);
-        LoadWeapon(lh, true);
+        _inventoryManager.Init(profile, this);
+        //LoadWeapon(rh, false);
+        //LoadWeapon(lh, true);
     }
 
     public void Init()
     {
         mTransform = this.transform;
         rigidbody = GetComponentInChildren<Rigidbody>();
+        controllerCollider = GetComponent<Collider>();
 
         anim = GetComponentInChildren<Animator>();
-        weaponHolderManager = GetComponent<WeaponHolderManager>();
+        _inventoryManager = GetComponent<InventoryManager_temp>();
         animatorHook = GetComponentInChildren<AnimatorHook>();
-        //armorManager = GetComponent<ArmorManager>();
-        //armorManager.Init();
-        //armorManager.LoadListOfItems(startingArmor);
+        armorManager = GetComponent<ArmorManager>();
+
 
         ResetCurrentActions();
 
         currentPosition = mTransform.position;
         ignoreForGroundCheck = ~(1 << 9 | 1 << 10 | 1 << 12);
+    }
+
+    public void InitArmor()
+    {
+        armorManager.Init();
+        armorManager.LoadListOfItems(startingArmor);
     }
 
     private void Update()
@@ -161,6 +174,10 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
         if (isInteracting)
         {
             targetVelocity = animatorHook.deltaPosition * velocityMultiplier;
+        }
+        else
+        {
+            controllerCollider.isTrigger = false;
         }
 
         //HANDLE MOVEMENT
@@ -316,17 +333,14 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     #region Items & Actions
     void ResetCurrentActions()
     {
-        currentActions = new ItemActionContainer[defaultActions.Length];
+        currentActions = new ItemActionContainer[4];
 
-        for (int i = 0; i < defaultActions.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
             currentActions[i] = new ItemActionContainer();
-            currentActions[i].animName = defaultActions[i].animName;
-            currentActions[i].attackInput = defaultActions[i].attackInput;
-            currentActions[i].isMirrored = defaultActions[i].isMirrored;
-            currentActions[i].itemActual = defaultActions[i].itemActual;
-            currentActions[i].canParry = defaultActions[i].canParry;
-            currentActions[i].canBackstab = defaultActions[i].canBackstab;
+            currentActions[i].attackInput = (AttackInputs)i;
+            currentActions[i].isMirrored = (currentActions[i].attackInput == AttackInputs.lt
+                || currentActions[i].attackInput == AttackInputs.lb);
         }
     }
 
@@ -413,25 +427,42 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
     public void LoadWeapon(Item item, bool isLeft)
     {
-        if (!(item is WeaponItem))
-            return;
+        //if (!(item is WeaponItem))
+        //    return;
 
-        WeaponItem weaponItem = (WeaponItem)item;
+        WeaponItem weaponItem = null;
 
-        WeaponHook weaponHook = weaponHolderManager.LoadWeaponOnHook(weaponItem, isLeft);
-
-        if (weaponItem == null)
+        if (item is WeaponItem)
         {
-            ItemActionContainer da = GetItemActionContainer(GetAttackInput(AttackInputs.rb, isLeft), defaultActions);
-            ItemActionContainer ta = GetItemActionContainer(GetAttackInput(AttackInputs.rt, isLeft), currentActions);
-            CopyItemActionContainer(da, ta);
-            ta.isMirrored = isLeft;
-            ta.weaponHook = weaponHook;
-            return;
+            weaponItem = (WeaponItem)item;
         }
 
-        for (int i = 0; i < weaponItem.itemActions.Length; i++)
+        WeaponHook weaponHook = _inventoryManager.LoadWeaponOnHook(weaponItem, isLeft);
+
+        int steps = 2;
+
+        if (isLeft)
         {
+            if (inventoryManager.isRightEmpty)
+            {
+                steps += 2;
+            }
+        }
+        else
+        {
+            if (inventoryManager.isLeftEmpty)
+            {
+                steps += 2;
+            }
+        }
+
+        for (int i = 0; i < steps; i++)
+        {
+            if (i > weaponItem.itemActions.Length - 1)
+            {
+                break;
+            }
+
             ItemActionContainer wa = weaponItem.itemActions[i];
             ItemActionContainer ic = GetItemActionContainer(GetAttackInput(wa.attackInput, isLeft), currentActions);
             ic.isMirrored = (isLeft);
@@ -440,11 +471,22 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
         }
     }
 
+    public void LoadArmor(Item item)
+    {
+        if (item is ArmorItem)
+        {
+            armorManager.LoadItem((ArmorItem)item);
+        }
+    }
+
     void CopyItemActionContainer(ItemActionContainer from, ItemActionContainer to)
     {
         to.animName = from.animName;
         to.itemActual = from.itemActual;
         to.canParry = from.canParry;
+        to.reactAnim = from.reactAnim;
+        //to.damage = from.damage;
+        to.overrideReactAnim = from.overrideReactAnim;
         to.canBackstab = from.canBackstab;
     }
 
@@ -486,11 +528,10 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
         if (c == null)
         {
-            Debug.Log("No combo input for " + inp);
             return;
         }
 
-        PlayTargetAnimation(c.animName, true, currentAction.isMirrored);
+        PlayTargetAnimation(c.animName, true, false);//
         animatorHook.canDoCombo = false;
     }
 
@@ -532,20 +573,33 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     bool isHit;
     float hitTimer;
 
+    public void OnInteractAnimation(string anim)
+    {
+        PlayTargetAnimation(anim, true, false);
+        controllerCollider.isTrigger = true;
+        isInteracting = true;
+    }
+
     public void OnDamage(ActionContainer action)
     {
         if (action.owner == mTransform)
             return;
 
+        if (controllerCollider.isTrigger)
+            return;
+
+
         if (!isHit)
         {
             animatorHook.openDamageCollider = false;
+
+            SoundManager.PlaySound(SoundManager.Sound.PlayerHit);
 
             isHit = true;
             hitTimer = 1f;
 
             health -= action.damage; // TODO: Draw defensive stats here.
-            Debug.Log("Player received " + action.damage + " new health is " + health);
+            //Debug.Log("Player received " + action.damage + " new health is " + health);
 
             if (health <= 0)
             {
@@ -576,7 +630,7 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
                         PlayTargetAnimation("Get Hit Back", true);
                     }
                 }
-            }            
+            }
         }
     }
     #endregion
@@ -629,6 +683,11 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     public bool canBeBackstabbed()
     {
         return false;
+    }
+
+    public void ConsumeItem()
+    {
+        inventoryManager.ConsumeItemActual();
     }
 }
 

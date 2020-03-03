@@ -13,14 +13,18 @@ public class DamageCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (owner == null)
+        {
+            owner = GetComponentInParent<IDamageEntity>();
+        }
+
         IDamageable damageable = other.GetComponentInParent<IDamageable>();
-        if(damageable != null)
+        if (damageable != null)
         {
             Debug.Log(owner.GetActionContainer().owner.name + " hit: " + other.name);
 
 
             damageable.OnDamage(owner.GetActionContainer());
-            
         }
     }
 }

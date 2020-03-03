@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerProfile : ScriptableObject
 {
     public string[] startingArmor;
-    public string rightHandWeapon;
-    public string leftHandWeapon;
+    public string[] rightHand;
+    public string[] leftHand;
+    public string[] consumables;
 }

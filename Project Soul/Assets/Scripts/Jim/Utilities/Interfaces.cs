@@ -27,3 +27,10 @@ public interface IParryable
     void GetBackstabbed(Vector3 origin, Vector3 direction);
     bool canBeBackstabbed();
 }
+
+public interface IInteractable
+{
+    void OnInteract(InputControl inp);
+
+    InteractionType GetInteractionType();
+}

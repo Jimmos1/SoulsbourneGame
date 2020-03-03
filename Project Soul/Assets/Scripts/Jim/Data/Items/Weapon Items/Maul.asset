@@ -12,14 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768c9b6ba2b9b7b44a85591ea8b930aa, type: 3}
   m_Name: Maul
   m_EditorClassIdentifier: 
+  isUnarmed: 0
   modelPrefab: {fileID: 4847887223735201842, guid: a1de4652124ad984b84aa7bd2672f66b,
     type: 3}
   oneHanded_anim: One Handed
   twoHanded_anim: Two Handed
   itemActions:
   - animName: Attack 1
-    itemAction: {fileID: 11400000, guid: 3d9bbd772a782a84ca4d45a98ac78de1, type: 2}
     attackInput: 0
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
+    weaponHook: {fileID: 0}
+    damage: 15
+    overrideReactAnim: 0
+    reactAnim: 
+    canParry: 0
+    canBackstab: 0
+  - animName: Attack 1
+    attackInput: 1
+    isMirrored: 0
+    isTwoHanded: 0
+    itemActual: {fileID: 0}
+    weaponHook: {fileID: 0}
+    damage: 15
+    overrideReactAnim: 0
+    reactAnim: 
+    canParry: 0
+    canBackstab: 0

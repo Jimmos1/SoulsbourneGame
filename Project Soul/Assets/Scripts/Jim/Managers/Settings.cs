@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class Settings
 {
+    public static LayerMask interactionsLayer;
+
     static ResourcesManager _resourcesManager;
     public static ResourcesManager resourcesManager {
         get {

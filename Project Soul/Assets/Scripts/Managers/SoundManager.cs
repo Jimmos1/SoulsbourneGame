@@ -11,6 +11,7 @@ public static class SoundManager
         SwordSheath,
         PlayerMove,
         PlayerAttack,
+        PlayerHit,
         EnemyHit,
         EnemyDie,
         Treasure,
@@ -26,6 +27,7 @@ public static class SoundManager
     {
         soundTimerDictionary = new Dictionary<Sound, float>();
         soundTimerDictionary[Sound.PlayerMove] = 0f;
+        soundTimerDictionary[Sound.EnemyHit] = 0f;
         //TODO: Add rest of sound
     }
 

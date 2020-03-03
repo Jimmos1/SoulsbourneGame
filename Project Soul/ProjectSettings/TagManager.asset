@@ -22,8 +22,8 @@ TagManager:
   - Ragdoll
   - RagdollFeet
   - DamageCollider
-  - 
-  - 
+  - InteractableItem
+  - Ground
   - 
   - 
   - 

@@ -28,6 +28,8 @@ public class InputControl : MonoBehaviour
     bool x_Input;
     bool FKey_Input;
     bool GKey_Input;
+    bool VKey_Input;
+    bool XKey_Input;
 
     //DPad
     bool leftArrow;
@@ -59,23 +61,16 @@ public class InputControl : MonoBehaviour
 
     private void Start()
     {
-        //todo
         camTransform = Camera.main.transform;
 
-        ResourcesManager rm = Settings.resourcesManager;
-        for (int i = 0; i < playerProfile.startingArmor.Length; i++)
-        {
-            Item item = rm.GetItem(playerProfile.startingArmor[i]);
-            if (item is ArmorItem)
-            {
-                controller.startingArmor.Add((ArmorItem)item);
-            }
-        }
         controller.Init();
+        controller.InitInventory(playerProfile);
 
-        controller.SetWeapons(rm.GetItem(playerProfile.rightHandWeapon), rm.GetItem(playerProfile.leftHandWeapon));
+        //controller.SetWeapons(rm.GetItem(playerProfile.rightHandWeapon), rm.GetItem(playerProfile.leftHandWeapon));
 
         cameraManager.targetTransform = controller.transform;
+
+        Settings.interactionsLayer = (1 << 13);
     }
 
     private void FixedUpdate()
@@ -109,6 +104,18 @@ public class InputControl : MonoBehaviour
             rollTimer += delta;
         }
 
+        if (XKey_Input)
+        {
+            if (!controller.isInteracting)
+            {
+                string targetAnim = "";
+                if (controller.inventoryManager.TryToConsumeItem(ref targetAnim))
+                {
+                    controller.PlayTargetAnimation(targetAnim, true);
+                }
+            }
+        }
+
         if (cameraMovement == ExecutionOrder.update)
         {
             cameraManager.HandleRotation(delta, mouseX, mouseY);
@@ -124,6 +131,16 @@ public class InputControl : MonoBehaviour
             Application.Quit();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            HandleSwitchWeapons(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            HandleSwitchWeapons(false);
+        }
+
     }
 
     private void LateUpdate()
@@ -132,6 +149,21 @@ public class InputControl : MonoBehaviour
         {
             //cameraManager.FollowTarget(Time.deltaTime);
         }
+
+        if (VKey_Input)
+        {
+            HandleInteractions();
+        }
+
+        HandleInteractionDetection();
+    }
+
+    void HandleSwitchWeapons(bool isLeft)
+    {
+        if (controller.isInteracting)
+            return;
+
+        controller.inventoryManager.SwitchWeapon(isLeft);
     }
 
     void HandleMovement(float delta)
@@ -164,14 +196,16 @@ public class InputControl : MonoBehaviour
         x_Input = Input.GetButtonDown("X");
         FKey_Input = Input.GetKeyDown(KeyCode.F); //need to add to input profile
         GKey_Input = Input.GetKeyDown(KeyCode.G); //need to add to input profile
+        VKey_Input = Input.GetKeyDown(KeyCode.V); //need to add to input profile
+        XKey_Input = Input.GetKeyDown(KeyCode.X); //need to add to input profile
 
         LMDown = Input.GetMouseButton(0);
         RMDown = Input.GetMouseButton(1);
 
-        leftArrow = Input.GetButton("Left");
-        rightArrow = Input.GetButton("Right");
-        upArrow = Input.GetButton("Up");
-        downArrow = Input.GetButton("Down");
+        leftArrow = Input.GetButtonDown("Left");
+        rightArrow = Input.GetButtonDown("Right");
+        upArrow = Input.GetButtonDown("Up");
+        downArrow = Input.GetButtonDown("Down");
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 
@@ -319,12 +353,42 @@ public class InputControl : MonoBehaviour
             }
         }
 
-        if(b_Input == false)
+        if (b_Input == false)
         {
             rollTimer = 0;
         }
 
         return false;
+    }
+
+    IInteractable currentInteractable;
+
+    void HandleInteractionDetection()
+    {
+        TempUI tempUI = TempUI.singleton;
+        currentInteractable = null;
+        tempUI.ResetInteraction();
+
+        Collider[] colliders = Physics.OverlapSphere(controller.mTransform.position, 1.5f, Settings.interactionsLayer);
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            IInteractable interactable = colliders[i].transform.GetComponentInParent<IInteractable>();
+            if (interactable != null)
+            {
+                currentInteractable = interactable;
+                tempUI.LoadInteraction(interactable.GetInteractionType());
+                break;
+            }
+        }
+    }
+
+    void HandleInteractions()
+    {
+        if (currentInteractable != null)
+        {
+            currentInteractable.OnInteract(this);
+        }
     }
 
 }

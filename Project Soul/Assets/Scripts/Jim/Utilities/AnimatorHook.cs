@@ -179,4 +179,14 @@ public class AnimatorHook : MonoBehaviour
     {
         useIK = false;
     }
+
+    public void ConsumeItem()
+    {
+        controller.ConsumeItem();
+    }
+
+    public void PlaySound(SoundManager.Sound sound)
+    {
+        SoundManager.PlaySound(sound);
+    }
 }

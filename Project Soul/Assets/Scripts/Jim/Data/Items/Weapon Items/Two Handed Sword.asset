@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768c9b6ba2b9b7b44a85591ea8b930aa, type: 3}
   m_Name: Two Handed Sword
   m_EditorClassIdentifier: 
+  isUnarmed: 0
   modelPrefab: {fileID: 7289633092923249282, guid: 20d809a71be734643beb5d23652f612f,
     type: 3}
   oneHanded_anim: One Handed
@@ -26,15 +27,15 @@ MonoBehaviour:
     damage: 10
     overrideReactAnim: 0
     reactAnim: 
-    canParry: 1
+    canParry: 0
     canBackstab: 1
-  - animName: Parry
+  - animName: TH Attack 1
     attackInput: 1
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
-    damage: 10
+    damage: 20
     overrideReactAnim: 0
     reactAnim: 
     canParry: 0

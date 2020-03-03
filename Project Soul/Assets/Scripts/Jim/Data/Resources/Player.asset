@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   startingArmor: []
-  rightHandWeapon: Two Handed Sword
-  leftHandWeapon: 
+  rightHand:
+  - Two Handed Sword
+  leftHand:
+  - Shield
+  - Two Handed Sword
+  consumables:
+  - Estus
