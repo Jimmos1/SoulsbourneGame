@@ -39,6 +39,7 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
     
     public bool isInInterruption; //Disruption mechanics (e.g. backstab and parry)
     public bool openToBackstab = true;
+    public bool isInSpecialState = false; //For animation
     bool isInteracting;  //Performing any action
     bool actionFlag;
     public float recoveryTimer;
@@ -120,6 +121,8 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             HandleDetection();
 
             stateMachine.Update(this.gameObject);
+
+            openToBackstab = true; //TODO: FIX
 
             //anim stuff
         }
@@ -392,6 +395,16 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             isHit = true;  //Invincibility removal happens in Update method.
             hitTimer = 1f;
 
+            //Sound
+            SoundManager.PlaySound(SoundManager.Sound.EnemyHit, mTransform.position);
+
+            //VFX
+            GameObject blood = ObjectPool.GetObject("BloodFX");
+            blood.transform.position = mTransform.position + Vector3.up * 1f;
+            blood.transform.rotation = mTransform.rotation;
+            blood.transform.SetParent(mTransform);
+            blood.SetActive(true);
+
             // Defensive ->Pulling defensive stats here
             int totalDamageTaken = this.GetComponent<CombatStats>().CalculateFinalDamageTaken(action.damage, action.damageType);
             health -= totalDamageTaken;
@@ -408,6 +421,8 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             }
             else
             {
+                isInSpecialState = false;
+
                 Vector3 direction = action.owner.position - mTransform.position;
                 float dot = Vector3.Dot(mTransform.forward, direction);
 
@@ -483,6 +498,8 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
 
     public void GetParried(Vector3 origin, Vector3 direction)
     {
+        isInSpecialState = true;
+
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(-direction);
         PlayTargetAnimation("Getting Parried", true, 0f, true);
@@ -491,6 +508,9 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
     }
     public void GetBackstabbed(Vector3 origin, Vector3 direction)
     {
+        isInSpecialState = true;
+        openToBackstab = false;
+
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(direction);
         PlayTargetAnimation("Getting Backstabbed", true, 0f, true);
