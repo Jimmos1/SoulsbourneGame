@@ -91,21 +91,26 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(ItemNikos item)
     {
+        Debug.Log("1111111");
+
         if (inventoryItems.Contains(item))
         {
             inventoryItems.Remove(item);
 
-            Debug.Log("Revomed " + item.name + " to inventory");
+            Debug.Log("Revomed " + item.name + " from inventory");
         }
     }
 
     public void RemoveItem(GameObject gameObject)
     {
+        Debug.Log("2222222");
+
         if (itemDatabase.GetItemByName(gameObject.name) != null && inventoryItems.Contains(itemDatabase.GetItemByName(gameObject.name)))
         {
+
             inventoryItems.Remove(itemDatabase.GetItemByName(gameObject.name));
 
-            Debug.Log("Revomed " + gameObject.name + " to inventory");
+            Debug.Log("Revomed " + gameObject.name + " from inventory");
         }
     }
 }

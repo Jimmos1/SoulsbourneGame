@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     private GameObject uiItemPrefab;
 
     [SerializeField]
-    private GameObject itemStatsName;
+    private GameObject itemStatsName, itemStatsDescription;
 
     [SerializeField]
     private Transform weaponsListParent, consumablesListParent, keysListParent;
@@ -25,11 +25,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject selectedItem;
 
+    [SerializeField]
+    private Image healthBarImage;
+
     private ItemDatabase itemDatabase;
+    private InventoryManager inventoryManager;
+
 
     private void Awake()
     {
         itemDatabase = Resources.Load<ItemDatabase>("ItemDatabase");
+        inventoryManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<InventoryManager>();
     }
 
     void Update()
@@ -42,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     public void SelectedItem()
     {
-        selectedItem = EventSystem.current.currentSelectedGameObject;
+        selectedItem = EventSystem.current.currentSelectedGameObject.gameObject;
         UpdateItemStats();
     }
 
@@ -100,6 +106,28 @@ public class UIManager : MonoBehaviour
 
     private void UpdateItemStats()
     {
-        itemStatsName.GetComponent<TextMeshProUGUI>().text = selectedItem.name;
+        itemStatsName.GetComponent<TextMeshProUGUI>().text = itemDatabase.GetItemByID(int.Parse(selectedItem.name)).name;
+        itemStatsDescription.GetComponent<TextMeshProUGUI>().text = itemDatabase.GetItemByID(int.Parse(selectedItem.name)).description;
+    }
+
+    public void EquipLeftHand()
+    {
+        if (selectedItem != null && itemDatabase.GetItemByID(int.Parse(selectedItem.name)).type == ItemType.Weapon)
+        {
+            inventoryManager.leftHandWeapon = selectedItem.gameObject;
+        }
+    }
+
+    public void EquipRightHand()
+    {
+        if (selectedItem != null && itemDatabase.GetItemByID(int.Parse(selectedItem.name)).type == ItemType.Weapon)
+        {
+            inventoryManager.rightHandWeapon = selectedItem.gameObject;
+        }
+    }
+
+    public void SetHealth(float healthNormalized)
+    {
+        healthBarImage.fillAmount = healthNormalized;
     }
 }
