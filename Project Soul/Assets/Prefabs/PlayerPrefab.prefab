@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 2135765042798273736}
   - component: {fileID: 2135765042798273781}
   - component: {fileID: 2135765042798273780}
+  - component: {fileID: 4590450835356075423}
   m_Layer: 8
   m_Name: PlayerController
   m_TagString: Player
@@ -159,7 +160,6 @@ MonoBehaviour:
   currentActions: []
   animatorHook: {fileID: 0}
   parryCollider: {fileID: 2135765043420891444}
-  unarmedCollider: {fileID: 2135765044190842983}
   health: 100
 --- !u!114 &2135765042798273781
 MonoBehaviour:
@@ -177,7 +177,7 @@ MonoBehaviour:
   unarmedHook: {fileID: 2135765044190842979}
   consumableItem: {fileID: 11400000, guid: fe9e3fc2aa182254abd63687676fcab5, type: 2}
   usesLeftOnConsumable: 0
-  toRefilConsumable: 0
+  toRefillConsumable: 0
 --- !u!114 &2135765042798273780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +190,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f60a0b4aac5ca4280008086b69f642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!81 &4590450835356075423
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135765042798273739}
+  m_Enabled: 1
 --- !u!1 &2135765042977058304
 GameObject:
   m_ObjectHideFlags: 0
@@ -3319,7 +3327,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2135765043633519430}
   - component: {fileID: 2135765043633519449}
-  - component: {fileID: 2135765043633519448}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -3384,14 +3391,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &2135765043633519448
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135765043633519450}
-  m_Enabled: 1
 --- !u!1 &2135765043901379855
 GameObject:
   m_ObjectHideFlags: 0
@@ -3504,6 +3503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2135765044248121378}
   - component: {fileID: 2135765044248121381}
+  - component: {fileID: 7489971321909655598}
   m_Layer: 0
   m_Name: Input Manager
   m_TagString: Untagged
@@ -3542,6 +3542,18 @@ MonoBehaviour:
   camTransform: {fileID: 2135765043633519430}
   playerProfile: {fileID: 11400000, guid: 8dcd966d16392d149bbbfe2e90e17f84, type: 2}
   cameraMovement: 0
+--- !u!114 &7489971321909655598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135765044248121380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d80fb84fe92f44c874759dce8eb664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2135765044321872500
 GameObject:
   m_ObjectHideFlags: 0

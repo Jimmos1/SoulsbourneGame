@@ -485,7 +485,7 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
         to.itemActual = from.itemActual;
         to.canParry = from.canParry;
         to.reactAnim = from.reactAnim;
-        //to.damage = from.damage;
+        to.damage = from.damage;
         to.overrideReactAnim = from.overrideReactAnim;
         to.canBackstab = from.canBackstab;
     }
@@ -531,7 +531,7 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
             return;
         }
 
-        PlayTargetAnimation(c.animName, true, false);//
+        PlayTargetAnimation(c.animName, true, currentAction.isMirrored);//
         animatorHook.canDoCombo = false;
     }
 
@@ -593,7 +593,7 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
         {
             animatorHook.openDamageCollider = false;
 
-            SoundManager.PlaySound(SoundManager.Sound.PlayerHit);
+            SoundManager.PlaySound(SoundManager.Sound.PlayerHit, mTransform.position);
 
             isHit = true;
             hitTimer = 1f;

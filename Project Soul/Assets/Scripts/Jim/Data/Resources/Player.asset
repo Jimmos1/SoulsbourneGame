@@ -15,6 +15,7 @@ MonoBehaviour:
   startingArmor: []
   rightHand:
   - Two Handed Sword
+  - Maul
   leftHand:
   - Shield
   - Two Handed Sword

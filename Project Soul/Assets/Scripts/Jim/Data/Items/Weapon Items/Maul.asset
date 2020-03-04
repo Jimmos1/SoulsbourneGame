@@ -21,7 +21,7 @@ MonoBehaviour:
   - animName: Attack 1
     attackInput: 0
     isMirrored: 0
-    isTwoHanded: 0
+    isTwoHanded: 1
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
     damage: 15
@@ -32,7 +32,7 @@ MonoBehaviour:
   - animName: Attack 1
     attackInput: 1
     isMirrored: 0
-    isTwoHanded: 0
+    isTwoHanded: 1
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
     damage: 15

@@ -40,25 +40,3 @@ MonoBehaviour:
     reactAnim: 
     canParry: 0
     canBackstab: 0
-  - animName: Kick 1
-    attackInput: 2
-    isMirrored: 1
-    isTwoHanded: 0
-    itemActual: {fileID: 0}
-    weaponHook: {fileID: 0}
-    damage: 5
-    overrideReactAnim: 0
-    reactAnim: 
-    canParry: 0
-    canBackstab: 0
-  - animName: Parry
-    attackInput: 3
-    isMirrored: 1
-    isTwoHanded: 0
-    itemActual: {fileID: 0}
-    weaponHook: {fileID: 0}
-    damage: 5
-    overrideReactAnim: 0
-    reactAnim: 
-    canParry: 1
-    canBackstab: 0

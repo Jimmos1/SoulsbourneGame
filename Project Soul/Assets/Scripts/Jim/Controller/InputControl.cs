@@ -23,19 +23,26 @@ public class InputControl : MonoBehaviour
     bool inventoryInput;
 
     //Prompts
-    bool b_Input;
-    bool y_Input;
-    bool x_Input;
+    bool b_Input; //roll
+    bool y_Input; //pick up
+    bool x_Input; //lock on
+    bool a_Input; //use item
     bool FKey_Input;
     bool GKey_Input;
     bool VKey_Input;
     bool XKey_Input;
 
     //DPad
-    bool leftArrow;
-    bool rightArrow;
-    bool upArrow;
-    bool downArrow;
+    //float DPadHor;
+    //float DPadVer;
+
+    //public static bool IsLeft, IsRight, IsUp, IsDown;
+    //private float _LastX, _LastY;
+
+    //bool leftArrow;
+    //bool rightArrow;
+    //bool upArrow;
+    //bool downArrow;
 
     //Logic
     bool isAttacking;
@@ -104,7 +111,7 @@ public class InputControl : MonoBehaviour
             rollTimer += delta;
         }
 
-        if (XKey_Input)
+        if (XKey_Input || a_Input)
         {
             if (!controller.isInteracting)
             {
@@ -131,12 +138,14 @@ public class InputControl : MonoBehaviour
             Application.Quit();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        //Debug.Log(Input.anyKeyDown);
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) || DPadButtons.IsLeft)
         {
             HandleSwitchWeapons(true);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) || DPadButtons.IsRight)
         {
             HandleSwitchWeapons(false);
         }
@@ -150,7 +159,7 @@ public class InputControl : MonoBehaviour
             //cameraManager.FollowTarget(Time.deltaTime);
         }
 
-        if (VKey_Input)
+        if (VKey_Input || y_Input)
         {
             HandleInteractions();
         }
@@ -194,6 +203,7 @@ public class InputControl : MonoBehaviour
         b_Input = Input.GetButton("B");
         y_Input = Input.GetButtonDown("Y");
         x_Input = Input.GetButtonDown("X");
+        a_Input = Input.GetButtonDown("A");
         FKey_Input = Input.GetKeyDown(KeyCode.F); //need to add to input profile
         GKey_Input = Input.GetKeyDown(KeyCode.G); //need to add to input profile
         VKey_Input = Input.GetKeyDown(KeyCode.V); //need to add to input profile
@@ -202,10 +212,36 @@ public class InputControl : MonoBehaviour
         LMDown = Input.GetMouseButton(0);
         RMDown = Input.GetMouseButton(1);
 
-        leftArrow = Input.GetButtonDown("Left");
-        rightArrow = Input.GetButtonDown("Right");
-        upArrow = Input.GetButtonDown("Up");
-        downArrow = Input.GetButtonDown("Down");
+
+        //float x = Input.GetAxis("DPadHor");
+        //float y = Input.GetAxis("DPadVer");
+
+        //IsLeft = false;
+        //IsRight = false;
+        //IsUp = false;
+        //IsDown = false;
+
+        //if (_LastX != x)
+        //{
+        //    if (x == -1)
+        //        IsLeft = true;
+        //    else if (x == 1)
+        //        IsRight = true;
+        //}
+
+        //if (_LastY != y)
+        //{
+        //    if (y == -1)
+        //        IsDown = true;
+        //    else if (y == 1)
+        //        IsUp = true;
+        //}
+
+        //_LastX = x;
+        //_LastY = y;
+
+        //DPadHor = Input.GetAxis("DPadHor");
+        //DPadVer = Input.GetAxis("DPadVer");
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2490945136236505254}
   - component: {fileID: 2822556662894828094}
   m_Layer: 0
-  m_Name: Shield(Clone)
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5280391950732516263}
   - component: {fileID: 1320417933446004457}
-  m_Layer: 0
+  - component: {fileID: 62063313391537013}
+  m_Layer: 12
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 2865120587599659150}
   m_LocalRotation: {x: 0.70710635, y: 0.00000005215404, z: 0.0000002682208, w: 0.7071071}
   m_LocalPosition: {x: 0, y: -0.060999896, z: 0}
-  m_LocalScale: {x: 0.5000008, y: 0.44223055, z: 0.44223142}
+  m_LocalScale: {x: 0.5000008, y: 0.44223055, z: 2.5420005}
   m_Children: []
   m_Father: {fileID: 2490945136236505254}
   m_RootOrder: 1
@@ -90,6 +91,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.4187822, y: 1.418783, z: 0.19131029}
   m_Center: {x: 0.00000035762787, y: 0.00000023841858, z: -0.00000023841858}
+--- !u!114 &62063313391537013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865120587599659150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51712afdf4cdbb3479e5704eebe9f320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4329885260755484808
 GameObject:
   m_ObjectHideFlags: 0

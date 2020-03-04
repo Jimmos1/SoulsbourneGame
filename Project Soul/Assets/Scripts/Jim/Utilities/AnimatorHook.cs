@@ -117,7 +117,7 @@ public class AnimatorHook : MonoBehaviour
     public void OpenDamageCollider()
     {
         openDamageCollider = true;
-        if(damageCollider!= null)
+        if (damageCollider != null)
         {
             damageCollider.SetActive(openDamageCollider);
         }
@@ -187,6 +187,6 @@ public class AnimatorHook : MonoBehaviour
 
     public void PlaySound(SoundManager.Sound sound)
     {
-        SoundManager.PlaySound(sound);
+        SoundManager.PlaySound(sound, animator.transform.position);
     }
 }

@@ -27,7 +27,7 @@ MonoBehaviour:
     damage: 10
     overrideReactAnim: 0
     reactAnim: 
-    canParry: 1
+    canParry: 0
     canBackstab: 0
   - animName: Punch 1
     attackInput: 1

@@ -148,3 +148,6 @@ Stratos #10 2/3/20 Master
 Jim #7 3/3/20 Master
 1) Will write full changelog on next patch, tldr added objectpooling class for whatever object, some sounds, some vfx and some major fixes
 	on player and inventory also used some of Nicks inventory scripts for picking up stuff. Working scene was JimScenebed_Sounds+Pickups+VFX.
+
+Jim #8 3/3/20 Master
+1) More sounds, better fuctions more fixes, better controller usability.
