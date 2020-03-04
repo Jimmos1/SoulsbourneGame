@@ -132,6 +132,14 @@ public class InputControl : MonoBehaviour
         {
             SceneManager.LoadScene(0); //reload first scene
         }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            SceneManager.LoadScene(1); //reload first scene
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            SceneManager.LoadScene(2); //reload first scene
+        }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

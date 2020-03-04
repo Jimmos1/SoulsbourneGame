@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/JimScenebed_Sounds+Pickups+VFX.unity
+    guid: 1d01653f6f5ddba49b47c40873dc53ec
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: cce00ec76b099ef488195bf61d975bf3
+  - enabled: 1
+    path: Assets/Scenes/InventoryUIScene.unity
+    guid: d221dd489cef08e4d9b87d5fe0ddfdce
   m_configObjects: {}
