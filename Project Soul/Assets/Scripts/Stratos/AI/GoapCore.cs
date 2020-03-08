@@ -39,7 +39,6 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
     
     public bool isInInterruption; //Disruption mechanics (e.g. backstab and parry)
     public bool openToBackstab = true;
-    public bool isInSpecialState = false; //For animation
     bool isInteracting;  //Performing any action
     bool actionFlag;
     public float recoveryTimer;
@@ -122,14 +121,25 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
 
             stateMachine.Update(this.gameObject);
 
-            openToBackstab = true; //TODO: FIX
-
             //anim stuff
         }
-        else              //means IS aware of player 
+        else if (isInInterruption)
         {
+            //HeadIK
+            lookPosition = currentTarget.mTransform.position;
+            lookPosition.y += 1.2f;
+            animatorHook.lookAtPosition = lookPosition;
+
+            //Move with Root Motion 
+            Vector3 targetVel = animatorHook.deltaPosition * moveSpeed; //todo:draw movespeed from dataprovider
+            rigidbody.velocity = targetVel;
+        }
+        else              //means IS aware of player 
+        {            
             stateMachine.Update(this.gameObject);
-            
+
+            openToBackstab = true; //TODO: priority check
+
             //HeadIK
             lookPosition = currentTarget.mTransform.position;
             lookPosition.y += 1.2f;
@@ -421,7 +431,6 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
             }
             else
             {
-                isInSpecialState = false;
 
                 Vector3 direction = action.owner.position - mTransform.position;
                 float dot = Vector3.Dot(mTransform.forward, direction);
@@ -491,6 +500,8 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
                 dir.y = 0;
                 mTransform.rotation = Quaternion.LookRotation(dir);
 
+                HandleDetection(); //To make sure active target = attacker and re-plan through 
+                //PLAY SOUND
                 PlayTargetAnimation("Attack Interrupt", true, 0f, true);
             }
         }
@@ -498,24 +509,56 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
 
     public void GetParried(Vector3 origin, Vector3 direction)
     {
-        isInSpecialState = true;
+        animator.SetBool("interrupted",true);
 
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(-direction);
         PlayTargetAnimation("Getting Parried", true, 0f, true);
-        //TODO: Damage Calculations & Sounds
-        //ALSO FORCE AI TO MAKE NEW PLAN
+
+        //EXTRA DAMAGE DONE AI-SIDE BECAUSE REASONS
+         OnSpecialStateFX(); //PATCH --- REMOVE IN FUTURE VERSIONS ---
     }
     public void GetBackstabbed(Vector3 origin, Vector3 direction)
     {
-        isInSpecialState = true;
+        animator.SetBool("interrupted", true);
         openToBackstab = false;
 
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(direction);
         PlayTargetAnimation("Getting Backstabbed", true, 0f, true);
-        //TODO: Damage Calculations & Sounds
-        //ALSO FORCE AI TO MAKE NEW PLAN
+
+        //EXTRA DAMAGE DONE AI-SIDE BECAUSE REASONS
+        OnSpecialStateFX(); //PATCH --- REMOVE IN FUTURE VERSIONS ---
+    }
+    private void OnSpecialStateFX()
+    {
+        //TODO: Add direction FX & Sound
+
+        //Sound
+        SoundManager.PlaySound(SoundManager.Sound.EnemyHit, mTransform.position);
+
+        //VFX
+        GameObject blood = ObjectPool.GetObject("BloodFX");
+        blood.transform.position = mTransform.position + Vector3.up * 1f;
+        blood.transform.rotation = mTransform.rotation;
+        blood.transform.SetParent(mTransform);
+        blood.SetActive(true);
+
+        // Defensive ->Pulling defensive stats here
+        int totalDamageTaken = this.GetComponent<CombatStats>().CalculateFinalDamageTaken(15, "Physical"); //HARDCODE
+        health -= totalDamageTaken;
+        Debug.Log("Agent " + agentID + " received SPECIAL" + totalDamageTaken + " damage. New health is " + health);
+
+        animatorHook.CloseDamageCollider(); //for safety
+
+        HandleDetection(); //To make sure active target = attacker and re-plan through 
+
+        if (health <= 0)
+        {
+            PlayTargetAnimation("Death", true);
+            animator.transform.parent = null; // in order for ragdoll to properly work
+            gameObject.SetActive(false); // could just destroy instead of disabling
+        }
     }
     public Transform getTransform() //Useful for dir calculations.
     {

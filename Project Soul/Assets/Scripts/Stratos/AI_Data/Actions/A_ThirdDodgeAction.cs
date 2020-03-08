@@ -7,7 +7,7 @@ public class A_ThirdDodgeAction : GoapAction
     private bool trickEnemy = false;
     private GameObject enemy; // what enemy we attack
     private string playerTag = "Player";
-    private string animAction = "Attack 3";
+    private string animAction = "roll_backwards_left";
     private bool actionFlag = false;
     private float recoveryTimer;
 
@@ -128,35 +128,43 @@ public class A_ThirdDodgeAction : GoapAction
             }
             else                                              //...else do my action
             {
-                //TODO: CHECK IF TARGET IS IN FRONT, OTHERWISE ENABLE ANIMATOR HOOK SHIT TO TURN
-                //Vector3 dir = target.transform.position - agent.transform.position;
-                //dir.y = 0;
-                //dir.Normalize();
-                //float dot = Vector3.Dot(transform.forward, dir);
+                Vector3 dir = target.transform.position - agent.transform.position;
+                dir.y = 0;
+                dir.Normalize();
+                float dot = Vector3.Dot(transform.forward, dir);
+
                 //Debug.Log(animAction + " " + dot);
-                //if (dot < 0)
-                //{
-                //    Transform mTransform = agent.transform;
 
-                //    navAgent.SetDestination(target.transform.position);
+                if (dot < 0) //Checking if target is in behind so we turn...
+                {
+                    Transform mTransform = agent.transform;
 
-                //    Vector3 relativeDirection = mTransform.InverseTransformDirection(navAgent.desiredVelocity);
-                //    relativeDirection.Normalize();
+                    navAgent.enabled = true;
+                    navAgent.SetDestination(target.transform.position);
 
-                //    anim.SetFloat("movement", relativeDirection.z, 0.1f, Time.deltaTime);
-                //    anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime);
+                    Vector3 relativeDirection = mTransform.InverseTransformDirection(navAgent.desiredVelocity);
+                    relativeDirection.Normalize();
 
-                //    navAgent.enabled = true;
-                //    mTransform.rotation = navAgent.transform.rotation;
-                //    return true;
-                //}
+                    anim.SetFloat("movement", relativeDirection.z, 0.1f, Time.deltaTime);
+                    anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime);
 
-                agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
-                actionFlag = true;
-                animatorHook.OpenDamageCollider();
-                //damageCollider.SetActive(animatorHook.openDamageCollider);
-                recoveryTimer = 2f; //TODO: Current action recovery time.
-                //PLAY SOUND/UI STUFF HERE
+
+                    mTransform.rotation = navAgent.transform.rotation;
+                    return true;
+                }
+                else      //...otherwise perform action
+                {
+                    /*
+                     * TODO: Calculate with navMesh preview a place where dodge could be done 
+                     * and make helper method to set proper animation.
+                     */
+
+                    agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
+                    actionFlag = true;
+                    animatorHook.OpenDamageCollider();
+                    recoveryTimer = 2f; //TODO: Current action recovery time.
+                    //PLAY SOUND/UI STUFF HERE
+                }
             }
         }
 

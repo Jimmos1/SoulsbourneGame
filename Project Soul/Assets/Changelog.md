@@ -151,3 +151,10 @@ Jim #7 3/3/20 Master
 
 Jim #8 3/3/20 Master
 1) More sounds, better fuctions more fixes, better controller usability.
+
+Stratos #11 8/3/20 Master
+1) Fixed rotation issues with AI. Now checks if enemy is in front before performing an action.
+2) Fixed backstab/parry on AI side to properly stop AI current actions and mitigate extra damage. Then it re-plans.
+3) Added backwards_left dodge on AI animation and hooked it with an action.
+4) Edited GOAP_Core & all actions scripts.
+5) Created AI prefab for use in main scene.

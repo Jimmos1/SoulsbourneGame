@@ -76,13 +76,7 @@ public class A_FirstMeleeAction : GoapAction
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
         Animator anim = (Animator)agent.GetComponentInChildren(typeof(Animator));
         NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponentInChildren(typeof(NavMeshAgent));
-        //GameObject damageCollider = agent.GetComponent<GoapCore>().damageCollider;
         AnimatorHook animatorHook = agent.GetComponentInChildren<AnimatorHook>();
-
-        //navAgent.enabled = false;
-
-        //anim.SetFloat("movement", 0f, 0.1f, Time.deltaTime);
-        //anim.SetFloat("sideways", 0f, 0.1f, Time.deltaTime);
 
                                                //Becomes true only on animator exit script... 
         if (anim.GetBool("actionSuccess_AI")) //...if action is complete and successful (
@@ -132,37 +126,39 @@ public class A_FirstMeleeAction : GoapAction
             }
             else                                              //...else do my action
             {
-                //TODO: CHECK IF TARGET IS IN FRONT, OTHERWISE ENABLE ANIMATOR HOOK SHIT TO TURN
-                //Vector3 dir = target.transform.position - agent.transform.position;
-                //dir.y = 0;
-                //dir.Normalize();
-                //float dot = Vector3.Dot(transform.forward, dir);
+
+                Vector3 dir = target.transform.position - agent.transform.position;
+                dir.y = 0;
+                dir.Normalize();
+                float dot = Vector3.Dot(transform.forward, dir);
+
                 //Debug.Log(animAction + " " + dot);
-                //if (dot < 0)
-                //{
-                //    Transform mTransform = agent.transform;                    
 
-                //    navAgent.SetDestination(target.transform.position);
+                if (dot < 0) //Checking if target is in behind so we turn...
+                {
+                    Transform mTransform = agent.transform;
 
-                //    Vector3 relativeDirection = mTransform.InverseTransformDirection(navAgent.desiredVelocity);
-                //    relativeDirection.Normalize();
+                    navAgent.enabled = true;
+                    navAgent.SetDestination(target.transform.position);
 
-                //    anim.SetFloat("movement", relativeDirection.z, 0.1f, Time.deltaTime);
-                //    anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime);
+                    Vector3 relativeDirection = mTransform.InverseTransformDirection(navAgent.desiredVelocity);
+                    relativeDirection.Normalize();
 
-                //    navAgent.enabled = true;
-                //    mTransform.rotation = navAgent.transform.rotation;
-                //    return true;
-                //}
+                    anim.SetFloat("movement", relativeDirection.z, 0.1f, Time.deltaTime);
+                    anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime);
 
-                //agent.GetComponent<GoapCore>().HandleRotation(Time.deltaTime, target);
-
-                agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
-                actionFlag = true;
-                animatorHook.OpenDamageCollider();
-                //damageCollider.SetActive(animatorHook.openDamageCollider);
-                recoveryTimer = 2f; //TODO: Current action recovery time.
-                //PLAY SOUND/UI STUFF HERE
+                    
+                    mTransform.rotation = navAgent.transform.rotation;
+                    return true;
+                }
+                else      //...otherwise perform action
+                {
+                    agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
+                    actionFlag = true;
+                    animatorHook.OpenDamageCollider();
+                    recoveryTimer = 2f; //TODO: Current action recovery time.
+                    //PLAY SOUND/UI STUFF HERE
+                }
             }
         }
 
