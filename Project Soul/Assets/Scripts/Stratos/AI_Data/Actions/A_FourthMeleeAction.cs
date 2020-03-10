@@ -11,6 +11,8 @@ public class A_FourthMeleeAction : GoapAction
     private bool actionFlag = false;
     private float recoveryTimer;
 
+    public float costRaisePerUse = 10f;
+
     public A_FourthMeleeAction()
     {
         addPrecondition("hasWeapon", true); // don't bother attacking when no weapon in hands
@@ -96,8 +98,9 @@ public class A_FourthMeleeAction : GoapAction
              * status from player and evaluate attack success.
              */
             killEnemy = true; //... effect is true so we can move to next action
+            cost += costRaisePerUse;
             navAgent.enabled = true;
-            animatorHook.CloseDamageCollider();
+            animatorHook.CloseDamageColliders();
             anim.SetBool("actionSuccess_AI", false);
             Debug.Log("Attack 4 has ended!");
 
@@ -152,7 +155,7 @@ public class A_FourthMeleeAction : GoapAction
                 {
                     agent.GetComponent<GoapCore>().PlayTargetAnimation(this.animAction, true);
                     actionFlag = true;
-                    animatorHook.OpenDamageCollider();
+                    animatorHook.OpenDamageColliders();
                     recoveryTimer = 2f; //TODO: Current action recovery time.
                     //PLAY SOUND/UI STUFF HERE
                 }

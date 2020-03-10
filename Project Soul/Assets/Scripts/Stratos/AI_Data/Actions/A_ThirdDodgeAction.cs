@@ -11,6 +11,8 @@ public class A_ThirdDodgeAction : GoapAction
     private bool actionFlag = false;
     private float recoveryTimer;
 
+    public float costRaisePerUse = 10f;
+
     public A_ThirdDodgeAction()
     {
         addPrecondition("hasWeapon", true); // don't bother attacking when no weapon in hands
@@ -96,6 +98,7 @@ public class A_ThirdDodgeAction : GoapAction
              * status from player and evaluate attack success.
              */
             trickEnemy = true; //... effect is true so we can move to next action
+            cost += costRaisePerUse;
             navAgent.enabled = true;
             animatorHook.CloseDamageCollider();
             anim.SetBool("actionSuccess_AI", false);

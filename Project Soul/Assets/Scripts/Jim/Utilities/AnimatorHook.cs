@@ -131,6 +131,24 @@ public class AnimatorHook : MonoBehaviour
             damageCollider.SetActive(openDamageCollider);
         }
     }
+    //PATCH BECAUSE REASONS
+    public void OpenDamageColliders()
+    {
+        openDamageCollider = true;
+        if (damageCollider != null)
+        {
+            damageCollider.SetActive(openDamageCollider);
+        }
+    }
+
+    public void CloseDamageColliders()
+    {
+        openDamageCollider = false;
+        if (damageCollider != null)
+        {
+            damageCollider.SetActive(openDamageCollider);
+        }
+    }
 
     public void EnableCombo()
     {

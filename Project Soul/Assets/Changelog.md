@@ -158,3 +158,11 @@ Stratos #11 8/3/20 Master
 3) Added backwards_left dodge on AI animation and hooked it with an action.
 4) Edited GOAP_Core & all actions scripts.
 5) Created AI prefab for use in main scene.
+
+Stratos #12 10/3/20 Master
+1) Added elevator in StratosScenebed & as a prefab for use in main scene.
+
+Stratos #12 10/3/20 Master
+1) Added 6 new actions with new animation & logic for a total of 10 actions available for GOAP.
+2) Added new action animations in EnemyAnimationController
+3) Patched AnimatorHook

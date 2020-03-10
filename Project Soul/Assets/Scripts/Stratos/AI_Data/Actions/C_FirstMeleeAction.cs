@@ -2,35 +2,34 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class A_SecondMeleeAction : GoapAction
+public class C_FirstMeleeAction : GoapAction
 {
-    private bool severeDamagedEnemy = false;
+    private bool damagedEnemy = false;
     private GameObject enemy; // what enemy we attack
     private string playerTag = "Player";
-    private string animAction = "Attack 2";
+    private string animAction = "C Attack 1";
     private bool actionFlag = false;
     private float recoveryTimer;
 
     public float costRaisePerUse = 10f;
-    public A_SecondMeleeAction()
+
+    public C_FirstMeleeAction()
     {
         addPrecondition("hasWeapon", true); // don't bother attacking when no weapon in hands
-        addPrecondition("damagedEnemy", true);
-        addEffect("severeDamagedEnemy", true); // kick his ass
+        addEffect("damagedEnemy", true); // we damaged the enemy ---- MAYBE ATTEMPTDAMAGEDENEMY ----
     }
 
 
     public override void reset()
     {
-        severeDamagedEnemy = false;
+        damagedEnemy = false;
         enemy = null;
-
         actionFlag = false;
     }
 
     public override bool isDone()
     {
-        return severeDamagedEnemy; // TODO: TRACK LATER ISDONE CONDITION
+        return damagedEnemy; // TODO: TRACK LATER ISDONE CONDITION
     }
 
     public override bool requiresInRange()
@@ -79,29 +78,33 @@ public class A_SecondMeleeAction : GoapAction
         //TODO: WILL OPTIMIZE ANIM/NAVAGENT REFS IN LATER VERSION.
         Animator anim = (Animator)agent.GetComponentInChildren(typeof(Animator));
         NavMeshAgent navAgent = (NavMeshAgent)agent.GetComponentInChildren(typeof(NavMeshAgent));
-        //GameObject damageCollider = agent.GetComponent<GoapCore>().damageCollider;
         AnimatorHook animatorHook = agent.GetComponentInChildren<AnimatorHook>();
 
-        //navAgent.enabled = false;
-
-        //anim.SetFloat("movement", 0f, 0.1f, Time.deltaTime);
-        //anim.SetFloat("sideways", 0f, 0.1f, Time.deltaTime);
-
-                                               //Becomes true only on animator exit script... 
-        if (anim.GetBool("actionSuccess_AI")) //...if action is complete and successful
+        //Becomes true only on animator exit script... 
+        if (anim.GetBool("actionSuccess_AI")) //...if action is complete and successful (
         {
             /*
              * Here we are sure we finished the animation
              * so it's possible we can get actual damagedEnemy
              * status from player and evaluate attack success.
              */
-            severeDamagedEnemy = true; //... effect is true so we can move to next action
+            damagedEnemy = true; //... effect is true so we can move to next action
             cost += costRaisePerUse;
-
             navAgent.enabled = true;
             animatorHook.CloseDamageCollider();
             anim.SetBool("actionSuccess_AI", false);
-            Debug.Log("Attack 2 has ended!");
+
+            //TEST
+            Transform mTransform = this.transform;
+
+            Vector3 relativeDirection = mTransform.InverseTransformDirection(navAgent.desiredVelocity);
+            relativeDirection.Normalize();
+
+            anim.SetFloat("movement", relativeDirection.z, 0.1f, Time.deltaTime);
+            anim.SetFloat("sideways", relativeDirection.x, 0.1f, Time.deltaTime);
+            //TEST
+
+            Debug.Log("C Attack 1 has ended!");
 
             return true;
         }
@@ -109,6 +112,7 @@ public class A_SecondMeleeAction : GoapAction
         //Becomes true during the period of attack OR getting disabled by enemy.
         if (anim.GetBool("isInteracting") != true) //Did we start animating an action...
         {
+
             if (actionFlag)                                  //Check if action is happening...
             {
                 navAgent.enabled = false;             //...lets stop the agent for a bit shall we?
@@ -125,6 +129,7 @@ public class A_SecondMeleeAction : GoapAction
             }
             else                                              //...else do my action
             {
+
                 Vector3 dir = target.transform.position - agent.transform.position;
                 dir.y = 0;
                 dir.Normalize();

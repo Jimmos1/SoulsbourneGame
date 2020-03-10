@@ -11,6 +11,8 @@ public class A_FirstMeleeAction : GoapAction
     private bool actionFlag = false;
     private float recoveryTimer;
 
+    public float costRaisePerUse = 10f;
+
     public A_FirstMeleeAction()
     {
         addPrecondition("hasWeapon", true); // don't bother attacking when no weapon in hands
@@ -87,6 +89,7 @@ public class A_FirstMeleeAction : GoapAction
              * status from player and evaluate attack success.
              */
             damagedEnemy = true; //... effect is true so we can move to next action
+            cost += costRaisePerUse;
             navAgent.enabled = true;
             animatorHook.CloseDamageCollider();
             anim.SetBool("actionSuccess_AI", false);
