@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
     }
     private void SetUpTriggers(PlayerArea area)
     {
-        Debug.Log("Set up triggers complete");
+        //Debug.Log("Set up triggers complete");
     }
     private void SetUpUI()
     {

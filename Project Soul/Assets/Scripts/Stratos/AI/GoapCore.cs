@@ -91,7 +91,7 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
 
         stateMachine.pushState(idleState);
         loadActions();
-        Debug.Log("Agent Init");
+        //Debug.Log("Agent Init");
         //loadActions
         
     }
@@ -305,7 +305,7 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
         }
         if (enableConsoleMessages)
         {
-            Debug.Log("Found actions on agent " + agentID + ": " + prettyPrint(actions));
+            //Debug.Log("Found actions on agent " + agentID + ": " + prettyPrint(actions));
         }
     }
     private bool hasActionPlan()

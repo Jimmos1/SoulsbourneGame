@@ -15,5 +15,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e5add80df615aa94d9281bd5218ae37f, type: 3}
   consumeAnimation: Estus Drink
   emptyAnimation: Can't Use
-  addValue: 15
+  addValue: 33
   isMana: 0

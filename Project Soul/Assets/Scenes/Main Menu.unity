@@ -300,6 +300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 236258274}
   - component: {fileID: 236258273}
+  - component: {fileID: 236258275}
   m_Layer: 0
   m_Name: SceneScript
   m_TagString: Untagged
@@ -333,6 +334,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &236258275
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236258272}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 69eb3b07fc66ea846b2cf608de2c3986, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.52
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.099
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &238350009
 GameObject:
   m_ObjectHideFlags: 0
@@ -9051,6 +9148,78 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901004840}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1994452143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1994452144}
+  - component: {fileID: 1994452146}
+  - component: {fileID: 1994452145}
+  m_Layer: 5
+  m_Name: TMP SubMeshUI [LiberationSans SDF Material + LiberationSans SDF Atlas]
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1994452144
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994452143}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6113097790307738169}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1994452145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994452143}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_spriteAsset: {fileID: 0}
+  m_material: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
+  m_isDefaultMaterial: 0
+  m_padding: 2.618
+  m_canvasRenderer: {fileID: 1994452146}
+  m_TextComponent: {fileID: 6113097790307738168}
+  m_materialReferenceIndex: 1
+--- !u!222 &1994452146
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994452143}
+  m_CullTransparentMesh: 0
 --- !u!1 &2003079075
 GameObject:
   m_ObjectHideFlags: 0
@@ -10933,9 +11102,35 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-    bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-    bla bla bla bla bla bla bla bla bla bla bla bla bla '
+  m_text: "\u03A4\u03BF Project Soul \u03B5\u03AF\u03BD\u03B1\u03B9 \u03AD\u03BD\u03B1
+    Action RPG \u03C0\u03B1\u03B9\u03C7\u03BD\u03AF\u03B4\u03B9 \u03B2\u03B1\u03C3\u03B9\u03C3\u03BC\u03AD\u03BD\u03BF
+    \u03C3\u03B5 \u03C0\u03B1\u03C1\u03CC\u03BC\u03BF\u03B9\u03BF\u03C5\u03C2 \u03C4\u03AF\u03C4\u03BB\u03BF\u03C5\u03C2\r\n\u03C4\u03BF\u03C5
+    \u03B5\u03AF\u03B4\u03BF\u03C5\u03C2 \u03CC\u03C0\u03C9\u03C2 \u03C4\u03B7\u03BD
+    \u03C3\u03B5\u03B9\u03C1\u03AC \u03B2\u03B9\u03BD\u03C4\u03B5\u03BF\u03C0\u03B1\u03B9\u03C7\u03BD\u03B9\u03B4\u03B9\u03CE\u03BD
+    Dark Souls.\r\n\n\u0397 \u03BF\u03BC\u03AC\u03B4\u03B1 \u03C0\u03BF\u03C5 \u03B4\u03B7\u03BC\u03B9\u03BF\u03C5\u03C1\u03B3\u03AE\u03B8\u03B7\u03BA\u03B5
+    \u03B3\u03B9\u03B1 \u03C4\u03BF\u03C5\u03C2 \u03C3\u03BA\u03BF\u03C0\u03BF\u03CD\u03C2
+    \u03C4\u03B7\u03C2 \u03C5\u03BB\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\u03B7\u03C2
+    \u03B1\u03C5\u03C4\u03AE\u03C2 \u03C4\u03B7\u03C2 \u03B9\u03B4\u03AD\u03B1\u03C2\r\n\u03B1\u03C0\u03BF\u03C4\u03B5\u03BB\u03B5\u03AF\u03C4\u03B1\u03B9
+    \u03B1\u03C0\u03CC 3 \u03BC\u03AD\u03BB\u03B7 \u03C4\u03BF\u03C5\u03C2 \u03A3\u03C4\u03C1\u03AC\u03C4\u03BF
+    \u039A\u03B1\u03BD\u03B1\u03B2\u03AF\u03C4\u03C3\u03B1, \u0394\u03B7\u03BC\u03AE\u03C4\u03C1\u03B7
+    \u03A0\u03B1\u03C7\u03AE \u03BA\u03B1\u03B9 \u039D\u03AF\u03BA\u03BF \u0394\u03B1\u03C1\u03AF\u03B4\u03B7.\r\n\n\u03A3\u03C4\u03CC\u03C7\u03BF\u03C2
+    \u03C4\u03B7\u03C2 \u03BF\u03BC\u03AC\u03B4\u03B1\u03C2 \u03AE\u03C4\u03B1\u03BD
+    \u03B7 \u03B4\u03B7\u03BC\u03B9\u03BF\u03C5\u03C1\u03B3\u03AF\u03B1 \u03B5\u03BD\u03CC\u03C2
+    \u03C0\u03B1\u03B9\u03C7\u03BD\u03B9\u03B4\u03B9\u03BF\u03CD \u03C3\u03C4\u03B7
+    \u03BC\u03B7\u03C7\u03B1\u03BD\u03AE Unity \u03B3\u03B9\u03B1\r\n\u03BB\u03B5\u03B9\u03C4\u03BF\u03C5\u03C1\u03B3\u03B9\u03BA\u03AC
+    \u03C3\u03C5\u03C3\u03C4\u03AE\u03BC\u03B1\u03C4\u03B1 Windows \u03C4\u03BF \u03BF\u03C0\u03BF\u03AF\u03BF
+    \u03C0\u03BB\u03B7\u03C3\u03B9\u03AC\u03B6\u03B5\u03B9 \u03CC\u03C3\u03BF \u03C4\u03BF
+    \u03B4\u03C5\u03BD\u03B1\u03C4\u03CC\u03BD \u03B3\u03AF\u03BD\u03B5\u03C4\u03B1\u03B9
+    \u03C3\u03B5\r\n\u03C0\u03C1\u03BF\u03B3\u03C1\u03B1\u03BC\u03BC\u03B1\u03C4\u03B9\u03C3\u03C4\u03B9\u03BA\u03CC
+    \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\u03BF \u03C4\u03B7\u03BD \u03C4\u03C1\u03B9\u03BB\u03BF\u03B3\u03AF\u03B1
+    \u03C4\u03B7\u03C2 FromSoftware.\n\n\u0397 \u03C0\u03B1\u03C1\u03B1\u03B3\u03C9\u03B3\u03AE
+    \u03BE\u03B5\u03BA\u03AF\u03BD\u03B7\u03C3\u03B5 \u03C4\u03BF\u03BD \u039F\u03BA\u03C4\u03CE\u03B2\u03C1\u03B7
+    \u03C4\u03BF\u03C5 2019 \u03BA\u03B1\u03B9 \u03BF\u03BB\u03BF\u03BA\u03BB\u03B7\u03C1\u03CE\u03B8\u03B7\u03BA\u03B5
+    \u03C3\u03C4\u03B9\u03C2 11 \u039C\u03B1\u03C1\u03C4\u03AF\u03BF\u03C5\r\n2020.\n\nA
+    Controller is recommended to play this game.\nKeyboard: WASD for Movement, number
+    1 / 2 switches weapons, F Locks to a target, \nV Heals the player, Hold Left Shift
+    to Sprint and tap it to Dodge.\nYou can press the Escape key while ingame to go
+    back to Main Menu."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10963,13 +11158,13 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 71.1
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 30
   m_fontSizeMax: 200
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -10977,10 +11172,10 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 774
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -11004,21 +11199,21 @@ MonoBehaviour:
   m_margin: {x: -2.8883464, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 6113097790307738168}
-    characterCount: 204
+    characterCount: 840
     spriteCount: 0
-    spaceCount: 51
-    wordCount: 51
+    spaceCount: 141
+    wordCount: 137
     linkCount: 0
-    lineCount: 7
+    lineCount: 17
     pageCount: 1
-    materialCount: 1
+    materialCount: 2
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
   m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1994452145}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -11037,7 +11232,8 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1994452144}
   m_Father: {fileID: 1794489750}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -12427,6 +12427,16 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2205102766241831039, guid: 91125a26351b7464e96017c76d017254,
+        type: 3}
+      propertyPath: actionDamage
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580327899386777665, guid: 91125a26351b7464e96017c76d017254,
+        type: 3}
+      propertyPath: actionDamage
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 2205102766241831038, guid: 91125a26351b7464e96017c76d017254,
         type: 3}
       propertyPath: actionDamage
@@ -12437,32 +12447,7 @@ PrefabInstance:
       propertyPath: cost
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 2205102766241831039, guid: 91125a26351b7464e96017c76d017254,
-        type: 3}
-      propertyPath: actionDamage
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205102766241831036, guid: 91125a26351b7464e96017c76d017254,
-        type: 3}
-      propertyPath: actionDamage
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205102766241831037, guid: 91125a26351b7464e96017c76d017254,
-        type: 3}
-      propertyPath: actionDamage
-      value: 19
-      objectReference: {fileID: 0}
     - target: {fileID: 4580327899386777667, guid: 91125a26351b7464e96017c76d017254,
-        type: 3}
-      propertyPath: actionDamage
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 4580327899386777664, guid: 91125a26351b7464e96017c76d017254,
-        type: 3}
-      propertyPath: actionDamage
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 4580327899386777665, guid: 91125a26351b7464e96017c76d017254,
         type: 3}
       propertyPath: actionDamage
       value: 19
@@ -12476,6 +12461,21 @@ PrefabInstance:
         type: 3}
       propertyPath: cost
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205102766241831036, guid: 91125a26351b7464e96017c76d017254,
+        type: 3}
+      propertyPath: actionDamage
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205102766241831037, guid: 91125a26351b7464e96017c76d017254,
+        type: 3}
+      propertyPath: actionDamage
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580327899386777664, guid: 91125a26351b7464e96017c76d017254,
+        type: 3}
+      propertyPath: actionDamage
+      value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91125a26351b7464e96017c76d017254, type: 3}
@@ -19154,8 +19154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 0}
-  isGlobal: 0
+  sharedProfile: {fileID: 11400000, guid: 5c71314370a950642a8117730a39563b, type: 2}
+  isGlobal: 1
   blendDistance: 0
   weight: 1
   priority: 0
@@ -19171,13 +19171,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 0}
+  volumeTrigger: {fileID: 2599025871604993721}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
-  antialiasingMode: 0
+  antialiasingMode: 1
   temporalAntialiasing:
     jitterSpread: 0.75
     sharpness: 0.25
