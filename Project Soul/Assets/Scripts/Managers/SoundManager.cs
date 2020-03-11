@@ -27,7 +27,9 @@ public static class SoundManager
         Waterfall,
         Wind,
         Rain,
-        ShieldSwing
+        ShieldSwing,
+        GenericStep,
+        LandOnGround
     }
 
     private static Dictionary<Sound, float> soundTimerDictionary;
@@ -129,9 +131,9 @@ public static class SoundManager
         switch (sound)
         {
             default:
-                audioSource.maxDistance = 100f;
                 audioSource.spatialBlend = 1f;
                 audioSource.rolloffMode = AudioRolloffMode.Linear;
+                audioSource.maxDistance = 100f;
                 audioSource.dopplerLevel = 0f;
                 audioSource.volume = 0.5f;
                 audioSource.pitch = Random.Range(0.8f, 1.2f);
@@ -139,20 +141,20 @@ public static class SoundManager
                 audioSource.spatialize = true;
                 return audioSource;
             case Sound.PlayerMove:
-                audioSource.maxDistance = 100f;
                 audioSource.spatialBlend = 1f;
                 audioSource.rolloffMode = AudioRolloffMode.Linear;
+                audioSource.maxDistance = 100f;
                 audioSource.dopplerLevel = 0f;
                 audioSource.pitch = Random.Range(0.8f, 1.2f);
                 audioSource.volume = 0.3f;
                 audioSource.spatialize = true;
                 audioSource.spread = 300f;
                 return audioSource;
-            case Sound.PlayerAttack:
+            case Sound.Slash1:
                 audioSource.spatialBlend = 0f;
-                audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
-                audioSource.minDistance = 10f;
-                audioSource.maxDistance = 150f;
+                audioSource.rolloffMode = AudioRolloffMode.Linear;
+                audioSource.minDistance = 0f;
+                audioSource.maxDistance = 100f;
                 audioSource.dopplerLevel = 0f;
                 audioSource.volume = 1f;
                 audioSource.spread = 180f;

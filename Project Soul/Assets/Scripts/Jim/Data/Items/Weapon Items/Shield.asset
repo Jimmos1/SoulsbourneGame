@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768c9b6ba2b9b7b44a85591ea8b930aa, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 3ed957623dc0035409f02e5a0d1c7d33, type: 3}
   isUnarmed: 0
   modelPrefab: {fileID: 2196394670780315377, guid: 8d944a6ff0da61d4b88d3e42c75054b5,
     type: 3}
@@ -19,23 +20,29 @@ MonoBehaviour:
   twoHanded_anim: Two Handed
   itemActions:
   - animName: Parry
+    altAnimName: Parry
     attackInput: 0
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
     damage: 10
+    staminaCost: 0
+    manaCost: 0
     overrideReactAnim: 0
     reactAnim: 
     canParry: 0
     canBackstab: 0
   - animName: Punch 1
+    altAnimName: Punch 1
     attackInput: 1
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
     damage: 10
+    staminaCost: 15
+    manaCost: 0
     overrideReactAnim: 0
     reactAnim: 
     canParry: 0

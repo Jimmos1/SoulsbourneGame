@@ -146,11 +146,14 @@ Stratos #10 2/3/20 Master
    Other than that only design choices and required from now on in regards of AI.
 
 Jim #7 3/3/20 Master
-1) Will write full changelog on next patch, tldr added objectpooling class for whatever object, some sounds, some vfx and some major fixes
-	on player and inventory also used some of Nicks inventory scripts for picking up stuff. Working scene was JimScenebed_Sounds+Pickups+VFX.
+1) Added object pools for VFX objects currently only works for blood on hits.
+2) Added various vfx: sandstorm, rain, waterfall and hooked up a fixed up sound system.
+3) Various fixes.
 
 Jim #8 3/3/20 Master
-1) More sounds, better fuctions more fixes, better controller usability.
+1) Added more sounds for the sound manager.
+2) Changes on controller functionality, it handles better and arrow keys work.
+3) More fixes all over the place.
 
 Stratos #11 8/3/20 Master
 1) Fixed rotation issues with AI. Now checks if enemy is in front before performing an action.
@@ -166,3 +169,22 @@ Stratos #12 10/3/20 Master
 1) Added 6 new actions with new animation & logic for a total of 10 actions available for GOAP.
 2) Added new action animations in EnemyAnimationController
 3) Patched AnimatorHook
+
+Jim #9 11/3/20 Master
+1) Changed Main Menu scene to adjust with screen size.
+2) Changed how from main menu you go to game and About page, no need to load second scene for about page, also when starting level
+	it loads it asynchronous and makes sure game is ready for player with a loading screen.
+3) UI fixes all over the place, 
+ - Added Health, Mana and Stamina for player, they change values accordingly.
+ - Also using Nicks' previous HPController, re-added it to GOAP agents, it gets enabled when the player is targeting their specific target.
+ - Quickslots icons change according to currently held item.
+ - Picking up an Item checks if player already has it and if not adds it to his list of items. This is janky but it works.
+4) Added more sounds.
+5) Added more icons.
+6) Changed/ Fixed various player related things.
+7) Added helper class FastStats for super easy access(dirty) to stats, this is a buff.
+8) Added FastStats to GoapCore for another super easy access, this is probably a nerf.
+9) Unarmed and kick works again.
+10) Changed player and canvas in StratosScenebed to test out things.
+11) Added 2 new enemy models and rigged them to be operational by AI.
+12) Including the 2 new models all current available AIs are in the Assets/ Prefabs/ AI. 3 with GOAP 2 with SimpleAI.

@@ -56380,6 +56380,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.3
+    functionName: PlaySound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 20
+    messageOptions: 0
   - time: 0.6666667
     functionName: OpenDamageCollider
     data: 
@@ -56401,6 +56408,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 10
     messageOptions: 0
+  - time: 0.7
+    functionName: PlaySound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 20
+    messageOptions: 0
   - time: 0.8333333
     functionName: EnableCombo
     data: 
@@ -56421,4 +56435,11 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 1.8666667
+    functionName: PlaySound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 20
     messageOptions: 0

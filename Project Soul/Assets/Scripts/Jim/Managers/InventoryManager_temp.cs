@@ -34,12 +34,14 @@ public class InventoryManager_temp : MonoBehaviour
 
     Controller controller;
 
-    string[] rh_ids = new string[3];
-    string[] lh_ids = new string[3];
-    string[] cons_ids = new string[3];
+    //string[] rh_ids = new string[3];
+    //string[] lh_ids = new string[3];
+    //string[] cons_ids = new string[3];
 
-    List<WeaponItem> rh_weapons = new List<WeaponItem>();
-    List<WeaponItem> lh_weapons = new List<WeaponItem>();
+    [SerializeField]
+    public List<WeaponItem> rh_weapons = new List<WeaponItem>();
+    [SerializeField]
+    public List<WeaponItem> lh_weapons = new List<WeaponItem>();
 
     private void Update()
     {
@@ -152,10 +154,7 @@ public class InventoryManager_temp : MonoBehaviour
     public WeaponHook LoadWeaponOnHook(WeaponItem weaponItem, bool isLeft)
     {
         WeaponHook result = null;
-        if (weaponItem.isUnarmed)
-        {          
-            result = unarmedHook;
-        }
+   
 
         if (isLeft)
         {
@@ -166,6 +165,11 @@ public class InventoryManager_temp : MonoBehaviour
         {
             rightItem = weaponItem;
             result = rightHook.LoadWeaponModel(weaponItem);
+        }
+
+        if (weaponItem.isUnarmed)
+        {
+            result = unarmedHook;
         }
 
         return result;
@@ -196,7 +200,7 @@ public class InventoryManager_temp : MonoBehaviour
     {
         if (_currentConsumable != null)
         {
-            _currentConsumable.consumableBase.OnConsume();
+            _currentConsumable.consumableBase.OnConsume(controller.stats);
             _currentConsumable.amount--;
             usesLeftOnConsumable = _currentConsumable.amount;
         }

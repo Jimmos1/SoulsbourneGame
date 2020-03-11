@@ -105,7 +105,7 @@ public class InputControl : MonoBehaviour
 
         HandleInput();
 
-        if (b_Input)
+        if (b_Input && !controller.isRolling)
         {
             rollFlag = true;
             rollTimer += delta;
@@ -220,36 +220,6 @@ public class InputControl : MonoBehaviour
         LMDown = Input.GetMouseButton(0);
         RMDown = Input.GetMouseButton(1);
 
-
-        //float x = Input.GetAxis("DPadHor");
-        //float y = Input.GetAxis("DPadVer");
-
-        //IsLeft = false;
-        //IsRight = false;
-        //IsUp = false;
-        //IsDown = false;
-
-        //if (_LastX != x)
-        //{
-        //    if (x == -1)
-        //        IsLeft = true;
-        //    else if (x == 1)
-        //        IsRight = true;
-        //}
-
-        //if (_LastY != y)
-        //{
-        //    if (y == -1)
-        //        IsDown = true;
-        //    else if (y == 1)
-        //        IsUp = true;
-        //}
-
-        //_LastX = x;
-        //_LastY = y;
-
-        //DPadHor = Input.GetAxis("DPadHor");
-        //DPadVer = Input.GetAxis("DPadVer");
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 
@@ -287,6 +257,7 @@ public class InputControl : MonoBehaviour
                     cameraManager.lockTarget = lockTarget;
                     controller.lockOn = true;
                     controller.currentLockTarget = lockTarget;
+                    controller.canvasOnLockTarget = lockTarget;
                 }
                 else
                 {
@@ -298,6 +269,8 @@ public class InputControl : MonoBehaviour
 
         if (controller.lockOn)
         {
+            controller.canvasOnLockTarget.parent.GetComponent<ObjectCanvasController>().isAware(); // dirty
+
             if (!currentLockable.IsAlive())
             {
                 DisableLockOn();
@@ -311,6 +284,8 @@ public class InputControl : MonoBehaviour
         controller.lockOn = false;
         controller.currentLockTarget = null;
         currentLockable = null;
+        controller.canvasOnLockTarget.parent.GetComponent<ObjectCanvasController>().isNotAware(); // more dirt
+
     }
 
     bool HandleAttacking()
@@ -363,6 +338,7 @@ public class InputControl : MonoBehaviour
     bool HandleRolls()
     {
         controller.isSprinting = false;
+        controller.isRolling = true;
 
         if (b_Input == false && rollFlag)
         {
@@ -380,12 +356,14 @@ public class InputControl : MonoBehaviour
                     Quaternion dir = Quaternion.LookRotation(movementDirection);
                     controller.transform.rotation = dir;
                     controller.PlayTargetAnimation("Roll", true, false, 1.5f);
+                    controller.stats.AssignRollCost(false);
                     return true;
 
                 }
                 else
                 {
                     controller.PlayTargetAnimation("Step", true, false);
+                    controller.stats.AssignRollCost(true);
                 }
             }
         }
@@ -393,7 +371,10 @@ public class InputControl : MonoBehaviour
         {
             if (moveAmount > 0.5f)
             {
-                controller.isSprinting = true;
+                if(controller.stats.stamina > 0)
+                {
+                    controller.isSprinting = true;
+                }
             }
         }
 
@@ -402,6 +383,7 @@ public class InputControl : MonoBehaviour
             rollTimer = 0;
         }
 
+        controller.isRolling = false;
         return false;
     }
 

@@ -50,10 +50,12 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
     public int targetLayer = 8; //8th layer is the player.
 
     //Combat vars
+    public FastStats stats; //temp maybe
     public int health = 30;
     private bool isHit; 
     private float hitTimer;
-    Controller currentTarget;
+    [HideInInspector]
+    public Controller currentTarget;
     ActionContainer _lastAction;
     //public GameObject damageCollider; //The collider we enable/disable to deal damage.
 
@@ -156,6 +158,9 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
         //Validating agent
         agent.transform.localPosition = Vector3.zero;
         agent.transform.localRotation = Quaternion.identity;
+
+        //probably fine here
+        stats.health = GetCurrentHealth();
     }
 
     private void FindDataProvider()  //Looks for a component with IGoap implemented, assigns it as dataProvider and then returns.
@@ -626,5 +631,10 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
         }
         s += "GOAL";
         return s;
+    }
+
+    public FastStats GetStats()
+    {
+        return stats;
     }
 }

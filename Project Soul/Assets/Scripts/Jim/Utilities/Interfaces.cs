@@ -10,6 +10,8 @@ public interface ILockable
 
 public interface IDamageable
 {
+    FastStats GetStats();
+
     void OnDamage(ActionContainer action);
 }
 

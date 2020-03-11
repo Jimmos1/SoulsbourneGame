@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity, IParryable
 {
+    public FastStats stats;
     new Rigidbody rigidbody;
     Animator animator;
     NavMeshAgent agent;
@@ -10,7 +11,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
     Transform mTransform;
     Vector3 lookPosition;
 
-    public int health = 100;
+    //public int health = 100;
 
     public float fovRadius = 20;
     public float rotationSpeed = 1;
@@ -229,7 +230,6 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
         }
     }
 
-
     void HandleRotation(float delta)
     {
         Vector3 dir = currentTarget.mTransform.position - mTransform.position;
@@ -291,8 +291,8 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
             SoundManager.PlaySound(SoundManager.Sound.EnemyHit, mTransform.position);
 
             isHit = true;
-            hitTimer = 1f;
-            health -= action.damage;
+            hitTimer = 0.2f;
+            stats.health -= action.damage;
             animatorHook.CloseDamageCollider(); //for safety
             //Debug.Log("Enemy received " + action.damage + " new health is " + health);
 
@@ -304,7 +304,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
             blood.transform.SetParent(mTransform);
             blood.SetActive(true);
 
-            if (health <= 0)
+            if (stats.health <= 0)
             {
                 PlayTargetAnimation("Death", true);
                 animator.transform.parent = null; // in order for ragdoll to properly work
@@ -339,7 +339,7 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
 
     public bool IsAlive()
     {
-        return health > 0;
+        return stats.health > 0;
     }
 
     public ActionContainer GetActionContainer()
@@ -398,6 +398,11 @@ public class AIController : MonoBehaviour, ILockable, IDamageable, IDamageEntity
         mTransform.position = origin + direction * parriedDistance;
         mTransform.rotation = Quaternion.LookRotation(direction);
         PlayTargetAnimation("Getting Backstabbed", true, 0f, true);
+    }
+
+    public FastStats GetStats()
+    {
+        return stats;
     }
 
     ActionContainer _lastAction;

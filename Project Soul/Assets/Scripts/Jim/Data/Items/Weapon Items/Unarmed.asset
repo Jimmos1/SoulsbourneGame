@@ -12,30 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768c9b6ba2b9b7b44a85591ea8b930aa, type: 3}
   m_Name: Unarmed
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 7ebdad5aa0587cd40a98d65d7b08ea4f, type: 3}
   isUnarmed: 1
   modelPrefab: {fileID: 7764008196530358694, guid: 2d246527226905448891838001f6759e,
     type: 3}
-  oneHanded_anim: Empty
+  oneHanded_anim: One Handed
   twoHanded_anim: Two Handed
   itemActions:
   - animName: Punch 1
+    altAnimName: Punch 1 Tired
     attackInput: 0
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
     damage: 5
+    staminaCost: 14
+    manaCost: 0
     overrideReactAnim: 0
     reactAnim: 
     canParry: 0
     canBackstab: 0
   - animName: Kick 1
+    altAnimName: Kick 1
     attackInput: 1
     isMirrored: 0
     isTwoHanded: 0
     itemActual: {fileID: 0}
     weaponHook: {fileID: 0}
     damage: 5
+    staminaCost: 14
+    manaCost: 0
     overrideReactAnim: 0
     reactAnim: 
     canParry: 0

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96cb4dd7d6261764f858813527e1f7e4, type: 3}
   m_Name: Estus
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: e5add80df615aa94d9281bd5218ae37f, type: 3}
   consumeAnimation: Estus Drink
   emptyAnimation: Can't Use
   addValue: 15
+  isMana: 0

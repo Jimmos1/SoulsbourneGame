@@ -205,6 +205,31 @@ public class AnimatorHook : MonoBehaviour
 
     public void PlaySound(SoundManager.Sound sound)
     {
-        SoundManager.PlaySound(sound, animator.transform.position);
+        if (!isAI) //this is done as a fix for overlapping sounds on footsteps
+        {
+            if (sound == SoundManager.Sound.PlayerMove)
+            {
+                if (!controller.isInteracting)
+                {
+                    SoundManager.PlaySound(sound, animator.transform.position);
+                }
+            }
+            else
+            {
+                SoundManager.PlaySound(sound, animator.transform.position);
+            }
+        }
+        else
+        {
+            SoundManager.PlaySound(sound, animator.transform.position);
+        }
+    }
+
+    public void DrainAttribute()
+    {
+        if (!isAI)
+        {
+            controller.ComboAttributeDrain();
+        }
     }
 }

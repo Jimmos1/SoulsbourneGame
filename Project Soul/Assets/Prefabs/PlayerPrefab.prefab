@@ -141,6 +141,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace01af0642dd7449aa45d368797a575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats:
+    health: 100
+    mana: 100
+    stamina: 100
+    staminaRefreshRate: 0.05
+    staminaDecreaseRate: 0.1
+    rollCost: 30
+    stepbackCost: 10
   lockOn: 0
   isOnAir: 0
   isGrounded: 0
@@ -160,7 +168,7 @@ MonoBehaviour:
   currentActions: []
   animatorHook: {fileID: 0}
   parryCollider: {fileID: 2135765043420891444}
-  health: 100
+  unarmedCollider: {fileID: 2135765044190842983}
 --- !u!114 &2135765042798273781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3639,7 +3647,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4146856226658792298}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

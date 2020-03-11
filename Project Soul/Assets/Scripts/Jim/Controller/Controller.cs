@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 {
+    public FastStats stats;
     public bool lockOn;
     public bool isOnAir;
     public bool isGrounded;
@@ -29,13 +30,15 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     public Transform currentLockTarget;
 
     [HideInInspector]
+    public Transform canvasOnLockTarget;
+
+    [HideInInspector]
     public Transform mTransform;
 
     LayerMask ignoreForGroundCheck;
 
     public List<ArmorItem> startingArmor;
     public ItemActionContainer[] currentActions;
-    //public ItemActionContainer[] defaultActions;
     ItemActionContainer currentAction;
     InventoryManager_temp _inventoryManager;
     public InventoryManager_temp inventoryManager {
@@ -50,11 +53,9 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
     Collider controllerCollider;
     public GameObject parryCollider;
-    //public GameObject unarmedCollider;
+    public GameObject unarmedCollider;
 
     ActionContainer _lastAction;
-
-    public int health = 100; //TODO: Hook this with other stuff.
 
     public ActionContainer lastAction {
         get {
@@ -71,7 +72,6 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
             return _lastAction;
         }
     }
-
 
     public void InitInventory(PlayerProfile profile)
     {
@@ -106,6 +106,8 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
     private void Update()
     {
+        float delta = Time.deltaTime;
+
         isInteracting = anim.GetBool("isInteracting");
 
         if (animatorHook.canDoCombo)
@@ -118,12 +120,30 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
         if (hitTimer > 0)
         {
-            hitTimer -= Time.deltaTime;
+            hitTimer -= delta;
             if (hitTimer < 0)
             {
                 isHit = false;
             }
         }
+
+        stats.HandleHealth();
+        stats.HandleStamina(delta, isSprinting);
+    }
+
+    private void LateUpdate()
+    {
+        if (parryCollider.activeSelf) //parry collider open for 4 frames
+        {
+            parryFrameCount++;
+            if (parryFrameCount > 16f)
+            {
+                parryCollider.SetActive(false);
+
+            }
+        }
+
+        TempUI.singleton.UpdateSliderValues(stats.health, stats.stamina, stats.mana);
     }
 
     #region Movement
@@ -222,7 +242,7 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
             if (isOnAir)
             {
                 isOnAir = false;
-                PlayTargetAnimation("Empty", false, false);
+                PlayTargetAnimation("Land", false, false);
             }
         }
         else
@@ -358,6 +378,11 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
         animatorHook.canRotate = false;
         currentAction = GetItemActionContainer(attackInput, currentActions);
 
+        //if (stats.stamina < 0)
+        //{
+        //    return;
+        //}
+
         if (currentAction.canBackstab || currentAction.canParry)
         {
             RaycastHit hit;
@@ -374,28 +399,31 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
                 {
                     Transform enTransform = parryable.getTransform();
 
-                    if (parryable.canBeParried())
+                    if (enTransform != null)
                     {
-                        float angle = Vector3.Angle(-enTransform.forward, mTransform.forward);
-
-                        if (angle < 45f)
+                        if (parryable.canBeParried())
                         {
-                            PlayTargetAnimation("Parry Attack", true, currentAction.isMirrored);
-                            parryable.GetParried(mTransform.position, mTransform.forward);
+                            float angle = Vector3.Angle(-enTransform.forward, mTransform.forward);
 
-                            return;
+                            if (angle < 45f)
+                            {
+                                PlayTargetAnimation("Parry Attack", true, currentAction.isMirrored);
+                                parryable.GetParried(mTransform.position, mTransform.forward);
+
+                                return;
+                            }
                         }
-                    }
-                    else if (parryable.canBeBackstabbed())
-                    {
-                        float angle = Vector3.Angle(enTransform.forward, mTransform.forward);
-
-                        if (angle < 45f)
+                        else if (parryable.canBeBackstabbed())
                         {
-                            PlayTargetAnimation("Parry Attack", true, currentAction.isMirrored);
-                            parryable.GetBackstabbed(mTransform.position, mTransform.forward);
+                            float angle = Vector3.Angle(enTransform.forward, mTransform.forward);
 
-                            return;
+                            if (angle < 45f)
+                            {
+                                PlayTargetAnimation("Parry Attack", true, currentAction.isMirrored);
+                                parryable.GetBackstabbed(mTransform.position, mTransform.forward);
+
+                                return;
+                            }
                         }
                     }
                 }
@@ -405,7 +433,15 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
         if (!string.IsNullOrEmpty(currentAction.animName))
         {
-            PlayTargetAnimation(currentAction.animName, true, currentAction.isMirrored);
+            string targetAnim = currentAction.animName;
+
+            if (stats.mana < currentAction.manaCost || stats.stamina < currentAction.staminaCost)
+            {
+                targetAnim = currentAction.altAnimName;
+            }
+
+            stats.AssignCostsOfAction(currentAction);
+            PlayTargetAnimation(targetAnim, true, currentAction.isMirrored);
         }
     }
 
@@ -429,6 +465,11 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     {
         //if (!(item is WeaponItem))
         //    return;
+
+        TempUI.singleton.UpdateQuickSlotForItem(item, isLeft);
+
+
+        PlayTargetAnimation("Equip Weapon", true, !isLeft);
 
         WeaponItem weaponItem = null;
 
@@ -482,12 +523,15 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     void CopyItemActionContainer(ItemActionContainer from, ItemActionContainer to)
     {
         to.animName = from.animName;
+        to.altAnimName = from.altAnimName;
         to.itemActual = from.itemActual;
         to.canParry = from.canParry;
         to.reactAnim = from.reactAnim;
         to.damage = from.damage;
         to.overrideReactAnim = from.overrideReactAnim;
         to.canBackstab = from.canBackstab;
+        to.manaCost = from.manaCost;
+        to.staminaCost = from.staminaCost;
     }
 
     AttackInputs GetAttackInput(AttackInputs inp, bool isLeft)
@@ -548,6 +592,12 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
 
         return null;
     }
+
+    public void ComboAttributeDrain()
+    {
+        stats.stamina -= currentAction.staminaCost;
+        stats.mana -= currentAction.manaCost;
+    }
     #endregion
 
     public ILockable FindLockableTarget()
@@ -598,12 +648,12 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
             isHit = true;
             hitTimer = 1f;
 
-            health -= action.damage; // TODO: Draw defensive stats here.
+            stats.health -= action.damage; // TODO: Draw defensive stats here.
             //Debug.Log("Player received " + action.damage + " new health is " + health);
 
-            if (health <= 0)
+            if (stats.health <= 0)
             {
-                health = 0;
+                stats.health = 0;
                 //GAME OVER STUFF HERE
                 Debug.Log("I DEAD");
                 //PlayTargetAnimation("Death", true);           
@@ -642,18 +692,6 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
         parryCollider.SetActive(true);
     }
 
-    private void LateUpdate()
-    {
-        if (parryCollider.activeSelf) //parry collider open for 4 frames
-        {
-            parryFrameCount++;
-            if (parryFrameCount > 16f)
-            {
-                parryCollider.SetActive(false);
-
-            }
-        }
-    }
 
     public void OnParried(Vector3 dir)
     {
@@ -688,6 +726,11 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
     public void ConsumeItem()
     {
         inventoryManager.ConsumeItemActual();
+    }
+
+    public FastStats GetStats()
+    {
+        return stats;
     }
 }
 

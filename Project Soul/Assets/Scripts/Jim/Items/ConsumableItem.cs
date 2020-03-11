@@ -6,5 +6,5 @@ public abstract class ConsumableItem : Item
 {
     public string consumeAnimation;
     public string emptyAnimation;
-    public abstract void OnConsume();
+    public abstract void OnConsume(FastStats stats);
 }
