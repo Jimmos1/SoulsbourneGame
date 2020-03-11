@@ -192,3 +192,7 @@ Jim #9 11/3/20 Master
 Stratos #14 11/3/20 Master
 1) Fixed a performance bug in GOAP_Core.
 2) Added AI & Elevator in mainScene.
+
+Stratos #15 11/3/20 Master
+1) Main Scene Balancing on AI.
+2) GGs Project Soul Finish
