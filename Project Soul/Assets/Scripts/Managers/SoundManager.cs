@@ -163,8 +163,8 @@ public static class SoundManager
             case Sound.Waterfall:
                 audioSource.spatialBlend = 1f;
                 audioSource.rolloffMode = AudioRolloffMode.Linear;
-                audioSource.minDistance = 5f;
-                audioSource.maxDistance = 15f;
+                audioSource.minDistance = 20f;
+                audioSource.maxDistance = 40f;
                 audioSource.dopplerLevel = 0f;
                 audioSource.volume = 0.3f;
                 audioSource.spread = 180f;

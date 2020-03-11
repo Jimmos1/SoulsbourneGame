@@ -68,7 +68,10 @@ public class Pool
             }
         }
 
-        retVal.SetActive(false);
+        if(retVal != null)
+        {
+            retVal.SetActive(false);
+        }
 
         return retVal;
     }
