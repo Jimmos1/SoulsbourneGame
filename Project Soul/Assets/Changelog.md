@@ -165,7 +165,7 @@ Stratos #11 8/3/20 Master
 Stratos #12 10/3/20 Master
 1) Added elevator in StratosScenebed & as a prefab for use in main scene.
 
-Stratos #12 10/3/20 Master
+Stratos #13 11/3/20 Master
 1) Added 6 new actions with new animation & logic for a total of 10 actions available for GOAP.
 2) Added new action animations in EnemyAnimationController
 3) Patched AnimatorHook
@@ -188,3 +188,7 @@ Jim #9 11/3/20 Master
 10) Changed player and canvas in StratosScenebed to test out things.
 11) Added 2 new enemy models and rigged them to be operational by AI.
 12) Including the 2 new models all current available AIs are in the Assets/ Prefabs/ AI. 3 with GOAP 2 with SimpleAI.
+
+Stratos #14 11/3/20 Master
+1) Fixed a performance bug in GOAP_Core.
+2) Added AI & Elevator in mainScene.

@@ -121,7 +121,7 @@ public sealed class GoapCore : MonoBehaviour, ILockable, IDamageable, IDamageEnt
 
             HandleDetection();
 
-            stateMachine.Update(this.gameObject);
+            //stateMachine.Update(this.gameObject);
 
             //anim stuff
         }
