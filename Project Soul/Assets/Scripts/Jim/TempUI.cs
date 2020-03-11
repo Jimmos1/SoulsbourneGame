@@ -8,6 +8,8 @@ public class TempUI : MonoBehaviour
     public static TempUI singleton;
 
     public GameObject pickupText;
+    public GameObject deathText;
+    public GameObject pauseText;
 
     public IconImageHook quick_lh;
     public IconImageHook quick_rh;
@@ -97,5 +99,15 @@ public class TempUI : MonoBehaviour
         {
             quick_item.UpdateIconHook(targetItem);
         }
+    }
+
+    public void HandleDeath()
+    {
+        deathText.SetActive(true);
+    }
+
+    public void HandlePauseMenu()
+    {
+        pauseText.SetActive(!pauseText.activeSelf);
     }
 }

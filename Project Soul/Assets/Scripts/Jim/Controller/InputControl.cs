@@ -143,7 +143,7 @@ public class InputControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            TempUI.singleton.HandlePauseMenu();
         }
 
         //Debug.Log(Input.anyKeyDown);

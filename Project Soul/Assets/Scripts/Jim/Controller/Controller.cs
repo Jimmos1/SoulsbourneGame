@@ -656,7 +656,9 @@ public class Controller : MonoBehaviour, IDamageEntity, IDamageable, IParryable
                 stats.health = 0;
                 //GAME OVER STUFF HERE
                 Debug.Log("I DEAD");
-                //PlayTargetAnimation("Death", true);           
+                PlayTargetAnimation("Death", true);
+                rigidbody.isKinematic = true;
+                TempUI.singleton.HandleDeath();
                 //animator.transform.parent = null; // in order for ragdoll to properly work
                 //gameObject.SetActive(false); // could just destroy instead of disabling
             }
