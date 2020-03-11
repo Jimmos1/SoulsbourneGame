@@ -19090,8 +19090,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2599025871604993721}
   - component: {fileID: 2599025871604993702}
-  - component: {fileID: 2599025871604993704}
   - component: {fileID: 2599025871604993703}
+  - component: {fileID: 2599025871604993704}
   m_Layer: 15
   m_Name: Camera
   m_TagString: MainCamera
@@ -19212,7 +19212,7 @@ MonoBehaviour:
       motionGridSize: 64
       colorBlindnessType: 0
       colorBlindnessStrength: 1
-  m_Resources: {fileID: 0}
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
   m_ShowToolkit: 0
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
