@@ -144,6 +144,17 @@ public class InputControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TempUI.singleton.HandlePauseMenu();
+            //if(Cursor.visible == true)
+            //{
+            //    Cursor.lockState = CursorLockMode.Locked;
+            //    Cursor.visible = false;
+            //}
+            //else
+            //{
+            //    Cursor.lockState = CursorLockMode.None;
+            //    Cursor.visible = true;
+            //}
+          
         }
 
         //Debug.Log(Input.anyKeyDown);

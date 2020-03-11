@@ -80,15 +80,30 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
 
         timeSinceStartup = Time.realtimeSinceStartup;
 
-        
+
+        //Scene scene = SceneManager.GetActiveScene();
+
+        //if (scene.buildIndex == 0)
+        //{
+        //    Cursor.lockState = CursorLockMode.None;
+        //    Cursor.visible = true;
+        //}
+        //if (scene.buildIndex == 2)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //    Cursor.visible = false;
+        //}
+
+
+
     }
 
     void Update()
     {
         timeSinceStartup = Time.realtimeSinceStartup;
         timeSinceLastUpdate += Time.deltaTime;
-        
-        if(timeSinceLastUpdate >= timeUpdateTimer)  //FOR TESTING PURPOSES
+
+        if (timeSinceLastUpdate >= timeUpdateTimer)  //FOR TESTING PURPOSES
         {
 
             timeSinceLastUpdate = 0.0f;
@@ -99,7 +114,7 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
         switch (sceneName)
         {
             case "Scene1":
-                if (isNewGame) 
+                if (isNewGame)
                 {
                     lastVisitedWaypoint = WayPoint.zero;
                 }
@@ -108,7 +123,7 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
                     lastVisitedWaypoint = statsManager.GetLastVisitedWaypoint();
                 }
                 currentPlayerArea = PlayerArea.level01;
-                break; 
+                break;
             case "Scene2":
                 lastVisitedWaypoint = statsManager.GetLastVisitedWaypoint();
                 currentPlayerArea = PlayerArea.level02;
@@ -121,7 +136,7 @@ public class GameManager : MonoBehaviour //Stats Manager derives from Monobehavi
                 lastVisitedWaypoint = WayPoint.custom;
                 currentPlayerArea = PlayerArea.custom;
                 break;
-                //Feel free to add your custom scene case here...
+            //Feel free to add your custom scene case here...
             default: break;
         }
         SetUpPlayer(lastVisitedWaypoint);
